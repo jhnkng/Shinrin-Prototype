@@ -8,10 +8,10 @@
             <!-- <li class='list-group-item list-group-item-dark'>Saved Notebooks</li> -->
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_archive') }}" hx-target=".list_row" hx-swap="afterbegin">Open Archives</li>
             <!-- <li class='list-group-item list-group-item-dark'>Settings</li> -->
-            <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML">Fullscreen Test</li>
+            <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML" hx-push-url="true">Fullscreen Test</li>
             <!-- <li class='list-group-item list-group-item-dark'>Help</li> -->
         </ul>
-        <p class="position-absolute bottom-0 start-0 p-4">Your user key is {{user_key}}. To access this page again please use this key to login.</p>
+        <p class="position-absolute bottom-0 start-0 p-4">Your user key is {{user_key}}.<br>To access this page again please use this key to login.</p>
     </header>
 
     <div id="target" class="z-ind-5" style="position: fixed; z-index: 1000;"></div>

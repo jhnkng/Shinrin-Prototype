@@ -2,13 +2,13 @@
 # This continues from v0301
 
 from flask import Flask, render_template, request, make_response
-from board import Board
 from markupsafe import Markup
 import datetime as dt
 import markdown as md
 import json
-from random import randint
+from random import choices
 from itertools import zip_longest
+from board import Board, List, Card
 
 
 app = Flask(__name__)
@@ -23,12 +23,12 @@ def get_data(user_key, data_type):
     :param data_type: lists or cards
     :return: processed requested data
     """
-    filename = f"{user_key}.json"
+    filename = f"user_data/{user_key}.json"
     try:
         with open(filename, mode='r') as data_file:
             data = json.load(data_file)
     except FileNotFoundError:
-        with open('new_user.json', mode='r') as data_file:
+        with open('user_data/new_user.json', mode='r') as data_file:
             data = json.load(data_file)
     # Converting list/card IDs back to ints because JSON requires them to be stored as strings.
     cleaned = {int(key): value for key, value in data[data_type].items()}
@@ -48,7 +48,7 @@ def write_data(list_pos, content):
         'lists': list_pos,
         'cards': content
     }
-    filename = f"{bd.user_key}.json"
+    filename = f"user_data/{bd.user_key}.json"
     with open(filename, mode='w') as data_file:
         json.dump(save_data, data_file, indent=2)
 
@@ -60,7 +60,10 @@ def get_new_id():
 
 
 def get_new_user_key():
-    return randint(10000, 99999)
+    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+                'U', 'V', 'W', 'X', 'Y', 'Z']
+    new_key = ''.join(choices(alphabet, k=6))
+    return new_key
 
 
 def process_newlines(text):
@@ -195,7 +198,6 @@ def login():
 def board():
     if request.method == 'POST':
         requested = request.form
-        print(requested)
         user_key = requested.get('user')
         if user_key:
             bd.user_key = user_key
@@ -267,7 +269,7 @@ def show_archive():
         unescaped_text = process_newlines(card['card_body'])
         card['card_body_html'] = Markup(md.markdown(unescaped_text))
         cards.append(card)
-    print(cards)
+
     resp = make_response(
         render_template('snippets/archive.html', list_id=list_id, list_name=list_name, cards=cards)
     )
@@ -294,8 +296,8 @@ def change_list_card_order():
 def change_list_name():
     if request.method == 'POST':
         req = request.form
-        current_list_id = req.get('current_list').split(':')[0]
-        current_list_name = req.get('current_list').split(':')[1]
+        bd.current_list_id = req.get('current_list').split(':')[0]
+        bd.current_list_name = req.get('current_list').split(':')[1]
         resp = make_response(
             render_template('snippets/list_name_change_before.html', current_list_name=bd.current_list_name)
         )
@@ -333,7 +335,9 @@ def change_notebook_name():
         new_notebook_name = ''.join(requested.getlist('new_notebook_name'))
         resp = make_response(
             render_template(
-                'snippets/notebook_name_change_after.html', new_notebook_name=new_notebook_name, notebook_id=bd.current_notebook_id
+                'snippets/notebook_name_change_after.html',
+                new_notebook_name=new_notebook_name,
+                notebook_id=bd.current_notebook_id
             )
         )
         resp.headers['HX-Trigger'] = 'syncChange'
@@ -363,7 +367,6 @@ def change_card_content():
         # Todo: clean up these variable names!!!
         escaped_newline_text = new_card_content
         # Get rid of newlines because it breaks things
-        # todo: moved to board.py, test here
         if '\n' in new_card_content:
             escaped_newline_text = new_card_content.replace('\n', '\\n')
 
@@ -371,7 +374,14 @@ def change_card_content():
 
         hxvals_body_text = escaped_newline_text
 
-        resp = make_response(render_template('snippets/card_change_after.html', card_id=bd.current_card_id, hxvals_body=hxvals_body_text, card_body=html_text))
+        resp = make_response(
+            render_template(
+                'snippets/card_change_after.html',
+                card_id=bd.current_card_id,
+                hxvals_body=hxvals_body_text,
+                card_body=html_text
+            )
+        )
         resp = make_response(resp)
         resp.headers['HX-Trigger'] = 'syncChange'
 
