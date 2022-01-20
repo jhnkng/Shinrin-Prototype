@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="edit_handle" hx-post="{{ url_for('change_card_content') }}" hx-trigger="click" hx-target="closest .row" hx-swap="outerHTML" hx-vals='{"current_card_content": "{{ card_id }}::::{{ hxvals_body }}"}'>
+        <span class="material-icons">edit</span>
+    </div>
+    <input type="hidden" name="id" value="card_id {{ card_id }}"/>
+    <input type="hidden" name="card_body" value="{{ hxvals_body }}"/>
+    <div class="card_content notebook_main col-9">
+        {{ card_body }}
+    </div>
+    <div class="notebook_side col-3">
+       <ul class="metadata">
+        <li>{{ card_id }}</li>
+        <li>Tags</li>
+        <li>Related Cards</li>
+        <li>Share Link</li>
+    </ul>
+    </div>
+</div>
+

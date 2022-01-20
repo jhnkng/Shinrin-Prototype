@@ -1,0 +1,4 @@
+<div class="change_event">
+    <input class="list_change_input z-ind-3" type="text" name="new_list_name" value="{{ current_list_name }}" onmouseover="this.select()" autofocus>
+    <button style="visibility: hidden; position: absolute; left: -9999px" type="submit" hx-put="{{ url_for('change_list_name') }}" hx-target="closest div" hx-swap="outerHTML">Save</button>
+</div>

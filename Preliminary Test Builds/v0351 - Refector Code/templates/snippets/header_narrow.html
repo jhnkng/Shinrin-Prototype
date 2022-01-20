@@ -1,0 +1,9 @@
+<header id="main_menu" class="smooth" style="width: 75px">
+    <h1 class="p-3" style="margin: 0 auto">森林</h1>
+    <ul class='list-group p-3'>
+        <li class='list-group-item material-icons' style="padding: 0.5rem;" hx-get="{{ url_for('new_list') }}" hx-target=".list_row" hx-swap="beforeend swap:0.1s">subject</li>
+        <li class='list-group-item material-icons' style="padding: 0.5rem;" hx-get="{{ url_for('new_notebook') }}" hx-target=".list_row" hx-swap="beforeend swap:0.1s">note</li>
+        <li class='list-group-item material-icons' style="padding: 0.5rem;" hx-get="{{ url_for('menu_width') }}" hx-target="#main_menu" hx-swap="outerHTML swap:0.7s">west</li>
+    </ul>
+    
+</header>

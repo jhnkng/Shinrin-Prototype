@@ -1,0 +1,39 @@
+<!-- individual notebook -->
+<!-- the h-100 class gives each column its own height, overriding
+bootstrap's auto same height columns -->
+<div class="list_wrapper notebook_wrapper fade_out align-self-start ms-2 p-0">
+
+    <!-- notebook location marker -->
+    <input type="hidden" name="id" value="notebook_id {{ nb['notebook_id'] }}" />
+
+    <div class="row justify-content-between">
+        <div class="col-10">
+            <div hx-post="{{ url_for('change_notebook_name') }}" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-vals='{"current_notebook": "{{ nb['notebook_id'] }}:{{ nb['notebook_name'] }}" }'>
+                <input type="hidden" name="notebook_name" value="{{ nb['notebook_name'] }}"/>
+                <h2>{{ nb['notebook_name'] }}</h2>
+            </div>
+        </div>
+        <div class="col-1" hx-delete="/remove" hx-target="closest .notebook_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
+            <span class="material-icons mt-2">close</span>
+        </div>
+    </div>
+
+    <!-- Notebook content: contains individual cards -->
+    <div id="notebookID{{ nb['notebook_id'] }}" class="list_content">
+
+    </div>
+    <!-- Notebook content end -->
+
+    <!--  add card button: appends the new card after the last child of the notebook content div-->
+    <!-- <div class="addCard m-2 mt-0 p-2">
+        <p hx-get="/new_card" hx-trigger="click" hx-target="#notebookID{{ nb['notebook_id'] }}" hx-swap="beforeend swap:0.1s">Add New Card</p>
+    </div> -->
+    <!-- add card button end -->
+
+</div>
+<script>
+    // Once new notebook is loaded scroll to it.
+    notebookID{{nb['notebook_id']}}.scrollIntoView();
+</script>
+
+<!-- individual notebook end -->

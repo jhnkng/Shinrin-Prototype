@@ -1,0 +1,48 @@
+{
+  "board": {},
+  "lists": {
+    "20220120115816469292": {
+      "list_id": 20220120115816469292,
+      "list_name": "Welcome!",
+      "is_notebook": false,
+      "cards": [
+        20220120115820735302,
+        20220120120149112482
+      ]
+    },
+    "20220120132612988951": {
+      "list_id": 20220120132612988951,
+      "list_name": "How Do I Use This?",
+      "is_notebook": false,
+      "cards": [
+        20220120132630684721
+      ]
+    },
+    "20220120120248401295": {
+      "list_id": 20220120120248401295,
+      "list_name": "What is Shinrin?",
+      "is_notebook": true,
+      "cards": [
+        20220120115915419318
+      ]
+    }
+  },
+  "cards": {
+    "20220120115820735302": {
+      "card_id": 20220120115820735302,
+      "card_body": "## \ud83d\ude4f\ud83c\udffcThanks for taking the time to check this out! \ud83d\ude4f\ud83c\udffc"
+    },
+    "20220120115915419318": {
+      "card_id": 20220120115915419318,
+      "card_body": "### Shinrin is a tool to help you think.\\n\\nShinrin was born out of my inability to find a tool that fits exactly the way I like to work.\\n\\nI'm a notebook and post-it notes guy. I like to scratch out ideas very loosely, and then try to find some order from the chaos I leave on paper. I like to add ideas using post-it notes, and I even cut up the notes and stick it back together in different order.\\n\\nTry as I might, I've not managed to replicate that experience digitally. I've tried kanban board style solutions, or wiki / document building services, and while I still use them I find for that it doesn't work for me during the very first thinking process."
+    },
+    "20220120120149112482": {
+      "card_id": 20220120120149112482,
+      "card_body": "###### First, Some Important Things\\n\\n1. This is basically a working prototype, riddled with bugs and breaking constantly. Please be patient.\\n\\n2. Your user key is bottom left of screen. Any changes you make here will be stored, if you would like to come back to your changes please login using the key. Data is stored as a simple JSON file, and there is NO ENCRYPTION or any data protection -- please don't enter anything that is even remotely personal! \\n\\n3. If you find a bug, please let me know!"
+    },
+    "20220120132630684721": {
+      "card_id": 20220120132630684721,
+      "card_body": "###### How do I use Shinrin?\\nAny way you like!"
+    }
+  }
+}

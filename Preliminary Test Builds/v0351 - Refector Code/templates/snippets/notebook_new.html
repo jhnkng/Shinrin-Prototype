@@ -1,0 +1,38 @@
+<!-- individual list -->
+<!-- the h-100 class gives each column its own height, overriding
+bootstrap's auto same height columns -->
+<div class="list_wrapper notebook_wrapper fade_out align-self-start ms-2 p-0">
+    <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
+        <span class="material-icons drag_handle">drag_handle</span>
+    <!-- list location marker -->
+    <input type="hidden" name="id" value="list_id {{ new_notebook_id }} note" />
+
+    <div class="row justify-content-between z-ind-2">
+        <div class="col-11">
+            {% include "snippets/notebook_name_change_before.html" %}
+        </div>
+        <div class="col-1 z-ind-3" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
+            <span class="material-icons mt-2">close</span>
+        </div>
+    </div>
+    </div>  <!-- Sortables target handle end -->
+
+    <!-- List content: contains individual cards -->
+    <div id="listID{{ new_notebook_id }}" class="list_content">
+
+    </div>
+    <!-- List content end -->
+
+    <!--  add card button: appends the new card after the last child of the list content div-->
+    <div class="addCard col-2 m-2 mt-1 p-2">
+        <p class="pl-2" hx-get="{{ url_for('new_card') }}" hx-trigger="click" hx-target="#listID{{ new_notebook_id }}" hx-swap="beforeend swap:0.1s">Add New Card</p>
+    </div>
+    <!-- add card button end -->
+
+</div>
+<script>
+    // Once new list is loaded scroll to it.
+    listID{{new_notebook_id}}.scrollIntoView();
+</script>
+
+<!-- individual list end -->

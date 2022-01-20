@@ -1,0 +1,437 @@
+body {
+    /* background: rgb(115,161,75);
+    background: -moz-linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
+    background: -webkit-linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
+    background: linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#73a14b",endColorstr="#ffcedc",GradientType=1); */
+
+    background-image: url(/static/img/bg7.jpg);
+    background-repeat: no-repeat;
+    background-position: 0 80%;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 500;
+    overscroll-behavior: none;
+}
+
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: white;
+    /* background-color: rgb(235, 235, 235);
+    background-color: rgba(235, 235, 235, 0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: -2px -1px 3px rgba(0, 0, 0, 0.3); */
+    height: 100%;
+    padding-top: 0;
+    font-size: 0.8rem;
+    font-weight: 900;
+    /* z-index: 5000; */
+
+    width: 200px;
+}
+
+h1 {
+    font-family: 'Kosugi Maru', sans-serif;
+    font-weight: 400;
+    font-size: 2rem;
+}
+
+.list-group li:hover {
+    background-color: rgb(235, 240, 240);
+}
+
+.list_row {
+    position: absolute;
+    top: 20px;
+    left: 220px;
+    bottom: 0;
+}
+
+/* forces the browser to add padding the extreme right */
+.list_row:after {
+    content: "";
+    display: block;
+    position: absolute;
+    /* right: -3rem;
+    width: 3rem; */
+    right: -3rem;
+    width: 3rem;
+    height: 1px;
+}
+
+.list_wrapper {
+    border-radius: 6px;
+    box-shadow: 0.1rem 0.1rem 5px rgba(60, 60, 60, 0.5);
+    width: 285px;
+    background-color: rgb(235, 235, 235);
+    background-color: rgba(235, 235, 235, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.list_content {
+    min-height: 1.5rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* This set hides the metadata column in lists but shows in notebook format. */
+    .list_wrapper .notebook_main {
+        width: 100%;
+    }
+
+    .list_wrapper .notebook_side {
+        display: none;
+    }
+
+    .notebook_wrapper {
+        width: 650px;
+    }
+
+    .notebook_wrapper .notebook_side {
+        display: block;
+    }
+
+    .notebook_wrapper .notebook_main {
+        width: 75%;
+    }
+
+
+/* List titles */
+.list_header h2 {
+    font-weight: 700;
+    font-size: 1rem;
+    color: rgb(60, 60, 60);
+    padding: 0.8rem 0.5rem 0 1rem;
+}
+
+.list_change_input {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0.6rem 0.7rem 0 0.7rem;
+    padding-left: 0.3rem;
+}
+
+input {
+    border-radius: 3px;
+    border: 0;
+    padding: 0.2rem;
+    width: 100%;
+}
+
+input:focus {
+    outline: 0;
+}
+
+.card {
+    color: rgb(60, 60, 60);
+    background-color: white;
+    margin: 0.3rem 0.5rem 0.3rem 0.5rem;
+    padding: 0.5rem;    /* affects card drag handle */
+    line-height: 1.1rem;
+    border-radius: 4px;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+
+.addCard {
+    border-radius: 3px;
+    background-color: rgb(205, 205, 205);
+    background-color: rgba(235, 235, 235, 0.6);
+}
+.addCard p {
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 0;
+    text-align: center;
+}
+.addCard:hover {
+    background-color: rgb(235, 240, 240);
+}
+
+
+
+.blue-background-class {
+    background-color: rgb(247, 255, 255);
+}
+
+/* Card Titles */
+h3 {
+    margin-top: 0.4rem;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+
+textarea {
+    font-size: 0.85rem;
+    /* width: 250px; */
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 3px;
+    min-height: 10rem;
+    border-width: 1px;
+    line-height: 1.2rem;
+}
+
+textarea:focus {
+    outline: 0;
+    font-weight: 500;
+}
+
+.card_content_change::parent {
+    height: 10rem;
+}
+
+p, .notebook_main ul {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.notebook_main ol {
+    /* reset existing padding */
+    padding-left: 0;    
+    padding-left: 1.2rem;
+    padding-right: 0.8rem;
+    font-size: 0.9rem;
+}
+
+strong {
+    font-weight: 900;
+}
+
+.debug {
+    background-color: salmon;
+}
+
+.card:first-child {
+    /* There is a 1px border in the card just in the left most list. No idea why, but this turns it off */
+    border: 0;
+}
+
+
+
+
+.fade_out.htmx-swapping {
+    width: 0;
+    opacity: 0;
+    transition: width 0.7s, opacity 0.3s ease-out;
+}
+
+.smooth {
+    transition: all 0.7s ease;
+}
+
+.notebook_wrapper .card {
+    box-shadow: none;
+    margin: 0 0.5rem;
+    /* padding-top: 1.5rem; */
+    padding-bottom: 1rem;
+}
+
+.notebook_wrapper .card:first-child {
+    /* box-shadow: none; */
+    margin: 0.3rem 0.5rem 0 0.5rem;
+}
+
+.notebook_wrapper .card_content p {
+    margin: 0;
+    padding: 0 0 0.5rem 0;
+}
+
+.notebook_side {
+    font-size: 0.85rem;
+    align-self:flex-end;
+    padding-bottom: 2rem;
+    border-left: 1px solid lightgrey;
+}
+
+    .metadata {
+        padding: 0;
+        margin: 0;
+    }
+    .metadata li{
+        list-style: none;
+    }
+
+
+.notebook_main textarea {
+    width: 100%;
+    outline: rgba(60, 60, 60, 0.5);
+}
+
+.list_sort_handle:hover {
+    /* Highlight list drag handle */
+    background-color: rgb(235, 240, 240);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+    .drag_handle {
+        position: absolute;
+        color: lightgray;
+        width: 100%;
+        /* Height set thus otherwise interfers with click to edit header */
+        height: 1px;
+        text-align: center;
+        visibility: hidden;
+        z-index: 1;
+    }
+    .drag_handle:active {
+        color: gray;
+    }
+    .list_sort_handle:hover .drag_handle {
+        visibility: visible;
+    }
+
+.card:hover .card_sort_handle span {
+    visibility: visible;
+}
+
+.card:hover .edit_handle {
+    color: lightgray;
+}
+
+.card_sort_handle {
+    /* neg margin offsets the padding from .card */
+    margin: -0.5rem -0.5rem 0rem -0.5rem;   
+    /* position: relative;
+    top: 0;
+    right: 0; */
+    color: lightgray;
+    text-align: center;
+}
+    .card_sort_handle span {
+        visibility: hidden;
+    }
+    .card_sort_handle:hover span {
+        /* border-top-left-radius: 4px;
+        border-top-right-radius: 4px; */
+        color: grey;
+        visibility: visible;
+    }
+    .card_sort_handle:active span {
+        color:black;
+    }
+
+.edit_handle {
+    position: absolute;
+    top: 0.5rem;
+    right: 0;
+    width: 37px;
+    color: white;
+    padding: 0;
+    margin-left: 4px;
+
+}
+
+    .edit_handle span {
+        font-size: 18px;
+        width: 100%;
+        padding-right: 0.5rem;
+        text-align: right;
+    }
+    .edit_handle:hover span {
+        color: gray;
+    }
+
+
+
+
+
+
+
+
+
+
+.z-ind-0 {
+    z-index: 1;
+}
+    
+.z-ind-1 {
+    z-index: 100;
+}
+
+.z-ind-2 {
+    z-index: 200;
+}
+
+.z-ind-3 {
+    z-index: 300;
+}
+
+.z-ind-4 {
+    z-index: 400;
+}
+
+.z-ind-5 {
+    z-index: 500;
+}
+
+    
+.notebook_main h1 {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding-bottom: 0.5rem;
+}
+
+.notebook_main h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding-bottom: 0.3rem;
+}
+
+.notebook_main h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid rgb(185, 185, 185);
+
+}
+
+.notebook_main h4 {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.notebook_main h5 {
+    font-size: 0.9rem;
+    font-weight: 900;
+}
+
+.notebook_main h6 {
+    font-size: 0.85rem;
+    font-weight: 900;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid rgb(185, 185, 185);   
+}
+
+
+
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(235, 235, 235) rgb(255, 255, 255);
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: rgba(235, 235, 235, 0.1);
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color:  rgb(185, 185, 185);
+    border-radius: 20px;
+    /* border: 5px solid rgb(205, 205, 205); */
+  }
