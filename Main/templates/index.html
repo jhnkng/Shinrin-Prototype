@@ -5,7 +5,7 @@
         <ul class='list-group p-3'>
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('new_list') }}" hx-target=".list_row" hx-swap="afterbegin">Add New List</li>
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('new_notebook') }}" hx-target=".list_row" hx-swap="afterbegin">Add New Notebook</li> 
-            <!-- <li class='list-group-item list-group-item-dark'>Saved Notebooks</li> -->
+            <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_board_index') }}" hx-target=".list_row" hx-swap="beforeend">Current List Index</li>
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_archive') }}" hx-target=".list_row" hx-swap="afterbegin">Open Archives</li>
             <!-- <li class='list-group-item list-group-item-dark'>Settings</li> -->
             <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML" hx-push-url="true">Fullscreen Test</li>

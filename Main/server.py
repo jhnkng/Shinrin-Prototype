@@ -101,7 +101,9 @@ def change_order(new_pos, list_names, card_content):
             int(each_list[0].split(' ')[1]): [int(card.split(' ')[1]) for card in each_list[1:]]
         }
         new_list_index.update(new_entry)
-    #   returns: {6: [1, 2], 7: [3, 4], 11: [5]}
+        #   returns: {ListID: [CardID, CardID], ListID: [CardID, CardID], ListID: [CardID]} etc
+    # Add updated index to Board
+    bd.current_board_index = new_list_index
 
     #   d. Make a list of all the existing notebooks
     notebooks_list = []
@@ -119,11 +121,6 @@ def change_order(new_pos, list_names, card_content):
     #   b. Make a dict that matches List IDs with their Titles (from list_names)
     new_list_names = {new_list_order[i]: list_names[i] for i in range(len(new_list_order))}
     #   returns {38: 'List name', 35: 'list name'}
-    # print(f"list_names:{list_names}")
-    # new_list_names = {}
-    # for i in range(len(new_list_order)):
-    #     print(f"i:{i}, len:{len(new_list_order)}, new_list_order:{new_list_order[i]}, list_names:{list_names[i]}")
-    #     new_list_order[i]: list_names[i]
 
     # 4. Iterate through the new list order (which holds the ListIDs) and use that to pull the corresponding
     #   index in order to access the list/card data to rebuild the entries in the new order
@@ -273,6 +270,16 @@ def show_archive():
     resp = make_response(
         render_template('snippets/archive.html', list_id=list_id, list_name=list_name, cards=cards)
     )
+    return resp
+
+
+@app.route('/board/index')
+def show_board_index():
+    new_list_id = 'Index'
+    new_list_name = 'Current Board Index'
+    index = bd.current_board_index
+    resp = make_response(render_template('snippets/board_index.html', new_list_id=new_list_id, new_list_name=new_list_name, index=index))
+    # resp.headers['HX-Trigger'] = 'syncChange'
     return resp
 
 
