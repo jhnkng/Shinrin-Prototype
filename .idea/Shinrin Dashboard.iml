@@ -2,16 +2,17 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/Main" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
-      <excludeFolder url="file://$MODULE_DIR$/Flask-Meld Test" />
+      <excludeFolder url="file://$MODULE_DIR$/Preliminary Test Builds/v02 - Basically a working version of v01" />
+      <excludeFolder url="file://$MODULE_DIR$/Preliminary Test Builds/v03 - Shinrin first test build" />
       <excludeFolder url="file://$MODULE_DIR$/Preliminary Test Builds/v0350 - Implemented View Archives" />
       <excludeFolder url="file://$MODULE_DIR$/Preliminary Test Builds/v0301 - Implement notebooks" />
-      <excludeFolder url="file://$MODULE_DIR$/Preliminary Test Builds/v03 - Shinrin first test build" />
-      <excludeFolder url="file://$MODULE_DIR$/Preliminary Test Builds/v02 - Basically a working version of v01" />
       <excludeFolder url="file://$MODULE_DIR$/Preliminary Test Builds/v01" />
+      <excludeFolder url="file://$MODULE_DIR$/Flask-Meld Test" />
       <excludeFolder url="file://$MODULE_DIR$/Flashcard Tool" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (Learning Dashboard)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
