@@ -23,11 +23,7 @@ bootstrap's auto same height columns -->
     </div>
     <!-- List content end -->
 
-    <!--  add card button: appends the new card after the last child of the list content div-->
-    <div class="addCard col-2 m-2 mt-1 p-2">
-        <p class="pl-2" hx-get="{{ url_for('new_card') }}" hx-trigger="click" hx-target="#listID{{ new_notebook_id }}" hx-swap="beforeend swap:0.1s">Add New Card</p>
-    </div>
-    <!-- add card button end -->
+    {% include "snippets/notebook_new_tool_bar.html" %}
 
 </div>
 <script>

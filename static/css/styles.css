@@ -100,13 +100,21 @@ h1 {
         width: 75%;
     }
 
+    /* .notebook_wrapper .list_tools p:last-child {
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);    
+    } */
+
 
 /* List titles */
 .list_header h2 {
     font-weight: 700;
     font-size: 1rem;
     color: rgb(60, 60, 60);
-    padding: 0.8rem 0.5rem 0 0;
+    padding: 0.8rem 0.5rem 0 0.3rem;
 }
 
 .list_header_wrapper {
@@ -460,3 +468,12 @@ strong {
     border-radius: 20px;
     /* border: 5px solid rgb(205, 205, 205); */
   }
+
+
+.rotate{
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    }

@@ -5,7 +5,7 @@
         <ul class='list-group p-3'>
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('new_list') }}" hx-target=".list_row" hx-swap="afterbegin">Add New List</li>
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('new_notebook') }}" hx-target=".list_row" hx-swap="afterbegin">Add New Notebook</li> 
-            <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_board_index') }}" hx-target=".list_row" hx-swap="beforeend">Current List Index</li>
+            <!--<li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_board_index') }}" hx-target=".list_row" hx-swap="beforeend">Current List Index</li>-->
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_archive') }}" hx-target=".list_row" hx-swap="afterbegin">Open Archives</li>
             <!-- <li class='list-group-item list-group-item-dark'>Settings</li> -->
             <!-- <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML" hx-push-url="true">Fullscreen Test</li> -->
@@ -84,7 +84,7 @@
                 </div>
                 <!-- List content end -->
 
-                {% include "snippets/list_tool_bar.html" %}
+                {% include "snippets/notebook_tool_bar.html" %}
 
             </div>
             {% else %} <!-- Normal Lists -->
@@ -127,9 +127,9 @@
                        <div class="notebook_side col-3">
                         <ul class="metadata">
                             <li>{{ card['card_id'] }}</li>
-                            <li>Tags</li>
+                            <!--<li>Tags</li>
                             <li>Related Cards</li>
-                            <li>Share Link</li>
+                            <li>Share Link</li>-->
                         </ul>
                        </div>
                     </div>  
