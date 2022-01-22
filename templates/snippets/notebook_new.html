@@ -7,11 +7,11 @@ bootstrap's auto same height columns -->
     <!-- list location marker -->
     <input type="hidden" name="id" value="list_id {{ new_notebook_id }} note" />
 
-    <div class="row justify-content-between z-ind-2">
-        <div class="col-11">
+    <div class="list_header_wrapper row justify-content-between z-ind-2">
+        <div class="col-10">
             {% include "snippets/notebook_name_change_before.html" %}
         </div>
-        <div class="col-1 z-ind-3" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
+        <div class="col-2 z-ind-3 text-end" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
             <span class="material-icons mt-2">close</span>
         </div>
     </div>

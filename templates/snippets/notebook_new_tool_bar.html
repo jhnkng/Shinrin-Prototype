@@ -1,5 +1,5 @@
  <!--  List tool bar: appends the new card after the last child of the list content div-->
  <div class="list_tools row justify-content-between m-2 mt-1">
-    <p class="col-2 material-icons" hx-get="{{ url_for('new_card') }}" hx-trigger="click" hx-target="#listID{{ new_list_id }}" hx-swap="beforeend delay:100ms">add</p>
+    <p class="col-2 material-icons" hx-get="{{ url_for('new_card') }}" hx-trigger="click" hx-target="#listID{{ new_notebook_id }}" hx-swap="beforeend delay:100ms">add</p>
     <p class="col-2 material-icons text-center" _="on click toggle .notebook_wrapper on closest <div.list_wrapper/> then toggle .rotate on me">west</p>
 </div><!-- list tool bar end -->
