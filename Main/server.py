@@ -10,7 +10,6 @@ from random import choices
 from itertools import zip_longest
 from board import Board, List, Card
 
-
 app = Flask(__name__)
 bd = Board()
 
@@ -169,7 +168,7 @@ def change_order(new_pos, list_names, card_content):
     #   e. Update stored card content with UI returned card content
     for card in ui_returned_cards:
         c_id = card[0]
-        body = card[1]      # Todo: could run newline escape here
+        body = card[1]  # Todo: could run newline escape here
         if c_id in list(stored_card_content.keys()):
             # if the card id exists, update the card body content
             stored_card_content[c_id]['card_body'] = body
@@ -260,12 +259,18 @@ def show_archive():
     card_data = get_data(bd.user_key, 'cards')
     list_id = 1
     list_name = 'Archive'
+
+    # Flatten nested list locations from board index to make list of cardIDs currently on screen
+    index = [y for x in list(bd.current_board_index.values()) for y in x]
+
+    # Show only cards NOT currently on screen
     cards = []
     for key in card_data.keys():
-        card = card_data[key]
-        unescaped_text = process_newlines(card['card_body'])
-        card['card_body_html'] = Markup(md.markdown(unescaped_text))
-        cards.append(card)
+        if not key in index:
+            card = card_data[key]
+            unescaped_text = process_newlines(card['card_body'])
+            card['card_body_html'] = Markup(md.markdown(unescaped_text))
+            cards.append(card)
 
     resp = make_response(
         render_template('snippets/archive.html', list_id=list_id, list_name=list_name, cards=cards)
@@ -277,8 +282,15 @@ def show_archive():
 def show_board_index():
     new_list_id = 'Index'
     new_list_name = 'Current Board Index'
-    index = bd.current_board_index
-    resp = make_response(render_template('snippets/board_index.html', new_list_id=new_list_id, new_list_name=new_list_name, index=index))
+    index = list(bd.current_board_index.values())
+    resp = make_response(
+        render_template(
+            'snippets/board_index.html',
+            new_list_id=new_list_id,
+            new_list_name=new_list_name,
+            index=index
+        )
+    )
     # resp.headers['HX-Trigger'] = 'syncChange'
     return resp
 

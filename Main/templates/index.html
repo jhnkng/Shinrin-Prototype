@@ -8,8 +8,8 @@
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_board_index') }}" hx-target=".list_row" hx-swap="beforeend">Current List Index</li>
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_archive') }}" hx-target=".list_row" hx-swap="afterbegin">Open Archives</li>
             <!-- <li class='list-group-item list-group-item-dark'>Settings</li> -->
-            <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML" hx-push-url="true">Fullscreen Test</li>
-            <li class='list-group-item list-group-item-dark' >Help</li>
+            <!-- <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML" hx-push-url="true">Fullscreen Test</li> -->
+            <!-- <li class='list-group-item list-group-item-dark' >Help</li> -->
         </ul>
         <p class="position-absolute bottom-0 start-0 p-4">Your user key is {{user_key}}.<br>To access this page again please use this key to login.</p>
     </header>
@@ -20,7 +20,7 @@
     <div class="container-fluid">
     
     <!-- List location form -->
-    <form id="content_change" hx-post="{{ url_for('change_list_card_order') }}" hx-trigger="end, syncChange from:body delay:3s, every:60s">
+    <form id="content_change" hx-post="{{ url_for('change_list_card_order') }}" hx-trigger="load, end, syncChange from:body delay:3s, every:60s">
 
         <!-- Bootstrap flexbox row -->
         <div id="list_row" class="list_row row flex-nowrap smooth">

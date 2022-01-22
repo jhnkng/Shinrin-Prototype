@@ -8,8 +8,7 @@
       "cards": [
         20220122000050585021,
         20220121140953808079,
-        20220121141121966283,
-        20220121143633851470
+        20220121141121966283
       ]
     },
     "20220120180423457626": {
@@ -61,6 +60,14 @@
         20220121142913582730,
         20220121142944184062,
         20220121143129019334
+      ]
+    },
+    "20220122171538551771": {
+      "list_id": 20220122171538551771,
+      "list_name": "Done!",
+      "is_notebook": false,
+      "cards": [
+        20220121143633851470
       ]
     },
     "20220121144743121246": {
@@ -147,7 +154,7 @@
     },
     "20220121143633851470": {
       "card_id": 20220121143633851470,
-      "card_body": "Implement Cancel on everything. "
+      "card_body": "Implemented cancel button on New Card. If user clicks on new card and decides not to go ahead with it, they can click Cancel and it will remove the item without saving."
     },
     "20220121144033143348": {
       "card_id": 20220121144033143348,
