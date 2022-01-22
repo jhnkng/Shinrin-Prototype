@@ -5,11 +5,12 @@ bootstrap's auto same height columns -->
     <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
     <span class="material-icons drag_handle">drag_handle</span>
     <!-- list location marker -->
-    <input type="hidden" name="id" value="list_id {{ new_list_id }}" />
 
     <div class="list_header_wrapper row justify-content-between z-ind-2">
         <div class="col-10">
-            {% include "snippets/list_name_change_before.html" %}
+            <div class="list_header">
+                <h2>{{ new_list_name }}</h2>
+            </div>
         </div>
         <div class="col-2 z-ind-3 text-end" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
             <span class="material-icons mt-2">close</span>
@@ -17,13 +18,26 @@ bootstrap's auto same height columns -->
     </div>
     </div>  <!-- Sortables target handle end -->
 
-    <!-- List content: contains individual cards -->
+    <div class="card">
+                    
+        <!-- List content: contains individual cards -->
     <div id="listID{{ new_list_id }}" class="list_content">
-
+        <div class="row">
+            <div class="card_content notebook_main col-9">
+                {{ index }}
+            </div>
+            <div class="notebook_side col-3">
+               <ul class="metadata">
+                <li>Tags</li>
+                <li>Related Cards</li>
+                <li>Share Link</li>
+            </ul>
+            </div>
+        </div>
     </div>
+    </div>
+    
     <!-- List content end -->
-
-    {% include "snippets/list_new_tool_bar.html" %}
 
 </div>
 <script>

@@ -9,7 +9,7 @@
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_archive') }}" hx-target=".list_row" hx-swap="afterbegin">Open Archives</li>
             <!-- <li class='list-group-item list-group-item-dark'>Settings</li> -->
             <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML" hx-push-url="true">Fullscreen Test</li>
-            <!-- <li class='list-group-item list-group-item-dark'>Help</li> -->
+            <li class='list-group-item list-group-item-dark' >Help</li>
         </ul>
         <p class="position-absolute bottom-0 start-0 p-4">Your user key is {{user_key}}.<br>To access this page again please use this key to login.</p>
     </header>
@@ -20,7 +20,7 @@
     <div class="container-fluid">
     
     <!-- List location form -->
-    <form id="content_change" hx-post="{{ url_for('change_list_card_order') }}" hx-trigger="end, syncChange from:body delay:4s"> 
+    <form id="content_change" hx-post="{{ url_for('change_list_card_order') }}" hx-trigger="end, syncChange from:body delay:3s, every:60s">
 
         <!-- Bootstrap flexbox row -->
         <div id="list_row" class="list_row row flex-nowrap smooth">
@@ -37,14 +37,14 @@
                 <!-- list location marker -->
                 <input type="hidden" name="id" value="list_id {{ list['list_id'] }} note" />
 
-                <div class="row justify-content-between z-ind-2">
-                    <div class="col-11">
+                <div class="list_header_wrapper row justify-content-between z-ind-2">
+                    <div class="col-10">
                         <div class="list_header" hx-post="{{ url_for('change_notebook_name') }}" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-vals='{"current_notebook": "{{ list['list_id'] }}:{{ list['list_name'] }}" }'>
                             <input type="hidden" name="list_name" value="{{ list['list_name'] }}"/>
                             <h2>{{ list['list_name'] }}</h2>
                         </div>
                     </div>
-                    <div class="col-1 z-ind-3" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
+                    <div class="col-2 z-ind-3 text-end" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
                         <span class="material-icons mt-2">close</span>
                     </div>
                 </div>
@@ -84,11 +84,8 @@
                 </div>
                 <!-- List content end -->
 
-                <!--  add card button: appends the new card after the last child of the list content div-->
-                <div class="addCard col-2 m-2 mt-1 p-2">
-                    <p class="pl-2" hx-get="{{ url_for('new_card') }}" hx-trigger="click" hx-target="#listID{{ list['list_id'] }}" hx-swap="beforeend swap:0.1s">Add New Card</p>
-                </div>
-                <!-- add card button end -->
+                {% include "snippets/list_tool_bar.html" %}
+
             </div>
             {% else %} <!-- Normal Lists -->
             <!-- individual list -->
@@ -98,14 +95,14 @@
             <!-- list location marker -->
             <input type="hidden" name="id" value="list_id {{ list['list_id'] }}"/>
 
-                <div class="row justify-content-between z-ind-2">
-                    <div class="col-10 smooth">
+                <div class="list_header_wrapper row justify-content-between z-ind-2">
+                    <div class="col-10">
                         <div class="list_header" hx-post="{{ url_for('change_list_name') }}" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-vals='{"current_list": "{{ list['list_id'] }}:{{ list['list_name'] }}" }'>
                             <input type="hidden" name="list_name" value="{{ list['list_name'] }}"/>
                             <h2 class="">{{ list['list_name'] }}</h2>
                         </div>
                     </div>
-                    <div class="col-2 z-ind-3" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
+                    <div class="col-2 z-ind-3 text-end" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
                         <span class="material-icons mt-2">close</span>
                     </div>
                 </div>
@@ -141,10 +138,7 @@
                 <!-- Individual Cards end -->
                 </div> <!-- List content end -->
 
-                <!--  add card button: appends the new card after the last child of the list content div-->
-                <div class="addCard col-5 m-2 mt-1 p-2">
-                    <p hx-get="{{ url_for('new_card') }}" hx-trigger="click" hx-target="#listID{{ list['list_id'] }}" hx-swap="beforeend delay:100ms">Add New Card</p>
-                </div><!-- add card button end -->
+                {% include "snippets/list_tool_bar.html" %}
 
             </div>
             <!-- individual list end -->

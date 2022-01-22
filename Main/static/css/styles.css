@@ -106,14 +106,19 @@ h1 {
     font-weight: 700;
     font-size: 1rem;
     color: rgb(60, 60, 60);
-    padding: 0.8rem 0.5rem 0 1rem;
+    padding: 0.8rem 0.5rem 0 0;
+}
+
+.list_header_wrapper {
+    width:285px;
+    margin: 0 auto;
 }
 
 .list_change_input {
     font-size: 1rem;
     font-weight: 700;
-    margin: 0.6rem 0.7rem 0 0.7rem;
-    padding-left: 0.3rem;
+    margin: 0.6rem 0 0 0;
+    /* padding-left: 0.3rem; */
 }
 
 input {
@@ -138,20 +143,27 @@ input:focus {
 }
 
 
-.addCard {
+.list_tools {
     border-radius: 3px;
-    background-color: rgb(205, 205, 205);
-    background-color: rgba(235, 235, 235, 0.6);
+    /* width: 100px; */
 }
-.addCard p {
-    font-weight: 700;
-    font-size: 0.8rem;
-    margin-bottom: 0;
-    text-align: center;
-}
-.addCard:hover {
-    background-color: rgb(235, 240, 240);
-}
+    .list_tools p {
+        background-color: rgb(205, 205, 205);
+        background-color: rgba(235, 235, 235, 0.6);
+        padding: 0.3rem 0.7rem;
+        width: 3rem;
+        border-radius: 3px;
+        margin-bottom: 0;
+        text-align: center;
+        color: rgb(80, 80, 80);
+    }
+    .list_tools p:hover {
+        color: rgb(30, 30, 30);
+        background-color: rgb(235, 240, 240);
+    }
+    .list_tools p:active {
+        color: black;
+    }
 
 
 
@@ -227,6 +239,11 @@ strong {
 
 .smooth {
     transition: all 0.7s ease;
+}
+
+
+.notebook_wrapper .list_header_wrapper {
+    width: 650px;
 }
 
 .notebook_wrapper .card {

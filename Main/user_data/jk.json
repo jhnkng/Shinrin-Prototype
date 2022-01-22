@@ -1,32 +1,56 @@
 {
   "board": {},
   "lists": {
+    "20220122000025330509": {
+      "list_id": 20220122000025330509,
+      "list_name": "Next Up!",
+      "is_notebook": false,
+      "cards": [
+        20220122000050585021,
+        20220121140953808079,
+        20220121141121966283,
+        20220121143633851470
+      ]
+    },
     "20220120180423457626": {
       "list_id": 20220120180423457626,
       "list_name": "What's next for Shinrin?",
       "is_notebook": false,
       "cards": [
-        20220121140953808079,
-        20220121141121966283,
+        20220121235405741363,
         20220121141535432410,
         20220121142742740751,
+        20220121234127167185,
         20220121142756502869,
-        20220121143633851470,
         20220121144033143348,
         20220121144157032815,
         20220121144317906754,
         20220121145326883668,
         20220121144614426040,
         20220121144651302372,
-        20220121145237990509
+        20220121145237990509,
+        20220121234207818094,
+        20220121234337547738
       ]
     },
-    "20220121144743121246": {
-      "list_id": 20220121144743121246,
-      "list_name": "REMEMBER \ud83d\udc49\ud83c\udffd\ud83e\udde0",
+    "20220121171347572577": {
+      "list_id": 20220121171347572577,
+      "list_name": "Under the Hood Improvements",
       "is_notebook": false,
       "cards": [
-        20220121144834688463
+        20220121164017554853,
+        20220121171409300117
+      ]
+    },
+    "20220121234710766553": {
+      "list_id": 20220121234710766553,
+      "list_name": "Flashcard Tool",
+      "is_notebook": true,
+      "cards": [
+        20220121235050461960,
+        20220121233420381347,
+        20220121234848385242,
+        20220122000302831772
       ]
     },
     "20220121142905905800": {
@@ -39,13 +63,12 @@
         20220121143129019334
       ]
     },
-    "20220121171347572577": {
-      "list_id": 20220121171347572577,
-      "list_name": "Under the Hood Improvements",
+    "20220121144743121246": {
+      "list_id": 20220121144743121246,
+      "list_name": "REMEMBER \ud83d\udc49\ud83c\udffd\ud83e\udde0",
       "is_notebook": false,
       "cards": [
-        20220121164017554853,
-        20220121171409300117
+        20220121144834688463
       ]
     }
   },
@@ -169,6 +192,42 @@
     "20220121171522784624": {
       "card_id": 20220121171522784624,
       "card_body": "Every single card should have the CardID as the ID so I can target it as required."
+    },
+    "20220121233420381347": {
+      "card_id": 20220121233420381347,
+      "card_body": "###### Some considerations:\\n\\n**How will it integrate with this?**\\nIt can run in the Notebook frame (650px wide) but... \\n\\n- will each flash card be a card?\\n- I'm definitely building an importing system, but what about a creation system? Can I make one card a word/question, group them in lists, then study the list?\\n- That's not a terrible system actually, though if you had, say, 2000 words from N3 you need to study, that's gonna get out of hand.\\n    - Maybe flashcard decks are limited to notebook frames that have search and filtering functions?\\n    - How many cards can I have in a list before it becomes impossible to use?\\n    - Maybe lazy loading is a must in that regard?\\n    - Maybe it can only be accessed in full screen mode?\\n- Maybe the flashcard tool can run separate from this, but then how will the data go in and out? Won't it interfere with this system? Both run on forms, and you can only have one form running at any one time.\\n"
+    },
+    "20220121234127167185": {
+      "card_id": 20220121234127167185,
+      "card_body": "A help page that's a list of cards with tips on how to use Shinrin would be cool."
+    },
+    "20220121234207818094": {
+      "card_id": 20220121234207818094,
+      "card_body": "List search"
+    },
+    "20220121234337547738": {
+      "card_id": 20220121234337547738,
+      "card_body": "Pomodoro timer card"
+    },
+    "20220121234848385242": {
+      "card_id": 20220121234848385242,
+      "card_body": "- Or maybe flashcards can run as a separate page away from the board. That clears distractions, but also clears away the issue of needing to maintain board functions.\\n    - On the other hand, it limits flexibility. If there's a word that I'm studying that I want to review, I would want to be able to drag it out into a list.\\n        - But then again having other stuff on screen would be very distracting. Maybe each card can have a button to mark for review?\\n    - Maybe as part of the searching or tagging function, we can have smart lists that only show certain tags."
+    },
+    "20220121235050461960": {
+      "card_id": 20220121235050461960,
+      "card_body": "Will have to rebuild with everything that I now know. Things like using the markdown package for text, and escaping html. \\n\\nHopefully other things too \ud83d\ude02"
+    },
+    "20220121235405741363": {
+      "card_id": 20220121235405741363,
+      "card_body": "Change list to notebook function.\\n\\nEach list already has an ID, and I'm not storing an index of all the data on screen, so it shouldn't be too hard to build a way to swap the list into a notebook frame and reload that data.\\n\\nOR: change is_notebook to true and reload the whole page! Whichever is easier really."
+    },
+    "20220122000050585021": {
+      "card_id": 20220122000050585021,
+      "card_body": "# Ok! Time to get shit done!\\n\\n## Here are the next three things I want to build:"
+    },
+    "20220122000302831772": {
+      "card_id": 20220122000302831772,
+      "card_body": "- Or, wild idea, but build the flashcard tool separately and integrate it with an API. Two birds one stone!\\n    - A flashcard tool front end can run as a card, but the heavy lifting is done via APIs. Notes can be added, words kept in cards, but the bulk of the data sits in a different service."
     }
   }
 }

@@ -7,14 +7,14 @@ bootstrap's auto same height columns -->
     <!-- list location marker -->
     <input type="hidden" name="id" value="list_id {{ list_id }} note" />
 
-    <div class="row justify-content-between z-ind-2">
-        <div class="col-11">
+    <div class="list_header_wrapper row justify-content-between z-ind-2">
+        <div class="col-10">
             <div class="list_header" hx-post="{{ url_for('change_notebook_name') }}" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-vals='{"current_notebook": "{{ list_id }}:{{ list_name }}" }'>
                 <input type="hidden" name="list_name" value="{{ list_name }}"/>
                 <h2>{{ list_name }}</h2>
             </div>
         </div>
-        <div class="col-1 z-ind-3" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
+        <div class="col-2 z-ind-3 text-end" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
             <span class="material-icons mt-2">close</span>
         </div>
     </div>
@@ -55,10 +55,10 @@ bootstrap's auto same height columns -->
     </div>
     <!-- List content end -->
 
-    <!--  add card button: appends the new card after the last child of the list content div-->
-    <div class="addCard col-2 m-2 mt-1 p-2">
-        <p class="pl-2" hx-get="{{ url_for('new_card') }}" hx-trigger="click" hx-target="#listID{{ list_id }}" hx-swap="beforeend swap:0.1s">Add New Card</p>
-    </div>
-    <!-- add card button end -->
+     <!--  List tool bar: appends the new card after the last child of the list content div-->
+ <div class="list_tools row justify-content-between m-2 mt-1">
+     <p style="visibility: collapse;"></p>
+    <p class="col-2 material-icons text-center"  _="on click toggle .notebook_wrapper on closest <div.list_wrapper/>">unfold_more</p>
+</div><!-- list tool bar end -->
 </div>
 
