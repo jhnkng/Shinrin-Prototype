@@ -213,9 +213,22 @@ def board():
     # Get saved data
     saved_list_data = get_data(bd.user_key, 'lists')
     saved_card_data = get_data(bd.user_key, 'cards')
+
     # Objectify
     list_objects = bd.create_list_objects(saved_list_data)
+    print(f"list_objects: {list_objects}")
+    # list_objects: [<board.List object at 0x000002C2049B4F10>, <board.List object at 0x000002C2049B4D30>]
+
     card_objects = bd.create_card_objects(saved_card_data)
+    print(f"card_objects: {card_objects}")
+    # card_objects: [<board.Card object at 0x00000196545D65E0>, <board.Card object at 0x00000196545D6040>,
+    # <board.Card object at 0x00000196545D65B0>, <board.Card object at 0x00000196545D66A0>]
+
+    # Creates {CardID:Index of Card Obj in Card Objects list} so we know which object to access to update content.
+    bd.current_card_obj_index = {each.card_id: card_objects.index(each) for each in card_objects}
+    print(f"Card Obj Index: {bd.current_card_obj_index}")
+    # Card Obj Index: {20220120115820735302: 0, 20220120120149112482: 1,
+    # 20220120132630684721: 2, 20220120154744804753: 3}
 
     # Because the template is expecting a single list of dictionaries (with dictionary == 1 list) we
     # have to combine the list and card data by:
@@ -373,6 +386,18 @@ def change_card_content():
         req = request.form
         bd.current_card_id = req.get('current_card_content').split('::::')[0]
         bd.current_card_content = req.get('current_card_content').split('::::')[1]
+
+        # todo: Theoretically I shouldn't need to get current_card_content from the UI, I can pull it out of
+        #  the card obj with this code. If this works then I don't need to write three copies of the same data
+        #  to hx-vals in the UI. Also reduces one area where unescaped characters break the UI
+        # Get the location of the card object with this ID
+        this_card_obj_index = bd.current_card_obj_index[int(bd.current_card_id)]
+        print(f"index of obj: {this_card_obj_index}")
+        # index of obj: 4
+        print(f"From obj: {bd.current_card_objects[this_card_obj_index].card_body}")
+        # From obj: This is a new card.
+        print(f"Content from UI: {bd.current_card_content}")
+        # Content from UI: This is a new card.
 
         resp = make_response(
             render_template('snippets/card_change_before.html', current_card_content=bd.current_card_content)

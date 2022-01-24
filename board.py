@@ -2,10 +2,11 @@
 class Board:
     def __init__(self):
         # self.new_id = shinrin.get_data('id')
-        self.user_key = '0'
+        self.user_key = str
         self.current_board_index = dict
         self.current_list_objects = list
         self.current_card_objects = list
+        self.current_card_obj_index = dict
         self.current_card_id = int
         self.current_card_content = str
         self.current_list_id = int
