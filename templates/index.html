@@ -7,7 +7,7 @@
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('new_notebook') }}" hx-target=".list_row" hx-swap="afterbegin">Add New Notebook</li> 
             <!--<li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_board_index') }}" hx-target=".list_row" hx-swap="beforeend">Current List Index</li>-->
             <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_archive') }}" hx-target=".list_row" hx-swap="afterbegin">Open Archives</li>
-            <!-- <li class='list-group-item list-group-item-dark'>Settings</li> -->
+            <li class='list-group-item list-group-item-dark'>Settings</li>
             <!-- <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML" hx-push-url="true">Fullscreen Test</li> -->
             <!-- <li class='list-group-item list-group-item-dark' >Help</li> -->
         </ul>
@@ -116,7 +116,7 @@
                 <div id="cardID{{ card['card_id'] }}" class="card">
                     <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
                     <div class="row">
-                        <div class="edit_handle" hx-post="{{ url_for('change_card_content') }}" hx-trigger="click" hx-target="closest .row" hx-swap="outerHTML" hx-vals='{"current_card_content": "{{ card['card_id'] }}::::{{ card['card_body'] }}" }'>
+                        <div class="edit_handle" hx-post="{{ url_for('change_card_content') }}" hx-trigger="click" hx-target="closest .row" hx-swap="outerHTML" hx-vals='{"current_card_content": "{{ card['card_id'] }}::::{{ card['card_body'] }}" }' _="on click get .notebook_main in closest .card then log its textContent">
                             <span class="material-icons">edit</span>
                         </div>
                             <input type="hidden" name="id" value="card_id {{ card['card_id'] }}"/>
