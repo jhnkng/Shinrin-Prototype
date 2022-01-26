@@ -69,6 +69,7 @@
                         <div class="card_content notebook_main col-9">
                                 {{ card['card_body_html'] }}
                         </div>
+
                         <div class="notebook_side col-3">
                             <ul class="metadata">
                                 <li>{{ card['card_id'] }}</li>
@@ -116,14 +117,19 @@
                 <div id="cardID{{ card['card_id'] }}" class="card">
                     <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
                     <div class="row">
-                        <div class="edit_handle" hx-post="{{ url_for('change_card_content') }}" hx-trigger="click" hx-target="closest .row" hx-swap="outerHTML" hx-vals='{"current_card_content": "{{ card['card_id'] }}::::{{ card['card_body'] }}" }' _="on click get .notebook_main in closest .card then log its textContent">
+                        <div class="edit_handle" _="on click get .notebook_main in closest .card then put its innerText into .card_content_change in .change_event in closest .card then remove .hidden from .change_event in closest .card then hide .notebook_main in closest .card">
                             <span class="material-icons">edit</span>
                         </div>
                             <input type="hidden" name="id" value="card_id {{ card['card_id'] }}"/>
                             <input type="hidden" name="card_body" value="{{ card['card_body'] }}"/>
                         <div class="card_content notebook_main col-9">
                             {{ card['card_body_html'] }}
-                       </div>
+                        </div>
+                        <div class="change_event hidden">
+                            <textarea class="card_content_change" name="new_card_content" autofocus></textarea>
+                            <button class="btn btn-dark btn-sm" type="submit" hx-put="/board/card/edit" hx-target="closest div" hx-swap="outerHTML">Save</button>
+                            <button class="btn btn-danger btn-sm" _="on click remove closest .card">Delete Card</button>
+                        </div>
                        <div class="notebook_side col-3">
                         <ul class="metadata">
                             <li>{{ card['card_id'] }}</li>

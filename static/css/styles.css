@@ -204,6 +204,10 @@ textarea:focus {
     font-weight: 500;
 }
 
+.hidden {
+    display: none;
+}
+
 .card_content_change::parent {
     height: 10rem;
 }
