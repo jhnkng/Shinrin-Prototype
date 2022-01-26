@@ -247,7 +247,9 @@ def board():
                 # Here we unescape it before it goes to the UI
                 unescaped_text = process_newlines(card['card_body'])
                 # Raw text is sent through markdown to convert to HTML, then HTML characters unescaped using Markup
-                card['card_body_html'] = Markup(md.markdown(unescaped_text))
+                card['card_body_html'] = Markup(unescaped_text)
+                # Disabling markdown for now
+                # card['card_body_html'] = Markup(md.markdown(unescaped_text))
                 cards_to_merge.append(card)
             else:
                 make_card = {
@@ -282,7 +284,7 @@ def show_archive():
         if not key in index:
             card = card_data[key]
             unescaped_text = process_newlines(card['card_body'])
-            card['card_body_html'] = Markup(md.markdown(unescaped_text))
+            card['card_body_html'] = Markup(unescaped_text)  # Disabling Markdown for now
             cards.append(card)
 
     resp = make_response(
@@ -414,7 +416,7 @@ def change_card_content():
         if '\n' in new_card_content:
             escaped_newline_text = new_card_content.replace('\n', '\\n')
 
-        html_text = Markup(md.markdown(new_card_content))
+        html_text = Markup(new_card_content)  # Disabling markdown for now
 
         hxvals_body_text = escaped_newline_text
 
