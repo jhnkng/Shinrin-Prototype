@@ -189,7 +189,7 @@ def login():
     return resp
 
 
-@app.route('/board', methods=['GET', 'POST'])
+@app.route('/app', methods=['GET', 'POST'])
 def board():
     if request.method == 'POST':
         requested = request.form
@@ -262,57 +262,82 @@ def board():
     return resp
 
 
-@app.route('/board/fullscreen')
-def show_fullscreen():
-    resp = make_response(render_template('snippets/full_screen.html'))
+# @app.route('/board/fullscreen')
+# def show_fullscreen():
+#     resp = make_response(render_template('snippets/full_screen.html'))
+#     return resp
+
+
+# @app.route('/app/archive')
+# def show_archive():
+#     card_data = get_data(bd.user_key, 'cards')
+#     list_id = 1
+#     list_name = 'Archive'
+#
+#     # Flatten nested list locations from board index to make list of cardIDs currently on screen
+#     index = [y for x in list(bd.current_board_index.values()) for y in x]
+#
+#     # Show only cards NOT currently on screen
+#     cards = []
+#     for key in card_data.keys():
+#         if not key in index:
+#             card = card_data[key]
+#             unescaped_text = process_newlines(card['card_body'])
+#             card['card_body_html'] = Markup(unescaped_text)  # Disabling Markdown for now
+#             cards.append(card)
+#
+#     resp = make_response(
+#         render_template('snippets/archive.html', list_id=list_id, list_name=list_name, cards=cards)
+#     )
+#     return resp
+
+
+# @app.route('/board/index')
+# def show_board_index():
+#     new_list_id = 'Index'
+#     new_list_name = 'Current Board Index'
+#     index = list(bd.current_board_index.values())
+#     resp = make_response(
+#         render_template(
+#             'snippets/board_index.html',
+#             new_list_id=new_list_id,
+#             new_list_name=new_list_name,
+#             index=index
+#         )
+#     )
+#     # resp.headers['HX-Trigger'] = 'syncChange'
+#     return resp
+
+
+
+# ----------------- # List Routes # ----------------- #
+# todo: update template
+@app.route('/app/l/new')
+def list_new():
+    new_list_id = get_new_id()
+    bd.current_list_id = new_list_id
+    resp = make_response(render_template('snippets/list_new.html', new_list_id=new_list_id))
+    resp.headers['HX-Trigger'] = 'syncChange'
     return resp
 
 
-@app.route('/board/archive')
-def show_archive():
-    card_data = get_data(bd.user_key, 'cards')
-    list_id = 1
-    list_name = 'Archive'
-
-    # Flatten nested list locations from board index to make list of cardIDs currently on screen
-    index = [y for x in list(bd.current_board_index.values()) for y in x]
-
-    # Show only cards NOT currently on screen
-    cards = []
-    for key in card_data.keys():
-        if not key in index:
-            card = card_data[key]
-            unescaped_text = process_newlines(card['card_body'])
-            card['card_body_html'] = Markup(unescaped_text)  # Disabling Markdown for now
-            cards.append(card)
-
-    resp = make_response(
-        render_template('snippets/archive.html', list_id=list_id, list_name=list_name, cards=cards)
-    )
-    return resp
+@app.route('/app/l/close')
+def list_close():
+    pass
 
 
-@app.route('/board/index')
-def show_board_index():
-    new_list_id = 'Index'
-    new_list_name = 'Current Board Index'
-    index = list(bd.current_board_index.values())
-    resp = make_response(
-        render_template(
-            'snippets/board_index.html',
-            new_list_id=new_list_id,
-            new_list_name=new_list_name,
-            index=index
-        )
-    )
-    # resp.headers['HX-Trigger'] = 'syncChange'
-    return resp
+@app.route('/app/l/trash')
+def list_move_to_trash():
+    pass
 
 
-# ----------------- # Change Things # ----------------- #
+@app.route('/app/l/archive')
+def list_add_to_archive():
+    pass
 
 
-@app.route('/board/change', methods=['POST'])
+# todo: change this to list_order_update()
+@app.route('/app/l/update', methods=['POST'])
 def change_list_card_order():
     if request.method == 'POST':
         requested = request.form
@@ -325,7 +350,8 @@ def change_list_card_order():
     return '', 204
 
 
-@app.route('/board/list/edit', methods=['POST', 'PUT'])
+# todo: change to list_rename()
+@app.route('/app/l/rename', methods=['POST', 'PUT'])
 def change_list_name():
     if request.method == 'POST':
         req = request.form
@@ -352,36 +378,74 @@ def change_list_name():
         return resp
 
 
-@app.route('/board/notebook/edit', methods=['POST', 'PUT'])
-def change_notebook_name():
-    if request.method == 'POST':
-        req = request.form
-        bd.current_notebook_id = req.get('current_notebook').split(':')[0]
-        bd.current_notebook_name = req.get('current_notebook').split(':')[1]
-        resp = make_response(
-            render_template('snippets/notebook_name_change_before.html', current_notebook_name=bd.current_notebook_name)
-        )
-        return resp
+# @app.route('/board/notebook/edit', methods=['POST', 'PUT'])
+# def change_notebook_name():
+#     if request.method == 'POST':
+#         req = request.form
+#         bd.current_notebook_id = req.get('current_notebook').split(':')[0]
+#         bd.current_notebook_name = req.get('current_notebook').split(':')[1]
+#         resp = make_response(
+#             render_template(
+#             'snippets/notebook_name_change_before.html',
+#             current_notebook_name=bd.current_notebook_name
+#             )
+#         )
+#         return resp
+#
+#     if request.method == 'PUT':
+#         requested = request.form
+#         new_notebook_name = ''.join(requested.getlist('new_notebook_name'))
+#         resp = make_response(
+#             render_template(
+#                 'snippets/notebook_name_change_after.html',
+#                 new_notebook_name=new_notebook_name,
+#                 notebook_id=bd.current_notebook_id
+#             )
+#         )
+#         resp.headers['HX-Trigger'] = 'syncChange'
+#
+#         bd.current_notebook_name = ''
+#         bd.current_notebook_id = 0
+#
+#         return resp
 
-    if request.method == 'PUT':
-        requested = request.form
-        new_notebook_name = ''.join(requested.getlist('new_notebook_name'))
-        resp = make_response(
-            render_template(
-                'snippets/notebook_name_change_after.html',
-                new_notebook_name=new_notebook_name,
-                notebook_id=bd.current_notebook_id
-            )
-        )
-        resp.headers['HX-Trigger'] = 'syncChange'
 
-        bd.current_notebook_name = ''
-        bd.current_notebook_id = 0
-
-        return resp
+# ----------------- # Card Routes # ----------------- #
+# Show fullscreen
+@app.route('/app/c/<card_id>')
+def card():
+    pass
 
 
-@app.route('/board/card/edit', methods=['POST', 'PUT'])
+# todo: update template
+@app.route('/app/c/new')
+def card_new():
+    # Get a new id for the new card
+    new_card_id = get_new_id()
+    # Update the current_card_id parameter so that when the new card content is passed to change_card_content() the
+    # ID will follow.
+    bd.current_card_id = new_card_id
+    resp = make_response(render_template('snippets/card_new.html', new_card_id=new_card_id))
+    resp.headers['HX-Trigger'] = 'syncChange'
+    return resp
+
+
+@app.route('/app/c/update')
+def card_order_update():
+    pass
+
+
+@app.route('/app/c/archive')
+def card_add_to_archive():
+    pass
+
+
+@app.route('/app/c/trash')
+def card_move_to_trash():
+    pass
+
+
+@app.route('/app/c/edit', methods=['POST', 'PUT'])
 def change_card_content():
     if request.method == 'POST':
         req = request.form
@@ -438,37 +502,14 @@ def change_card_content():
 
 # ----------------- # Add New Things # ----------------- #
 
-# Adds a new card
-@app.route('/board/card/new')
-def new_card():
-    # Get a new id for the new card
-    new_card_id = get_new_id()
-    # Update the current_card_id parameter so that when the new card content is passed to change_card_content() the
-    # ID will follow.
-    bd.current_card_id = new_card_id
-    resp = make_response(render_template('snippets/card_new.html', new_card_id=new_card_id))
-    resp.headers['HX-Trigger'] = 'syncChange'
-    return resp
-
-
-# Add new list
-@app.route('/board/list/new')
-def new_list():
-    new_list_id = get_new_id()
-    bd.current_list_id = new_list_id
-    resp = make_response(render_template('snippets/list_new.html', new_list_id=new_list_id))
-    resp.headers['HX-Trigger'] = 'syncChange'
-    return resp
-
-
-# Add new notebook
-@app.route('/board/notebook/new')
-def new_notebook():
-    new_notebook_id = get_new_id()
-    bd.current_notebook_id = new_notebook_id
-    resp = make_response(render_template('snippets/notebook_new.html', new_notebook_id=new_notebook_id))
-    resp.headers['HX-Trigger'] = 'syncChange'
-    return resp
+# # Add new notebook
+# @app.route('/board/notebook/new')
+# def new_notebook():
+#     new_notebook_id = get_new_id()
+#     bd.current_notebook_id = new_notebook_id
+#     resp = make_response(render_template('snippets/notebook_new.html', new_notebook_id=new_notebook_id))
+#     resp.headers['HX-Trigger'] = 'syncChange'
+#     return resp
 
 
 # ----------------- # Delete Things # ----------------- #
