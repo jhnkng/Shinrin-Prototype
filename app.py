@@ -1,6 +1,6 @@
 # Shinrin, Prototype v2
 
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, jsonify
 from markupsafe import Markup
 import datetime as dt
 import markdown as md
@@ -185,7 +185,7 @@ def change_order(new_pos, list_names, card_content):
 # ----------------- # Start Here # ----------------- #
 @app.route('/')
 def login():
-    resp = make_response(render_template('login.html'))
+    resp = make_response(render_template('test.html'))
     return resp
 
 
@@ -258,7 +258,7 @@ def board():
                 cards_to_merge.append(make_card)
         item['cards'] = cards_to_merge
 
-    resp = make_response(render_template('index.html', lists=user_lists, user_key=bd.user_key))
+    resp = make_response(render_template('test2.html', lists=user_lists, user_key=bd.user_key))
     return resp
 
 
@@ -309,7 +309,6 @@ def board():
 #     return resp
 
 
-
 # ----------------- # List Routes # ----------------- #
 # todo: update template
 @app.route('/app/l/new')
@@ -350,33 +349,33 @@ def change_list_card_order():
     return '', 204
 
 
-# todo: change to list_rename()
 @app.route('/app/l/rename', methods=['POST', 'PUT'])
-def change_list_name():
+def list_rename():
+    # if request.method == 'POST':
+    #     req = request.form
+    #     bd.current_list_id = req.get('current_list').split(':')[0]
+    #     bd.current_list_name = req.get('current_list').split(':')[1]
+    #     resp = make_response(
+    #         render_template('snippets/list_name_change_before.html', current_list_name=bd.current_list_name)
+    #     )
+    #     return resp
+    #
+    # if request.method == 'PUT':
+    #     requested = request.form
+    #     new_list_name = ''.join(requested.getlist('new_list_name'))
+    #     resp = make_response(
+    #         render_template(
+    #             'snippets/list_name_change_after.html', new_list_name=new_list_name, list_id=bd.current_list_id
+    #         )
+    #     )
+    #     resp.headers['HX-Trigger'] = 'syncChange'
+    #
+    #     bd.current_list_name = ''
+    #     bd.current_list_id = 0
+    #     return resp
     if request.method == 'POST':
-        req = request.form
-        bd.current_list_id = req.get('current_list').split(':')[0]
-        bd.current_list_name = req.get('current_list').split(':')[1]
-        resp = make_response(
-            render_template('snippets/list_name_change_before.html', current_list_name=bd.current_list_name)
-        )
-        return resp
-
-    if request.method == 'PUT':
-        requested = request.form
-        new_list_name = ''.join(requested.getlist('new_list_name'))
-        resp = make_response(
-            render_template(
-                'snippets/list_name_change_after.html', new_list_name=new_list_name, list_id=bd.current_list_id
-            )
-        )
-        resp.headers['HX-Trigger'] = 'syncChange'
-
-        bd.current_list_name = ''
-        bd.current_list_id = 0
-
-        return resp
-
+        print(request.get_json())
+    return '', 204
 
 # @app.route('/board/notebook/edit', methods=['POST', 'PUT'])
 # def change_notebook_name():
@@ -446,59 +445,61 @@ def card_move_to_trash():
 
 
 @app.route('/app/c/edit', methods=['POST', 'PUT'])
-def change_card_content():
+def card_edit_content():
+    # if request.method == 'POST':
+    #     req = request.form
+    #     bd.current_card_id = req.get('current_card_content').split('::::')[0]
+    #     bd.current_card_content = req.get('current_card_content').split('::::')[1]
+    #
+    #     # todo: Theoretically I shouldn't need to get current_card_content from the UI, I can pull it out of
+    #     #  the card obj with this code. If this works then I don't need to write three copies of the same data
+    #     #  to hx-vals in the UI. Also reduces one area where unescaped characters break the UI
+    #     # Get the location of the card object with this ID
+    #     this_card_obj_index = bd.current_card_obj_index[int(bd.current_card_id)]
+    #     print(f"index of obj: {this_card_obj_index}")
+    #     # index of obj: 4
+    #     print(f"From obj: {bd.current_card_objects[this_card_obj_index].card_body}")
+    #     # From obj: This is a new card.
+    #     print(f"Content from UI: {bd.current_card_content}")
+    #     # Content from UI: This is a new card.
+    #
+    #     resp = make_response(
+    #         render_template('snippets/card_change_before.html', current_card_content=bd.current_card_content)
+    #     )
+    #     return resp
+    #
+    # if request.method == 'PUT':
+    #     requested = request.form
+    #     new_card_content = ''.join(requested.getlist('new_card_content'))
+    #
+    #     # Todo: clean up these variable names!!!
+    #     escaped_newline_text = new_card_content
+    #     # Get rid of newlines because it breaks things
+    #     if '\n' in new_card_content:
+    #         escaped_newline_text = new_card_content.replace('\n', '\\n')
+    #
+    #     html_text = Markup(new_card_content)  # Disabling markdown for now
+    #
+    #     hxvals_body_text = escaped_newline_text
+    #
+    #     resp = make_response(
+    #         render_template(
+    #             'snippets/card_change_after.html',
+    #             card_id=bd.current_card_id,
+    #             hxvals_body=hxvals_body_text,
+    #             card_body=html_text
+    #         )
+    #     )
+    #     resp = make_response(resp)
+    #     resp.headers['HX-Trigger'] = 'syncChange'
+    #
+    #     bd.current_card_content = ''
+    #     bd.current_card_id = 0
+    #
+    #     return resp
     if request.method == 'POST':
-        req = request.form
-        bd.current_card_id = req.get('current_card_content').split('::::')[0]
-        bd.current_card_content = req.get('current_card_content').split('::::')[1]
-
-        # todo: Theoretically I shouldn't need to get current_card_content from the UI, I can pull it out of
-        #  the card obj with this code. If this works then I don't need to write three copies of the same data
-        #  to hx-vals in the UI. Also reduces one area where unescaped characters break the UI
-        # Get the location of the card object with this ID
-        this_card_obj_index = bd.current_card_obj_index[int(bd.current_card_id)]
-        print(f"index of obj: {this_card_obj_index}")
-        # index of obj: 4
-        print(f"From obj: {bd.current_card_objects[this_card_obj_index].card_body}")
-        # From obj: This is a new card.
-        print(f"Content from UI: {bd.current_card_content}")
-        # Content from UI: This is a new card.
-
-        resp = make_response(
-            render_template('snippets/card_change_before.html', current_card_content=bd.current_card_content)
-        )
-        return resp
-
-    if request.method == 'PUT':
-        requested = request.form
-        new_card_content = ''.join(requested.getlist('new_card_content'))
-
-        # Todo: clean up these variable names!!!
-        escaped_newline_text = new_card_content
-        # Get rid of newlines because it breaks things
-        if '\n' in new_card_content:
-            escaped_newline_text = new_card_content.replace('\n', '\\n')
-
-        html_text = Markup(new_card_content)  # Disabling markdown for now
-
-        hxvals_body_text = escaped_newline_text
-
-        resp = make_response(
-            render_template(
-                'snippets/card_change_after.html',
-                card_id=bd.current_card_id,
-                hxvals_body=hxvals_body_text,
-                card_body=html_text
-            )
-        )
-        resp = make_response(resp)
-        resp.headers['HX-Trigger'] = 'syncChange'
-
-        bd.current_card_content = ''
-        bd.current_card_id = 0
-
-        return resp
-
+        print(request.get_json())
+    return '', 204
 
 # ----------------- # Add New Things # ----------------- #
 

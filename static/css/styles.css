@@ -110,12 +110,21 @@ h1 {
 
 
 /* List titles */
-.list_header h2 {
+h2.list_header  {
     font-weight: 700;
     font-size: 1rem;
     color: rgb(60, 60, 60);
     padding: 0.8rem 0.5rem 0 0.3rem;
 }
+
+h2[contentEditable=true] {
+    outline: 0px solid black;
+    border-radius: 3px;
+    background-color: white;
+    margin-top: 0.3rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.3rem;
+}
+
 
 .list_header_wrapper {
     width:285px;
@@ -148,6 +157,15 @@ input:focus {
     line-height: 1.1rem;
     border-radius: 4px;
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.card_content[contentEditable=true] {
+    outline: 0px solid black;
+    border-radius: 3px;
+    background-color: rgb(235, 240, 240);
+    width: 255px;
+    margin-left: 10px;
+    padding: 0.5rem;
 }
 
 
@@ -481,3 +499,7 @@ strong {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
     }
+
+
+
+    
