@@ -24,11 +24,11 @@
 
     <!-- Normal Lists -->
     <!-- individual list -->
-    <div id="listID{{ list['list_id'] }}" class="list_wrapper id fade_out align-self-start ms-2 p-0">
+    <div id="listID{{ list['list_id'] }}" class="list_wrapper smooth id align-self-start ms-2 p-0">
     <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
     <span class="material-icons drag_handle">drag_handle</span>
 
-        <div class="list_header_wrapper row justify-content-between z-ind-2">
+        <div class="list_header_wrapper smooth row justify-content-between z-ind-2">
             <div class="col-10">
                 <h2 contentEditable="false" class="list_header">{{ list['list_name'] }}</h2>
             </div>
@@ -38,35 +38,39 @@
         </div>
     </div>  <!-- Sortables target handle end -->
     
-        <!-- List content: contains individual cards -->
-        <div class="list_content">
+    <!-- List content: contains individual cards -->
+    <div class="list_content">
 
-        <!-- Individual Cards -->
-        {% for card in list['cards']: %}
-        <div id="cardID{{ card['card_id'] }}" class="card id">
-            <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
-            <div class="row">
-                <div class="edit_handle">
-                    <span class="material-icons">edit</span>
-                </div>
-                <div contentEditable="false" class="card_content notebook_main col-9">
-                    {{ card['card_body_html'] }}
-                </div>
-                <div class="notebook_side col-3">
-                <ul class="metadata">
-                    <li>{{ card['card_id'] }}</li>
-                    <!--<li>Tags</li>
-                    <li>Related Cards</li>
-                    <li>Share Link</li>-->
-                </ul>
-                </div>
-            </div>  
-        </div>
-        {% endfor %}
-        <!-- Individual Cards end -->
-        </div> <!-- List content end -->
+    <!-- Individual Cards -->
+    {% for card in list['cards']: %}
+    <div id="cardID{{ card['card_id'] }}" class="card id">
+        <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
+        <div class="row">
+            <div class="edit_handle">
+                <span class="material-icons">edit</span>
+            </div>
+            <div contentEditable="false" class="card_content content_main col-9">
+                <p>{{ card['card_body_html'] }}</p>
+            </div>
+            <div class="content_side col-3">
+            <ul class="metadata">
+                <li>{{ card['card_id'] }}</li>
+                <!--<li>Tags</li>
+                <li>Related Cards</li>
+                <li>Share Link</li>-->
+            </ul>
+            </div>
+        </div>  
+    </div>
+    {% endfor %}
+    <!-- Individual Cards end -->
+    </div> <!-- List content end -->
 
-        {% include "snippets/list_tool_bar.html" %}
+    <!--  List tool bar: appends the new card after the last child of the list content div-->
+    <div class="list_tools row justify-content-between m-2 mt-1">
+        <p class="col-2 material-icons card_new">add</p>
+        <p class="col-2 material-icons text-center list_width">east</p>
+    </div><!-- list tool bar end -->
 
     </div>
     <!-- individual list end -->

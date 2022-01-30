@@ -80,27 +80,27 @@ h1 {
 }
 
 /* This set hides the metadata column in lists but shows in notebook format. */
-    .list_wrapper .notebook_main {
+    .list_wrapper .content_main {
         width: 100%;
     }
 
-    .list_wrapper .notebook_side {
+    .list_wrapper .content_side {
         display: none;
     }
 
-    .notebook_wrapper {
+    .wide_wrapper {
         width: 650px;
     }
 
-    .notebook_wrapper .notebook_side {
+    .wide_wrapper .content_side {
         display: block;
     }
 
-    .notebook_wrapper .notebook_main {
+    .wide_wrapper .content_main {
         width: 75%;
     }
 
-    /* .notebook_wrapper .list_tools p:last-child {
+    /* .wide_wrapper .list_tools p:last-child {
         -moz-transform: rotate(180deg);
         -ms-transform: rotate(180deg);
         -o-transform: rotate(180deg);
@@ -163,11 +163,16 @@ input:focus {
     outline: 0px solid black;
     border-radius: 3px;
     background-color: rgb(235, 240, 240);
-    width: 255px;
-    margin-left: 10px;
+    width: 100%;
     padding: 0.5rem;
+    box-shadow: 0px 2px 3px rgba(205, 210, 210, 0.8);
 }
 
+.wide_wrapper .card_content[contentEditable=true] {
+    width: 100%;
+    padding: 0.6rem;
+    margin: 0.5rem 0;
+}
 
 .list_tools {
     border-radius: 3px;
@@ -230,14 +235,14 @@ textarea:focus {
     height: 10rem;
 }
 
-p, .notebook_main ul {
+.content_main {
     font-size: 0.9rem;
     font-weight: 500;
     line-height: 1.2rem;
     margin-bottom: 0.5rem;
 }
 
-.notebook_main ol {
+.content_main ol {
     /* reset existing padding */
     padding-left: 0;    
     padding-left: 1.2rem;
@@ -260,23 +265,22 @@ strong {
 
 
 
-
-.fade_out.htmx-swapping {
+/* .fade_out {
     width: 0;
     opacity: 0;
     transition: width 0.7s, opacity 0.3s ease-out;
-}
+} */
 
 .smooth {
-    transition: all 0.7s ease;
+    transition: all 0.3s ease;
 }
 
 
-.notebook_wrapper .list_header_wrapper {
+.wide_wrapper .list_header_wrapper {
     width: 650px;
 }
 
-.notebook_wrapper .card {
+.wide_wrapper .card {
     box-shadow: none;
     margin: 0 0.5rem;
     border-radius: 0;
@@ -284,24 +288,24 @@ strong {
     padding-bottom: 1rem;
 }
 
-.notebook_wrapper .card:first-child {
+.wide_wrapper .card:first-child {
     /* box-shadow: none; */
     margin: 0.3rem 0.5rem 0 0.5rem;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
-.notebook_wrapper .card:last-child {
+.wide_wrapper .card:last-child {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
 }
 
 
-.notebook_wrapper .card_content p {
+.wide_wrapper .card_content p {
     margin: 0;
     padding: 0 0 0.5rem 0;
 }
 
-.notebook_side {
+.content_side {
     font-size: 0.85rem;
     align-self:flex-end;
     padding-bottom: 2rem;
@@ -317,7 +321,7 @@ strong {
     }
 
 
-.notebook_main textarea {
+.content_main textarea {
     width: 100%;
     outline: rgba(60, 60, 60, 0.5);
 }
@@ -430,20 +434,20 @@ strong {
 }
 
     
-.notebook_main h1 {
+.content_main h1 {
     font-family: 'Zen Kaku Gothic New', sans-serif;
     font-size: 1.2rem;
     font-weight: 700;
     padding-bottom: 0.5rem;
 }
 
-.notebook_main h2 {
+.content_main h2 {
     font-size: 1.2rem;
     font-weight: 500;
     padding-bottom: 0.3rem;
 }
 
-.notebook_main h3 {
+.content_main h3 {
     font-size: 1.1rem;
     font-weight: 500;
     padding-bottom: 0.2rem;
@@ -451,17 +455,17 @@ strong {
 
 }
 
-.notebook_main h4 {
+.content_main h4 {
     font-size: 1rem;
     font-weight: 700;
 }
 
-.notebook_main h5 {
+.content_main h5 {
     font-size: 0.9rem;
     font-weight: 900;
 }
 
-.notebook_main h6 {
+.content_main h6 {
     font-size: 0.85rem;
     font-weight: 900;
     padding-bottom: 0.2rem;

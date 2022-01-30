@@ -1,10 +1,13 @@
 // ---------------------- // Communicate with Backend // ---------------------- //
 
 // Make a get request
-function getFromBackend (endPoint, functionToRun) {
+function getFromBackend (endPoint) {
     fetch(endPoint)
         .then(response => response.json())
-        .then(data => {functionToRun(data)})
+        .then(data => {
+            console.log(data);
+            return data;
+        })
 }
 
 // Send data to backend
@@ -35,7 +38,7 @@ for (var i = 0; i < sortables.length; i++) {
     animation: 50,
     ghostClass: 'blue-background-class',
     onEnd: function(evt) {
-        console.log(evt);
+        // console.log(evt);
         // sendToBackend('/receive', 'POST', getCurrentListLocation());
     }
     });
@@ -59,8 +62,27 @@ function enableListeners() {
     });
 
     // Listens for clicks to edit card content
-    $(".card_content").on('click', function() {
-        editContent(this, '/app/c/edit', 'card content');
+    $(".edit_handle").on('click', function() {
+        // Goes up one level in the DOM tree and finds the card content container
+        editContent($(this).parent().find('.card_content'), '/app/c/edit', 'card content');
+    });
+
+    // Add new card
+    $('.card_new').on('click', function() {
+        addNewCard($(this).closest('.id').find('.list_content'));
+    });
+    
+    // Change List Width
+    // Todo: add persistence 
+    $(".list_width").on('click', function() {
+        console.log(this);
+        if ($(this).hasClass('rotate')) {
+            $(this).closest('.list_wrapper').removeClass('wide_wrapper');
+            $(this).removeClass('rotate');
+        } else {
+            $(this).closest('.list_wrapper').addClass('wide_wrapper');
+            $(this).addClass('rotate');    
+        }
     });
 };
 
@@ -73,9 +95,10 @@ function editContent(editObj, endPoint, objType) {
         const changedData = [objType, $(editObj).closest('.id').attr('id')];
         // Changes to contentEditable mode
         $(editObj).attr('contentEditable', 'true');
+        $(editObj).focus();
         // Listens for enter key, if pressed exits edit mode
         $(editObj).keydown(function(e) {
-            if (e.key == "Enter") {
+            if (e.key == "Enter" && e.ctrlKey) {
                 $(editObj).attr('contentEditable', 'false');
                 // adds new text content to changedData array
                 changedData.push($(this).prop('innerText'));
@@ -83,10 +106,43 @@ function editContent(editObj, endPoint, objType) {
                 sendToBackend(endPoint, 'POST', changedData);
             }
         })
+        $(editObj).keydown(function(e) {
+            if (e.key == "Escape") {
+                $(editObj).attr('contentEditable', 'false');
+            }
+        })
     }
 };
 
 
+// Make new card
+function addNewCard(listObj) {
+    let cardId = getFromBackend('/app/c/new');
+    console.log(cardId)  // it's not showing up here because this is running before the backend has time to get it.
+    let newCard = `
+    <div id="cardID${cardId}" class="card id">
+    <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
+    <div class="row">
+        <div class="edit_handle">
+            <span class="material-icons">edit</span>
+        </div>
+        <div contentEditable="false" class="card_content content_main col-9">
+            <p></p>
+        </div>
+        <div class="content_side col-3">
+        <ul class="metadata">
+            <li>${cardId}</li>
+            <!--<li>Tags</li>
+            <li>Related Cards</li>
+            <li>Share Link</li>-->
+        </ul>
+        </div>
+    </div>  
+    </div>
+    `
+    $(listObj).append(newCard);
+    enableListeners();
+};
 
 // ---------------------- // Start // ---------------------- //
 // Gets data from backend, sends it to renderPage to render on screen

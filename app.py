@@ -190,7 +190,7 @@ def login():
 
 
 @app.route('/app', methods=['GET', 'POST'])
-def board():
+def main():
     if request.method == 'POST':
         requested = request.form
         user_key = requested.get('user')
@@ -257,7 +257,7 @@ def board():
                 }
                 cards_to_merge.append(make_card)
         item['cards'] = cards_to_merge
-
+    print(user_lists)
     resp = make_response(render_template('test2.html', lists=user_lists, user_key=bd.user_key))
     return resp
 
@@ -337,7 +337,7 @@ def list_add_to_archive():
 
 # todo: change this to list_order_update()
 @app.route('/app/l/update', methods=['POST'])
-def change_list_card_order():
+def list_order_update():
     if request.method == 'POST':
         requested = request.form
         id_list = requested.getlist('id')
@@ -424,9 +424,10 @@ def card_new():
     # Update the current_card_id parameter so that when the new card content is passed to change_card_content() the
     # ID will follow.
     bd.current_card_id = new_card_id
-    resp = make_response(render_template('snippets/card_new.html', new_card_id=new_card_id))
-    resp.headers['HX-Trigger'] = 'syncChange'
-    return resp
+    # resp = make_response(render_template('snippets/card_new.html', new_card_id=new_card_id))
+    # resp.headers['HX-Trigger'] = 'syncChange'
+    print(new_card_id)
+    return jsonify(new_card_id)
 
 
 @app.route('/app/c/update')
