@@ -417,17 +417,20 @@ def card():
 
 
 # todo: update template
-@app.route('/app/c/new')
+@app.route('/app/c/new', methods=['GET', 'POST'])
 def card_new():
-    # Get a new id for the new card
-    new_card_id = get_new_id()
-    # Update the current_card_id parameter so that when the new card content is passed to change_card_content() the
-    # ID will follow.
-    bd.current_card_id = new_card_id
-    # resp = make_response(render_template('snippets/card_new.html', new_card_id=new_card_id))
-    # resp.headers['HX-Trigger'] = 'syncChange'
-    print(new_card_id)
-    return jsonify(new_card_id)
+    if request.method == 'GET':
+        # Get a new id for the new card
+        new_card_id = get_new_id()
+        # Update the current_card_id parameter so that when the new card content is passed to change_card_content() the
+        # ID will follow.
+        bd.current_card_id = new_card_id
+        print(new_card_id)
+        return jsonify(new_card_id)
+
+    if request.method == 'POST':
+        print(request.get_json())
+        return '', 204
 
 
 @app.route('/app/c/update')

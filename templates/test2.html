@@ -24,7 +24,7 @@
 
     <!-- Normal Lists -->
     <!-- individual list -->
-    <div id="listID{{ list['list_id'] }}" class="list_wrapper smooth id align-self-start ms-2 p-0">
+    <div id="listID{{ list['list_id'] }}" class="list_wrapper wide_wrapper smooth id align-self-start ms-2 p-0">
     <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
     <span class="material-icons drag_handle">drag_handle</span>
 
@@ -55,9 +55,9 @@
             <div class="content_side col-3">
             <ul class="metadata">
                 <li>{{ card['card_id'] }}</li>
-                <!--<li>Tags</li>
+                <li>Tags</li>
                 <li>Related Cards</li>
-                <li>Share Link</li>-->
+                <li>Share Link</li>
             </ul>
             </div>
         </div>  
@@ -69,7 +69,7 @@
     <!--  List tool bar: appends the new card after the last child of the list content div-->
     <div class="list_tools row justify-content-between m-2 mt-1">
         <p class="col-2 material-icons card_new">add</p>
-        <p class="col-2 material-icons text-center list_width">east</p>
+        <p class="col-2 material-icons text-center list_width">west</p>
     </div><!-- list tool bar end -->
 
     </div>

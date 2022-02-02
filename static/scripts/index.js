@@ -1,12 +1,16 @@
 // ---------------------- // Communicate with Backend // ---------------------- //
 
 // Make a get request
-function getFromBackend (endPoint) {
+function getFromBackend (endPoint, funcToCall, elem) {
+    // funcToCall: the function to call after the data has been fetched
+    // elem: the target element. Right now this has been written for addCard which requires a target element to insert the new card into. 
+    // This probably won't scale for everything.
+    // But it needs to be here for now because if you don't call addCard after you get the data then it'll run BEFORE the data arrives.
     fetch(endPoint)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            return data;
+            // console.log(data);
+            funcToCall(elem, data)
         })
 }
 
@@ -69,7 +73,9 @@ function enableListeners() {
 
     // Add new card
     $('.card_new').on('click', function() {
-        addNewCard($(this).closest('.id').find('.list_content'));
+        let targetElem = $(this).closest('.id').find('.list_content');
+        // fetches the new id. Passes in the name of the function to call, then the target element that function requires
+        getFromBackend('/app/c/new', addNewCard, targetElem)
     });
     
     // Change List Width
@@ -87,8 +93,16 @@ function enableListeners() {
 };
 
 
+function removeListeners() {
+    // removes all listeners so listeners can be re-enabled when something new is added to the DOM
+    $(document).add('*').off()
+}
+
 // Turns on contentEditable, makes API call to save changed data
 function editContent(editObj, endPoint, objType) {
+    console.log(editObj);
+    let x = $(editObj).attr('contentEditable');
+    console.log(x);
     // Stops listening to clicks when editing
     if ($(editObj).attr('contentEditable') == 'false') {
         // create the array to be sent to the backend
@@ -116,9 +130,8 @@ function editContent(editObj, endPoint, objType) {
 
 
 // Make new card
-function addNewCard(listObj) {
-    let cardId = getFromBackend('/app/c/new');
-    console.log(cardId)  // it's not showing up here because this is running before the backend has time to get it.
+function addNewCard(listObj, data) {
+    let cardId = data;
     let newCard = `
     <div id="cardID${cardId}" class="card id">
     <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
@@ -132,22 +145,22 @@ function addNewCard(listObj) {
         <div class="content_side col-3">
         <ul class="metadata">
             <li>${cardId}</li>
-            <!--<li>Tags</li>
+            <li>Show Parent</li>
             <li>Related Cards</li>
-            <li>Share Link</li>-->
+            <li>Share Link</li>
         </ul>
         </div>
     </div>  
     </div>
     `
     $(listObj).append(newCard);
+    removeListeners();
     enableListeners();
+    let newCardObj = $(`#cardID${cardId}`).find('.card_content');
+    editContent(newCardObj, '/app/c/new', 'card');
 };
 
 // ---------------------- // Start // ---------------------- //
-// Gets data from backend, sends it to renderPage to render on screen
-// getFromBackend('/app', renderPage);
-
 // Because everything is loaded programically we need to set a delay otherwise this runs before there is anything on screen
 setTimeout(function(){
     enableListeners();
