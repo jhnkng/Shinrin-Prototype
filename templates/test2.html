@@ -24,7 +24,7 @@
 
     <!-- Normal Lists -->
     <!-- individual list -->
-    <div id="listID{{ list['list_id'] }}" class="list_wrapper smooth id align-self-start ms-2 p-0">
+    <div id="{{ list['list_id'] }}" class="list_wrapper smooth id align-self-start ms-2 p-0">
     <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
     <span class="material-icons drag_handle">drag_handle</span>
 
@@ -43,7 +43,7 @@
 
     <!-- Individual Cards -->
     {% for card in list['cards']: %}
-    <div id="cardID{{ card['card_id'] }}" class="card id">
+    <div id="{{ card['card_id'] }}" class="card id">
         <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
         <div class="row">
             <div class="edit_handle">

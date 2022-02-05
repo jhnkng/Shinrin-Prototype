@@ -21,32 +21,52 @@ def get_data(user_key, data_type):
     :param data_type: lists or cards
     :return: processed requested data
     """
-    filename = f"user_data/{user_key}.json"
+    # filename = f"user_data/{user_key}.json"
+    filename = 'user_data/test_data.json'
     try:
         with open(filename, mode='r') as data_file:
             data = json.load(data_file)
     except FileNotFoundError:
-        with open('user_data/new_user.json', mode='r') as data_file:
+        with open('user_data/test_data.json', mode='r') as data_file:
             data = json.load(data_file)
     # Converting list/card IDs back to ints because JSON requires them to be stored as strings.
-    cleaned = {int(key): value for key, value in data[data_type].items()}
+    # cleaned = {int(key): value for key, value in data[data_type].items()}
+    cleaned = [value for value in data[data_type]]
+    # print(f"loaded data: {data}")
     return cleaned
 
 
-def write_data(list_pos, content):
-    """
-    Create the structure to save back to JSON to disk
-    :param list_pos: The positions of lists and cards as passed back by the UI
-    :param content: the card content that was in the UI
-    :return: none
-    """
+def write_data():
+    list_pos = []
+    for list_obj in bd.current_list_objects:
+        cards = [x['card_id'] for x in list_obj.cards]
+        new_list = {
+            "list_id": list_obj.list_id,
+            "list_name": list_obj.list_name,
+            "is_notebook": list_obj.is_notebook,
+            "cards": cards
+        }
+        list_pos.append(new_list)
+
+    content = []
+    for card_obj in bd.current_card_objects:
+        new_card = {
+            "card_id": card_obj.card_id,
+            "card_title": "",
+            "card_body": card_obj.card_body,
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        }
+        content.append(new_card)
+
     # Create the structure to save in JSON
     save_data = {
         'board': {},
         'lists': list_pos,
         'cards': content
     }
-    filename = f"user_data/{bd.user_key}.json"
+    filename = f"user_data/test_data.json"
     with open(filename, mode='w') as data_file:
         json.dump(save_data, data_file, indent=2)
 
@@ -84,110 +104,6 @@ def process_newlines(text):
     #     return text
 
 
-def change_order(new_pos, list_names, card_content):
-    # ----------- # Wrangle Lists # ----------- #
-    # 1. Get the data passed back from the UI
-    ui_returned_content_order = list(new_pos)
-
-    # 2. Create an index of each list with all the cards in the list as a dictionary
-    #   a. get the index for each List ID in data
-    new_list_order_index = [ui_returned_content_order.index(item) for item in ui_returned_content_order if
-                            'list_id' in item]
-
-    #   b. Sorts data
-    sorted_list_card_positions = [ui_returned_content_order[a:b] for a, b in
-                                  zip_longest([0] + new_list_order_index, new_list_order_index)][1:]
-
-    #   c. Create the index as a dictionary
-    new_list_index = {}
-    for each_list in sorted_list_card_positions:
-        new_entry = {
-            int(each_list[0].split(' ')[1]): [int(card.split(' ')[1]) for card in each_list[1:]]
-        }
-        new_list_index.update(new_entry)
-        #   returns: {ListID: [CardID, CardID], ListID: [CardID, CardID], ListID: [CardID]} etc
-    # Add updated index to Board
-    bd.current_board_index = new_list_index
-
-    #   d. Make a list of all the existing notebooks
-    notebooks_list = []
-    for each_list in sorted_list_card_positions:
-        list_id = int(each_list[0].split(' ')[1])
-        if 'note' in each_list[0].split(' ')[-1]:
-            notebooks_list.append(list_id)
-    # Returns a list of IDs that are notebooks. Later we check against this list to set is_notebook:True
-
-    # 3. Sort lists
-    #   a. List ids are keys in the New Board Index, so get those and return a list of ints
-    new_list_order = [item for item in list(new_list_index.keys())]
-    #   returns [7, 6, 11] list IDs in the new order
-
-    #   b. Make a dict that matches List IDs with their Titles (from list_names)
-    new_list_names = {new_list_order[i]: list_names[i] for i in range(len(new_list_order))}
-    #   returns {38: 'List name', 35: 'list name'}
-
-    # 4. Iterate through the new list order (which holds the ListIDs) and use that to pull the corresponding
-    #   index in order to access the list/card data to rebuild the entries in the new order
-    #   But first, get a fresh copy of current saved list data
-    stored_list_data = get_data(bd.user_key, "lists")
-    new_list_pos_data_to_save = {}
-    for num in new_list_order:
-        # If the listID currently exists
-        if num in list(stored_list_data.keys()):
-            # Writes in the location of each card in their lists.
-            stored_list_data[num]['cards'] = new_list_index[num]
-            # Write in the list name
-            stored_list_data[num]['list_name'] = new_list_names[num]
-            # Write in notebook status
-            if num in notebooks_list:
-                stored_list_data[num]['is_notebook'] = True
-            else:
-                stored_list_data[num]['is_notebook'] = False
-            # saves to new data to save
-            new_list_pos_data_to_save[num] = stored_list_data[num]
-        else:
-            # make new structure to save
-            new_list_pos_data_to_save[num] = {
-                "list_id": num,
-                "list_name": new_list_names[num],
-                "is_notebook": False,
-                "cards": new_list_index[num]
-            }
-            if num in notebooks_list:
-                new_list_pos_data_to_save[num]['is_notebook'] = True
-
-    # ----------- # Wrangle Card Content # ----------- #
-    # 5. Wrangle and save card content
-    #   a. Get a fresh copy of current saved list data
-    stored_card_content = get_data(bd.user_key, "cards")
-
-    #   b. Get card content data passed back from UI
-    ui_returned_card_content = card_content  # Returns a list of the card body text.
-
-    #   c. Make a list of the card IDs from the new order data
-    ui_returned_card_ids = [int(item.split(' ')[1]) for item in ui_returned_content_order if 'card_id' in item]
-
-    #   d. zip the card ids and card content together
-    ui_returned_cards = zip(ui_returned_card_ids, ui_returned_card_content)
-
-    #   e. Update stored card content with UI returned card content
-    for card in ui_returned_cards:
-        c_id = card[0]
-        body = card[1]  # Todo: could run newline escape here
-        if c_id in list(stored_card_content.keys()):
-            # if the card id exists, update the card body content
-            stored_card_content[c_id]['card_body'] = body
-        else:
-            # if not, make a new entry
-            stored_card_content[c_id] = {
-                "card_id": c_id,
-                "card_body": body
-            }
-
-    # 5. Write to disk
-    write_data(new_list_pos_data_to_save, stored_card_content)
-
-
 # ----------------- # Start Here # ----------------- #
 @app.route('/')
 def login():
@@ -219,12 +135,15 @@ def main():
     saved_list_data = get_data(bd.user_key, 'lists')
     saved_card_data = get_data(bd.user_key, 'cards')
 
+    # todo: fix the order of operations here
     # Objectify
     list_objects = bd.create_list_objects(saved_list_data)
+    bd.current_list_objects = list_objects
     # print(f"list_objects: {list_objects}")
     # list_objects: [<board.List object at 0x000002C2049B4F10>, <board.List object at 0x000002C2049B4D30>]
 
     card_objects = bd.create_card_objects(saved_card_data)
+    bd.current_card_objects = card_objects
     # print(f"card_objects: {card_objects}")
     # card_objects: [<board.Card object at 0x00000196545D65E0>, <board.Card object at 0x00000196545D6040>,
     # <board.Card object at 0x00000196545D65B0>, <board.Card object at 0x00000196545D66A0>]
@@ -263,56 +182,9 @@ def main():
                 }
                 cards_to_merge.append(make_card)
         item['cards'] = cards_to_merge
-    print(user_cards)
+    # print(user_cards)
     resp = make_response(render_template('test2.html', lists=user_lists, user_key=bd.user_key))
     return resp
-
-
-# @app.route('/board/fullscreen')
-# def show_fullscreen():
-#     resp = make_response(render_template('snippets/full_screen.html'))
-#     return resp
-
-
-# @app.route('/app/archive')
-# def show_archive():
-#     card_data = get_data(bd.user_key, 'cards')
-#     list_id = 1
-#     list_name = 'Archive'
-#
-#     # Flatten nested list locations from board index to make list of cardIDs currently on screen
-#     index = [y for x in list(bd.current_board_index.values()) for y in x]
-#
-#     # Show only cards NOT currently on screen
-#     cards = []
-#     for key in card_data.keys():
-#         if not key in index:
-#             card = card_data[key]
-#             unescaped_text = process_newlines(card['card_body'])
-#             card['card_body_html'] = Markup(unescaped_text)  # Disabling Markdown for now
-#             cards.append(card)
-#
-#     resp = make_response(
-#         render_template('snippets/archive.html', list_id=list_id, list_name=list_name, cards=cards)
-#     )
-#     return resp
-
-
-# @app.route('/board/index')
-# def show_board_index():
-#     new_list_id = 'Index'
-#     new_list_name = 'Current Board Index'
-#     index = list(bd.current_board_index.values())
-#     resp = make_response(
-#         render_template(
-#             'snippets/board_index.html',
-#             new_list_id=new_list_id,
-#             new_list_name=new_list_name,
-#             index=index
-#         )
-#     )
-#     # resp.headers['HX-Trigger'] = 'syncChange'
-#     return resp
 
 
 # ----------------- # List Routes # ----------------- #
@@ -341,78 +213,16 @@ def list_add_to_archive():
     pass
 
 
-# todo: change this to list_order_update()
 @app.route('/app/l/update', methods=['POST'])
 def list_order_update():
-    if request.method == 'POST':
-        requested = request.form
-        id_list = requested.getlist('id')
-        list_names = requested.getlist('list_name')
-        card_content = requested.getlist('card_body')
-
-        # Send to sort and save
-        change_order(id_list, list_names, card_content)
     return '', 204
 
 
 @app.route('/app/l/rename', methods=['POST', 'PUT'])
 def list_rename():
-    # if request.method == 'POST':
-    #     req = request.form
-    #     bd.current_list_id = req.get('current_list').split(':')[0]
-    #     bd.current_list_name = req.get('current_list').split(':')[1]
-    #     resp = make_response(
-    #         render_template('snippets/list_name_change_before.html', current_list_name=bd.current_list_name)
-    #     )
-    #     return resp
-    #
-    # if request.method == 'PUT':
-    #     requested = request.form
-    #     new_list_name = ''.join(requested.getlist('new_list_name'))
-    #     resp = make_response(
-    #         render_template(
-    #             'snippets/list_name_change_after.html', new_list_name=new_list_name, list_id=bd.current_list_id
-    #         )
-    #     )
-    #     resp.headers['HX-Trigger'] = 'syncChange'
-    #
-    #     bd.current_list_name = ''
-    #     bd.current_list_id = 0
-    #     return resp
     if request.method == 'POST':
         print(request.get_json())
     return '', 204
-
-# @app.route('/board/notebook/edit', methods=['POST', 'PUT'])
-# def change_notebook_name():
-#     if request.method == 'POST':
-#         req = request.form
-#         bd.current_notebook_id = req.get('current_notebook').split(':')[0]
-#         bd.current_notebook_name = req.get('current_notebook').split(':')[1]
-#         resp = make_response(
-#             render_template(
-#             'snippets/notebook_name_change_before.html',
-#             current_notebook_name=bd.current_notebook_name
-#             )
-#         )
-#         return resp
-#
-#     if request.method == 'PUT':
-#         requested = request.form
-#         new_notebook_name = ''.join(requested.getlist('new_notebook_name'))
-#         resp = make_response(
-#             render_template(
-#                 'snippets/notebook_name_change_after.html',
-#                 new_notebook_name=new_notebook_name,
-#                 notebook_id=bd.current_notebook_id
-#             )
-#         )
-#         resp.headers['HX-Trigger'] = 'syncChange'
-#
-#         bd.current_notebook_name = ''
-#         bd.current_notebook_id = 0
-#
-#         return resp
 
 
 # ----------------- # Card Routes # ----------------- #
@@ -427,12 +237,7 @@ def card():
 def card_new():
     if request.method == 'GET':
         # Get a new id for the new card
-        new_card_id = get_new_id()
-        # Update the current_card_id parameter so that when the new card content is passed to change_card_content() the
-        # ID will follow.
-        bd.current_card_id = new_card_id
-        print(new_card_id)
-        return jsonify(new_card_id)
+        return jsonify(get_new_id())
 
     if request.method == 'POST':
         print(request.get_json())
@@ -456,71 +261,42 @@ def card_move_to_trash():
 
 @app.route('/app/c/edit', methods=['POST', 'PUT'])
 def card_edit_content():
-    # if request.method == 'POST':
-    #     req = request.form
-    #     bd.current_card_id = req.get('current_card_content').split('::::')[0]
-    #     bd.current_card_content = req.get('current_card_content').split('::::')[1]
-    #
-    #     # todo: Theoretically I shouldn't need to get current_card_content from the UI, I can pull it out of
-    #     #  the card obj with this code. If this works then I don't need to write three copies of the same data
-    #     #  to hx-vals in the UI. Also reduces one area where unescaped characters break the UI
-    #     # Get the location of the card object with this ID
-    #     this_card_obj_index = bd.current_card_obj_index[int(bd.current_card_id)]
-    #     print(f"index of obj: {this_card_obj_index}")
-    #     # index of obj: 4
-    #     print(f"From obj: {bd.current_card_objects[this_card_obj_index].card_body}")
-    #     # From obj: This is a new card.
-    #     print(f"Content from UI: {bd.current_card_content}")
-    #     # Content from UI: This is a new card.
-    #
-    #     resp = make_response(
-    #         render_template('snippets/card_change_before.html', current_card_content=bd.current_card_content)
-    #     )
-    #     return resp
-    #
-    # if request.method == 'PUT':
-    #     requested = request.form
-    #     new_card_content = ''.join(requested.getlist('new_card_content'))
-    #
-    #     # Todo: clean up these variable names!!!
-    #     escaped_newline_text = new_card_content
-    #     # Get rid of newlines because it breaks things
-    #     if '\n' in new_card_content:
-    #         escaped_newline_text = new_card_content.replace('\n', '\\n')
-    #
-    #     html_text = Markup(new_card_content)  # Disabling markdown for now
-    #
-    #     hxvals_body_text = escaped_newline_text
-    #
-    #     resp = make_response(
-    #         render_template(
-    #             'snippets/card_change_after.html',
-    #             card_id=bd.current_card_id,
-    #             hxvals_body=hxvals_body_text,
-    #             card_body=html_text
-    #         )
-    #     )
-    #     resp = make_response(resp)
-    #     resp.headers['HX-Trigger'] = 'syncChange'
-    #
-    #     bd.current_card_content = ''
-    #     bd.current_card_id = 0
-    #
-    #     return resp
     if request.method == 'POST':
-        print(request.get_json())
-    return '', 204
+        # accept the cardID, get the unwrapped content of that card and pass it through
+        # 1. get the passed card id
+        req_card_id = int(request.get_json())
+        # print(f"req_card_id: {req_card_id}")
 
-# ----------------- # Add New Things # ----------------- #
+        # 2. look up the index of that card object
+        req_card_id_index = bd.current_card_obj_index[req_card_id]
+        # print(f"req_card_id_index: {req_card_id_index}")
 
-# # Add new notebook
-# @app.route('/board/notebook/new')
-# def new_notebook():
-#     new_notebook_id = get_new_id()
-#     bd.current_notebook_id = new_notebook_id
-#     resp = make_response(render_template('snippets/notebook_new.html', new_notebook_id=new_notebook_id))
-#     resp.headers['HX-Trigger'] = 'syncChange'
-#     return resp
+        # 3. get the stored data unwrapped from the object
+        req_data = process_newlines(bd.current_card_objects[req_card_id_index].card_body)
+
+        # 4. return that data
+        return jsonify(req_data)
+
+    if request.method == 'PUT':
+        # 1. accept the changes
+        changed_data = request.get_json()
+        # print(f"changed data: {changed_data}")
+
+        # 2. update card content
+        # get card id
+        changed_data_card_id = int(changed_data[0])
+        # get the index of the matching card object
+        changed_data_card_obj_index = bd.current_card_obj_index[changed_data_card_id]
+        # update card object with new data
+        bd.current_card_objects[changed_data_card_obj_index].card_body = changed_data[-1]
+        # print(bd.current_card_objects[changed_data_card_obj_index].card_body)
+
+        # 3. write changes to disk
+        write_data()
+
+        # 4. wrap in markdown and return
+        convert_to_markdown = Markup(md.markdown(changed_data[2]))
+        return jsonify(convert_to_markdown)
 
 
 # ----------------- # Delete Things # ----------------- #

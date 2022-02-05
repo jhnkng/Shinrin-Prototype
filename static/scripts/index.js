@@ -25,7 +25,7 @@ function sendToBackend(endPoint, method, dataToSend) {
     })
 
     fetch(request)
-        .then(res => res.json())
+        // .then(res => res.json())
         // .then(res => console.log(res));
 };
 
@@ -68,7 +68,68 @@ function enableListeners() {
     // Listens for clicks to edit card content
     $(".edit_handle").on('click', function() {
         // Goes up one level in the DOM tree and finds the card content container
-        editContent($(this).parent().find('.card_content'), '/app/c/edit', 'card content');
+        let cardContentContainer = $(this).parent().find('.card_content');
+        // gets the card ID
+        let cardId = cardContentContainer.closest('.id').attr('id');
+
+        // fetches the un-markdown-ed text as stored
+        const request = new Request('/app/c/edit', {
+            method: 'POST',
+            body: JSON.stringify(cardId),
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        });
+    
+        fetch(request)
+            .then(res => res.json())
+            .then(res => {
+                // save the current text in case we want to cancel
+                let beforeEditContent = cardContentContainer.html();
+                // replace newlines with line breaks. Without this text is jammed into the edit window with no line breaks at all.
+                let result = res.replace(/\n/g, "<br>");
+                // replace current text with markdown in edit window
+                cardContentContainer.html(result);
+                // Stops listening to clicks when editing
+                if (cardContentContainer.attr('contentEditable') == 'false') {
+                    // create the array to be sent to the backend
+                    const changedData = [cardId, 'Card Content'];
+                    // Changes to contentEditable mode
+                    cardContentContainer.attr('contentEditable', 'true');
+                    cardContentContainer.focus();
+                    // Listens for enter key, if pressed exits edit mode
+                    cardContentContainer.keydown(function(e) {
+                        if (e.key == "Enter" && e.ctrlKey) {
+                            cardContentContainer.attr('contentEditable', 'false');
+                            // adds new text content to changedData array
+                            changedData.push($(this).prop('innerText'));
+                            // sends to the backend
+                            const request = new Request('/app/c/edit', {
+                                method: 'PUT',
+                                body: JSON.stringify(changedData),
+                                headers: new Headers({
+                                    'Content-Type': 'application/json'
+                                })
+                            })
+                        
+                            fetch(request)
+                                .then(res => res.json())
+                                .then(res => {
+                                    // replaces markdown code with processed markdown html
+                                    cardContentContainer.html(res);
+                                });
+                        }
+                    })
+                    // Cancel function
+                    cardContentContainer.keydown(function(e) {
+                        if (e.key == "Escape") {
+                            cardContentContainer.html(beforeEditContent);
+                            cardContentContainer.attr('contentEditable', 'false');
+                        }
+                    })
+                }
+            })
+        
     });
 
     // Add new card
@@ -103,7 +164,7 @@ function editContent(editObj, endPoint, objType) {
     // Stops listening to clicks when editing
     if ($(editObj).attr('contentEditable') == 'false') {
         // create the array to be sent to the backend
-        const changedData = [objType, $(editObj).closest('.id').attr('id')];
+        const changedData = [$(editObj).closest('.id').attr('id'), objType];
         // Changes to contentEditable mode
         $(editObj).attr('contentEditable', 'true');
         $(editObj).focus();
