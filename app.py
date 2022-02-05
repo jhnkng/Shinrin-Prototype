@@ -76,6 +76,12 @@ def process_newlines(text):
         return text.replace('\n', '\\n')
     else:
         return text
+    # if text.find('\\n'):
+    #     return text.replace('\\n', '<br/>')
+    # elif text.find('\n'):
+    #     return text.replace('\n', '<br/>')
+    # else:
+    #     return text
 
 
 def change_order(new_pos, list_names, card_content):
@@ -215,17 +221,17 @@ def main():
 
     # Objectify
     list_objects = bd.create_list_objects(saved_list_data)
-    print(f"list_objects: {list_objects}")
+    # print(f"list_objects: {list_objects}")
     # list_objects: [<board.List object at 0x000002C2049B4F10>, <board.List object at 0x000002C2049B4D30>]
 
     card_objects = bd.create_card_objects(saved_card_data)
-    print(f"card_objects: {card_objects}")
+    # print(f"card_objects: {card_objects}")
     # card_objects: [<board.Card object at 0x00000196545D65E0>, <board.Card object at 0x00000196545D6040>,
     # <board.Card object at 0x00000196545D65B0>, <board.Card object at 0x00000196545D66A0>]
 
     # Creates {CardID:Index of Card Obj in Card Objects list} so we know which object to access to update content.
     bd.current_card_obj_index = {each.card_id: card_objects.index(each) for each in card_objects}
-    print(f"Card Obj Index: {bd.current_card_obj_index}")
+    # print(f"Card Obj Index: {bd.current_card_obj_index}")
     # Card Obj Index: {20220120115820735302: 0, 20220120120149112482: 1,
     # 20220120132630684721: 2, 20220120154744804753: 3}
 
@@ -246,9 +252,9 @@ def main():
                 # Here we unescape it before it goes to the UI
                 unescaped_text = process_newlines(card['card_body'])
                 # Raw text is sent through markdown to convert to HTML, then HTML characters unescaped using Markup
-                card['card_body_html'] = Markup(unescaped_text)
+                # card['card_body_html'] = Markup(unescaped_text)
                 # Disabling markdown for now
-                # card['card_body_html'] = Markup(md.markdown(unescaped_text))
+                card['card_body_html'] = Markup(md.markdown(unescaped_text))
                 cards_to_merge.append(card)
             else:
                 make_card = {
@@ -257,7 +263,7 @@ def main():
                 }
                 cards_to_merge.append(make_card)
         item['cards'] = cards_to_merge
-    print(user_lists)
+    print(user_cards)
     resp = make_response(render_template('test2.html', lists=user_lists, user_key=bd.user_key))
     return resp
 

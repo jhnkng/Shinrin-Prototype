@@ -33,6 +33,7 @@ class Board:
             s = saved_card_data[key]
             new_card_obj = Card()
             new_card_obj.card_id = s['card_id']
+            # new_card_obj.card_title = s['card_title']
             new_card_obj.card_body = s['card_body']
             card_objects.append(new_card_obj)
         self.current_card_objects = card_objects
@@ -50,4 +51,7 @@ class List:
 class Card:
     def __init__(self):
         self.card_id = int
+        # self.card_title = str
         self.card_body = str
+        # self.tags = str
+

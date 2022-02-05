@@ -83,10 +83,10 @@ function enableListeners() {
     $(".list_width").on('click', function() {
         console.log(this);
         if ($(this).hasClass('rotate')) {
-            $(this).closest('.list_wrapper').removeClass('wide_wrapper');
+            $(this).closest('.list_wrapper').addClass('wide_wrapper');
             $(this).removeClass('rotate');
         } else {
-            $(this).closest('.list_wrapper').addClass('wide_wrapper');
+            $(this).closest('.list_wrapper').removeClass('wide_wrapper');
             $(this).addClass('rotate');    
         }
     });
@@ -100,9 +100,6 @@ function removeListeners() {
 
 // Turns on contentEditable, makes API call to save changed data
 function editContent(editObj, endPoint, objType) {
-    console.log(editObj);
-    let x = $(editObj).attr('contentEditable');
-    console.log(x);
     // Stops listening to clicks when editing
     if ($(editObj).attr('contentEditable') == 'false') {
         // create the array to be sent to the backend
@@ -140,7 +137,6 @@ function addNewCard(listObj, data) {
             <span class="material-icons">edit</span>
         </div>
         <div contentEditable="false" class="card_content content_main col-9">
-            <p></p>
         </div>
         <div class="content_side col-3">
         <ul class="metadata">
