@@ -7,6 +7,7 @@ import markdown as md
 import json
 from random import choices
 from board import Board, List, Card
+from copy import deepcopy
 # from itertools import zip_longest
 
 app = Flask(__name__)
@@ -39,7 +40,7 @@ def get_data(user_key, data_type):
 def write_data():
     list_pos = []
     for list_obj in bd.current_list_objects:
-        cards = [x['card_id'] for x in list_obj.cards]
+        cards = [c for c in list_obj.cards]
         new_list = {
             "list_id": list_obj.list_id,
             "list_name": list_obj.list_name,
@@ -136,8 +137,11 @@ def main():
     saved_card_data = get_data(bd.user_key, 'cards')
 
     # Objectify
-    list_objects = bd.create_list_objects(saved_list_data)
-    # bd.current_list_objects = list_objects
+    bd.create_list_objects(saved_list_data)
+    list_objects = deepcopy(bd.current_list_objects)
+    # deepcopy() clones rather than points to list objects -- we need this because later we will merge list objects
+    # and card objects into a single dictionary to send to the template, which also means current_list_objects will
+    # contain all the card data rather than just the card ID.
     # print(f"list_objects: {list_objects}")
     # list_objects: [<board.List object at 0x000002C2049B4F10>, <board.List object at 0x000002C2049B4D30>]
 
@@ -174,8 +178,6 @@ def main():
                 # Here we unescape it before it goes to the UI
                 unescaped_text = process_newlines(card['card_body'])
                 # Raw text is sent through markdown to convert to HTML, then HTML characters unescaped using Markup
-                # card['card_body_html'] = Markup(unescaped_text)
-                # Disabling markdown for now
                 card['card_body_html'] = Markup(md.markdown(unescaped_text))
                 cards_to_merge.append(card)
             else:
@@ -186,6 +188,7 @@ def main():
                 cards_to_merge.append(make_card)
         item['cards'] = cards_to_merge
     # print(user_cards)
+    [print(obj.cards) for obj in bd.current_list_objects]
     resp = make_response(render_template('test2.html', lists=user_lists, user_key=bd.user_key))
     return resp
 
@@ -257,11 +260,12 @@ def card_new():
     if request.method == 'POST':
         # print(request.get_json())
         new_card_data = request.get_json()
-        # Returns ['20220206122440255917', 'new card', 'Hey there!']
+        new_card_data[0] = int(new_card_data[0])
+        # Returns ['new card id', 'new card', 'list id', 'card body']
 
         # Create new card object and append to current card objects
         new_card_obj = Card()
-        new_card_obj.card_id = int(new_card_data[0])
+        new_card_obj.card_id = new_card_data[0]
         new_card_obj.card_body = new_card_data[-1]
         bd.current_card_objects.append(new_card_obj)
 
@@ -269,14 +273,48 @@ def card_new():
         card_objects = bd.current_card_objects
         bd.current_card_obj_index = {each.card_id: card_objects.index(each) for each in card_objects}
 
+        # update list object with the new card id and position
+        list_objects = bd.current_list_objects
+        to_list_index = bd.current_list_obj_index[int(new_card_data[2])]
+        to_list = list_objects[to_list_index].cards
+        to_list.append(new_card_data[0])
+
+        # Write to disk
         write_data()
 
-        return '', 204
+        # Return markdown processed card body
+        convert_to_markdown = Markup(md.markdown(new_card_data[-1]))
+        return jsonify(convert_to_markdown)
 
 
-@app.route('/app/c/update')
+@app.route('/app/c/update', methods=['POST'])
 def card_order_update():
-    pass
+    if request.method == 'POST':
+        # 1. get data
+        changed_data = request.get_json()
+        # returns ['20220120115816469292', 1, '20220120115816469292', 0]
+
+        # 2. remove the card id from the first list id + index
+        # get list objects
+        list_objects = bd.current_list_objects
+        # get the index of where the card to replace is
+        from_list_index = bd.current_list_obj_index[int(changed_data[0])]
+        from_list = list_objects[from_list_index].cards
+        card_to_remove = from_list[changed_data[1]]
+        card_to_remove_index = from_list.index(card_to_remove)
+        # remove card
+        removed_card = from_list.pop(card_to_remove_index)
+
+        # so far I've removed the card id from the list it was at. Next:
+        # 3. insert the card id to the new list id + index
+        to_list_index = bd.current_list_obj_index[int(changed_data[2])]
+        to_list = list_objects[to_list_index].cards
+        to_list.insert(changed_data[3], removed_card)
+        # print([obj.cards for obj in bd.current_list_objects])
+
+        # 5. write to disk
+        write_data()
+    return '', 204
 
 
 @app.route('/app/c/archive')
@@ -300,13 +338,12 @@ def card_edit_content():
         # 2. look up the index of that card object
         if req_card_id in bd.current_card_obj_index:
             req_card_id_index = bd.current_card_obj_index[req_card_id]
-            print(f"req_card_id_index: {req_card_id_index}")
             # 3. get the stored data unwrapped from the object
             req_data = process_newlines(bd.current_card_objects[req_card_id_index].card_body)
             # 4. return that data
             return jsonify(req_data)
         else:
-            return ''
+            return '', 204
 
     if request.method == 'PUT':
         # 1. accept the changes
