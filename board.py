@@ -5,14 +5,15 @@ class Board:
         self.user_key = 'new_user'
         self.current_board_index = dict
         self.current_list_objects = list
+        self.current_list_obj_index = dict
         self.current_card_objects = list
         self.current_card_obj_index = dict
         self.current_card_id = int
-        self.current_card_content = str
+        # self.current_card_content = str
         self.current_list_id = int
         self.current_list_name = str
-        self.current_notebook_id = int
-        self.current_notebook_name = str
+        # self.current_notebook_id = int
+        # self.current_notebook_name = str
 
     def create_list_objects(self, saved_list_data):
         list_objects = []

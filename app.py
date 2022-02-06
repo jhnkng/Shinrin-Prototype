@@ -6,8 +6,8 @@ import datetime as dt
 import markdown as md
 import json
 from random import choices
-from itertools import zip_longest
 from board import Board, List, Card
+# from itertools import zip_longest
 
 app = Flask(__name__)
 bd = Board()
@@ -135,15 +135,14 @@ def main():
     saved_list_data = get_data(bd.user_key, 'lists')
     saved_card_data = get_data(bd.user_key, 'cards')
 
-    # todo: fix the order of operations here
     # Objectify
     list_objects = bd.create_list_objects(saved_list_data)
-    bd.current_list_objects = list_objects
+    # bd.current_list_objects = list_objects
     # print(f"list_objects: {list_objects}")
     # list_objects: [<board.List object at 0x000002C2049B4F10>, <board.List object at 0x000002C2049B4D30>]
 
     card_objects = bd.create_card_objects(saved_card_data)
-    bd.current_card_objects = card_objects
+    # bd.current_card_objects = card_objects
     # print(f"card_objects: {card_objects}")
     # card_objects: [<board.Card object at 0x00000196545D65E0>, <board.Card object at 0x00000196545D6040>,
     # <board.Card object at 0x00000196545D65B0>, <board.Card object at 0x00000196545D66A0>]
@@ -153,6 +152,10 @@ def main():
     # print(f"Card Obj Index: {bd.current_card_obj_index}")
     # Card Obj Index: {20220120115820735302: 0, 20220120120149112482: 1,
     # 20220120132630684721: 2, 20220120154744804753: 3}
+
+    # Do the same for lists
+    bd.current_list_obj_index = {each.list_id: list_objects.index(each) for each in list_objects}
+    # print(bd.current_list_obj_index)
 
     # Because the template is expecting a single list of dictionaries (with dictionary == 1 list) we
     # have to combine the list and card data by:
@@ -215,6 +218,18 @@ def list_add_to_archive():
 
 @app.route('/app/l/update', methods=['POST'])
 def list_order_update():
+    if request.method == 'POST':
+        # the data passed is an array with the old index to the new index
+        # 1. get changed data
+        changed_data = request.get_json()
+        # 2. grab the current list of card objects, take the card object from old index and re-insert it at new index
+        list_objects = bd.current_list_objects
+        card_to_move = list_objects.pop(changed_data[0])
+        list_objects.insert(changed_data[1], card_to_move)
+        # 3. update the new card objects index, the new card objects, and write to disk
+        bd.current_list_obj_index = {each.list_id: list_objects.index(each) for each in list_objects}
+        bd.current_list_objects = list_objects
+        write_data()
     return '', 204
 
 
@@ -240,7 +255,22 @@ def card_new():
         return jsonify(get_new_id())
 
     if request.method == 'POST':
-        print(request.get_json())
+        # print(request.get_json())
+        new_card_data = request.get_json()
+        # Returns ['20220206122440255917', 'new card', 'Hey there!']
+
+        # Create new card object and append to current card objects
+        new_card_obj = Card()
+        new_card_obj.card_id = int(new_card_data[0])
+        new_card_obj.card_body = new_card_data[-1]
+        bd.current_card_objects.append(new_card_obj)
+
+        # Update card object index
+        card_objects = bd.current_card_objects
+        bd.current_card_obj_index = {each.card_id: card_objects.index(each) for each in card_objects}
+
+        write_data()
+
         return '', 204
 
 
@@ -268,14 +298,15 @@ def card_edit_content():
         # print(f"req_card_id: {req_card_id}")
 
         # 2. look up the index of that card object
-        req_card_id_index = bd.current_card_obj_index[req_card_id]
-        # print(f"req_card_id_index: {req_card_id_index}")
-
-        # 3. get the stored data unwrapped from the object
-        req_data = process_newlines(bd.current_card_objects[req_card_id_index].card_body)
-
-        # 4. return that data
-        return jsonify(req_data)
+        if req_card_id in bd.current_card_obj_index:
+            req_card_id_index = bd.current_card_obj_index[req_card_id]
+            print(f"req_card_id_index: {req_card_id_index}")
+            # 3. get the stored data unwrapped from the object
+            req_data = process_newlines(bd.current_card_objects[req_card_id_index].card_body)
+            # 4. return that data
+            return jsonify(req_data)
+        else:
+            return ''
 
     if request.method == 'PUT':
         # 1. accept the changes

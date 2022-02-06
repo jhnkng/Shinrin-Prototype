@@ -39,11 +39,12 @@ for (var i = 0; i < sortables.length; i++) {
     new Sortable(sortable, {
     handle: '.card_sort_handle',
     group: 'shared',
-    animation: 50,
+    animation: 150,
+    easing: "cubic-bezier(1, 0, 0, 1)",
     ghostClass: 'blue-background-class',
     onEnd: function(evt) {
-        // console.log(evt);
-        // sendToBackend('/receive', 'POST', getCurrentListLocation());
+        console.log(evt);
+        sendToBackend('/app/l/update', 'POST', getCurrentListLocation());
     }
     });
 };
@@ -52,17 +53,21 @@ for (var i = 0; i < sortables.length; i++) {
 var listRow = document.getElementById("list_row")
 new Sortable(listRow, {
     handle: '.list_sort_handle',
-    animation: 50,
-    ghostClass: 'blue-background-class'
+    animation: 150,
+    easing: "cubic-bezier(1, 0, 0, 1)",
+    ghostClass: 'blue-background-class',
+    onEnd: function(evt) {
+        // grabs the old index and the new index to pass to backend to make change persistent
+        let changeIndex = [evt.oldIndex, evt.newIndex]
+        sendToBackend('/app/l/update', 'POST', changeIndex);
+    }
 });
-
-
 
 // Event Listeners
 function enableListeners() {
     // Listens for clicks to edit list headers
     $("h2.list_header").on('click', function() {
-        editContent(this, '/app/l/rename', 'list name');
+        editContent(this, '/app/l/rename', 'POST', 'list name');
     });
 
     // Listens for clicks to edit card content
@@ -160,7 +165,7 @@ function removeListeners() {
 }
 
 // Turns on contentEditable, makes API call to save changed data
-function editContent(editObj, endPoint, objType) {
+function editContent(editObj, endPoint, method, objType) {
     // Stops listening to clicks when editing
     if ($(editObj).attr('contentEditable') == 'false') {
         // create the array to be sent to the backend
@@ -175,7 +180,7 @@ function editContent(editObj, endPoint, objType) {
                 // adds new text content to changedData array
                 changedData.push($(this).prop('innerText'));
                 // sends to the backend
-                sendToBackend(endPoint, 'POST', changedData);
+                sendToBackend(endPoint, method, changedData);
             }
         })
         $(editObj).keydown(function(e) {
@@ -191,7 +196,7 @@ function editContent(editObj, endPoint, objType) {
 function addNewCard(listObj, data) {
     let cardId = data;
     let newCard = `
-    <div id="cardID${cardId}" class="card id">
+    <div id="${cardId}" class="card id">
     <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
     <div class="row">
         <div class="edit_handle">
@@ -213,8 +218,9 @@ function addNewCard(listObj, data) {
     $(listObj).append(newCard);
     removeListeners();
     enableListeners();
-    let newCardObj = $(`#cardID${cardId}`).find('.card_content');
-    editContent(newCardObj, '/app/c/new', 'card');
+    let newCardObj = $(`#${cardId}`).find('.card_content');
+    console.log(newCardObj.attr('class'));
+    editContent(newCardObj, '/app/c/new', 'POST', 'new card');
 };
 
 // ---------------------- // Start // ---------------------- //

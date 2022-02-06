@@ -3,20 +3,47 @@
   "lists": [
     {
       "list_id": 20220120115816469292,
-      "list_name": "Welcome!\ud83d\udc4b\ud83c\udffd",
+      "list_name": "\ud83d\udc4b\ud83c\udffd Welcome!\ud83d\udc4b\ud83c\udffd",
       "is_notebook": false,
       "cards": [
         20220120115820735302,
+        20220120161511268725
+      ]
+    },
+    {
+      "list_id": 20220120161446357295,
+      "list_name": "\ud83d\udc47\ud83c\udffdImportant Notes\ud83d\udc47\ud83c\udffd",
+      "is_notebook": false,
+      "cards": [
         20220120120149112482
       ]
     },
     {
       "list_id": 20220120132612988951,
       "list_name": "\u2753How Do I Use This? \u2753",
-      "is_notebook": true,
+      "is_notebook": false,
       "cards": [
         20220120132630684721,
         20220120154744804753
+      ]
+    },
+    {
+      "list_id": 20220120120248401295,
+      "list_name": "What is Shinrin? \ud83e\udd14",
+      "is_notebook": true,
+      "cards": [
+        20220120115915419318,
+        20220120160436677134,
+        20220120161004123665,
+        20220120161358584154
+      ]
+    },
+    {
+      "list_id": 20220120161647677134,
+      "list_name": "Get In Touch \ud83d\udce8",
+      "is_notebook": false,
+      "cards": [
+        20220120162136605070
       ]
     }
   ],
@@ -24,7 +51,15 @@
     {
       "card_id": 20220120115820735302,
       "card_title": "",
-      "card_body": "### Thanks for taking the time to check this out!\u00a0\nSeriously, I know how busy you are, and I ***really*** appreciate you taking the time!",
+      "card_body": "## Thanks for taking the time to check this out! \ud83d\ude4f\ud83c\udffc",
+      "tags": "",
+      "card_children": [],
+      "related_cards": ""
+    },
+    {
+      "card_id": 20220120115915419318,
+      "card_title": "",
+      "card_body": "### Shinrin is a tool to help you think.\\n\\nShinrin was born out of my inability to find a tool that fits exactly the way I like to work.\\n\\nI'm a notebook and post-it notes guy. I like to scratch out ideas very loosely, and then try to find some order from the chaos I leave on paper. I like to add ideas using post-it notes, and I even cut up the notes and stick it back together in different order.\\n\\nTry as I might, I've not managed to replicate that experience digitally. I've tried Kanban board style solutions, and wiki / document building services, and while I find uses for them I find for that it doesn't work for me during the very first thinking process.\\n\\nThe biggest problem I have is that I have to make all these decisions up front. What do I call it? Where do I save it? Kanban apps solve some of those problems, but they're designed as a type of to-do list so once I get my thoughts down I inevitably have to get move it to another app to fill out my thoughts.",
       "tags": "",
       "card_children": [],
       "related_cards": ""
@@ -32,7 +67,7 @@
     {
       "card_id": 20220120120149112482,
       "card_title": "",
-      "card_body": "### \ud83d\udc47\ud83c\udffd A Few Important Notes\n1. This is basically a working prototype, riddled with bugs and breaking constantly. Please be patient.\n2. Your user key is bottom left of screen. Any changes you make here will be stored, if you would like to come back to your changes please login using the key. Data is stored as a simple JSON file, and there is NO ENCRYPTION or any data protection -- please don't enter anything that is even remotely personal!\n3. The system is built to save after changes, so if you have a text window open for a long time but never close, the work won't be saved. Shinrin is designed for short text snippets, so use it that way and you shouldn't have any problems.\n4. Quotes and double quotes (and probably a bunch more characters) break some functionality, so be careful.\n5. If you find any other bugs, please let me know!\n6. OH MAH GAWD",
+      "card_body": "### First, Some Important Things\n\n1. This is basically a working prototype, riddled with bugs and breaking constantly. Please be patient.\n\n2. Your user key is bottom left of screen. Any changes you make here will be stored, if you would like to come back to your changes please login using the key. Data is stored as a simple JSON file, and there is NO ENCRYPTION or any data protection -- please don't enter anything that is even remotely personal!\n\n3. The system is built to save after changes, so if you have a text window open for a long time but never close, the work won't be saved. Shinrin is designed for short text snippets, so use it that way and you shouldn't have any problems.\n\n4. If you find a bug, please let me know!",
       "tags": "",
       "card_children": [],
       "related_cards": ""
@@ -40,7 +75,7 @@
     {
       "card_id": 20220120132630684721,
       "card_title": "",
-      "card_body": "### Basic Functions \\n Shinrin is a side-scroller! Think Super Mario but for productivity \ud83c\udfc3\ud83c\udffc\u200d\u2640\ufe0f\ud83c\udfc3\ud83c\udffd\\n\\nYou can drag and drop cards from one list to another, and you can change the order of the lists by drag and drop too. Move your mouse to the top of the card or list and you should see a two line icon show up -- grab that and drag away.\\n\\nThe + sign is for adding cards, and the arrow is to make the list wider or narrower as required.\\n\\nThere's no hard limit for the number of cards or lists you can have on screen. I don't know what happens when you have too many, try it and let me know!",
+      "card_body": "### Basic Functions\\n\\nShinrin is a side-scroller! Think Super Mario but for productivity \ud83c\udfc3\ud83c\udffc\u200d\u2640\ufe0f\ud83c\udfc3\ud83c\udffd\\n\\nYou can drag and drop cards from one list to another, and you can change the order of the lists by drag and drop too. Move your mouse to the top of the card or list and you should see a two line icon show up -- grab that and drag away.\\n\\nThere's no hard limit for the number of cards or lists you can have on screen. I don't know what happens when you have too many, try it and let me know!",
       "tags": "",
       "card_children": [],
       "related_cards": ""
@@ -48,7 +83,47 @@
     {
       "card_id": 20220120154744804753,
       "card_title": "",
-      "card_body": "### Adding and editing cards and lists\n\nYou can find the new card button at the bottom of each list, and you can add new list and new notebooks using the menu on the left hand side.\n\nYou can edit cards by clicking on the pencil symbol on the top right hand side of the card. The editor supports [Markdown](https://www.markdownguide.org/) so you can add *styling* and **organisational skillz** to your text. [Like a boss](https://www.youtube.com/watch?v=NisCkxU544c&ab_channel=thelonelyisland).\n\n---\n\nNOTE\nLinks open in this window, so for now please use ctrl + click to open links.\n\n---\n\nFinally, you can remove a list using the cross button at the top right of the list. Note that any card inside won't be deleted, just the list. But the card won't show up again. If you need to find your cards please use the Open Archives list on the main menu, and from there you should be able to find all the cards you've every created. If you click on the edit link in each card you can choose to delete the card, but again, it won't be deleted from the system, just removed from view. You'll be able to find them again in the Archives.",
+      "card_body": "### Adding and editing cards and lists\\n\\nYou can find the new card button at the bottom of each list, and you can add new list and new notebooks using the menu on the left hand side.\\n\\nYou can edit cards by clicking on the pencil symbol on the top right hand side of the card. The editor supports [Markdown](https://www.markdownguide.org/) so you can add *styling* and **organisation** to your text. [Like a boss](https://www.youtube.com/watch?v=NisCkxU544c&ab_channel=thelonelyisland).\\n\\n---\\n\\nNOTE \\nLinks open in this window, so for now please use ctrl + click to open links.\\n\\n---\\n\\nFinally, you can remove a list using the cross button at the top right of the list. Note that any card inside won't be deleted, just the list. But the card won't show up again. If you need to find your cards please use the Open Archives list on the main menu, and from there you should be able to find all the cards you've every created.",
+      "tags": "",
+      "card_children": [],
+      "related_cards": ""
+    },
+    {
+      "card_id": 20220120160436677134,
+      "card_title": "",
+      "card_body": "### Shinrin is designed to solve these issues. \\nYou can write anywhere, you can format and style your text, and there's no limitation as to where you save your work -- it's automatic. Once you get your words down then you can move it around as you need to, again with no limits. Open a list, grab the ones you need and put it there, and when you finish, close the list and it goes away. Cards themselves cannot be deleted, so you never have to worry about losing work.",
+      "tags": "",
+      "card_children": [],
+      "related_cards": ""
+    },
+    {
+      "card_id": 20220120161004123665,
+      "card_title": "",
+      "card_body": "### Shinrin can help you learn\\n\\nOne of my bigger use cases is learning Japanese. Often I would study a set of words, and through my day to day I get a chance to use it, or I hear it being used in a new context. Sometimes I write them down, and note it somewhere. But what do I do with it? My flashcard app can't take notes, and even if I can I can't make a quiz or use that as a flashcard. So the next big set of features I'm planning for Shinrin is language learning tools like a Spaced Repetition Flashcard tool, and a pomodoro timer that can be dropped in just like a card. It'll just be part of this interface, able to be dragged and dropped and organised as you need it, when you need it.",
+      "tags": "",
+      "card_children": [],
+      "related_cards": ""
+    },
+    {
+      "card_id": 20220120161358584154,
+      "card_title": "",
+      "card_body": "### What do you think? Do you have any ideas?\\n\\nIf you do I would love to hear from you! What works? What doesn't? What would you like to see? Let me know!",
+      "tags": "",
+      "card_children": [],
+      "related_cards": ""
+    },
+    {
+      "card_id": 20220120161511268725,
+      "card_title": "",
+      "card_body": "Shinrin started as a way for me to exercise my newly learnt programming skills but has grown bigger than I thought. This is the tool that I've wanted but never found. I hope this can be the tool that gets you excited about learning and thinking too.",
+      "tags": "",
+      "card_children": [],
+      "related_cards": ""
+    },
+    {
+      "card_id": 20220120162136605070,
+      "card_title": "",
+      "card_body": "Here are the ways you can find me.",
       "tags": "",
       "card_children": [],
       "related_cards": ""
