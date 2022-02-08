@@ -3,10 +3,7 @@
 <header id="main_menu h-100" class="smooth">
     <h1 class="p-3">森林</h1>
     <ul class='list-group p-3'>
-        <li class='list-group-item list-group-item-dark'>Add New List</li>
-        <li class='list-group-item list-group-item-dark'>Add New Notebook</li> 
-        <li class='list-group-item list-group-item-dark'>Open Archives</li>
-        <li class='list-group-item list-group-item-dark'>Settings</li>
+        <li class='list-group-item list-group-item-dark' onclick="addNewList()">Add New List</li>
     </ul>
     <p class="position-absolute bottom-0 start-0 p-4">Your user key is {{user_key}}.<br>To access this page again please use this key to login.</p>
 </header>
@@ -33,7 +30,7 @@
                 <h2 contentEditable="false" class="list_header">{{ list['list_name'] }}</h2>
             </div>
             <div class="col-2 z-ind-3 text-end">
-                <span class="material-icons mt-2">close</span>
+                <span class="material-icons mt-2 remove">close</span>
             </div>
         </div>
     </div>  <!-- Sortables target handle end -->
@@ -69,7 +66,7 @@
     <!--  List tool bar: appends the new card after the last child of the list content div-->
     <div class="list_tools row justify-content-between m-2 mt-1">
         <p class="col-2 material-icons card_new">add</p>
-        <p class="col-2 material-icons text-center list_width">west</p>
+        <!-- <p class="col-2 material-icons text-center list_width">west</p> -->
     </div><!-- list tool bar end -->
 
     </div>

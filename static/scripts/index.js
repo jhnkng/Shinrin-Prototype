@@ -108,7 +108,7 @@ function enableListeners() {
                     cardContentContainer.attr('contentEditable', 'true');
                     cardContentContainer.focus();
                     // Listens for enter key, if pressed exits edit mode
-                    cardContentContainer.keydown(function(e) {
+                    cardContentContainer.on('keydown', function(e) {
                         if (e.key == "Enter" && e.ctrlKey) {
                             cardContentContainer.attr('contentEditable', 'false');
                             // adds new text content to changedData array
@@ -127,16 +127,21 @@ function enableListeners() {
                                 .then(res => {
                                     // replaces markdown code with processed markdown html
                                     cardContentContainer.html(res);
+                                    // turns off listeners, otherwise multiple listeners are active at once
+                                    cardContentContainer.off();
                                 });
                         }
                     })
                     // Cancel function
-                    cardContentContainer.keydown(function(e) {
+                    cardContentContainer.on('keydown', function(e) {
                         if (e.key == "Escape") {
                             cardContentContainer.html(beforeEditContent);
                             cardContentContainer.attr('contentEditable', 'false');
+                            // turns off listeners, otherwise multiple listeners are active at once
+                            cardContentContainer.off();
                         }
                     })
+                    
                 }
             })
         
@@ -160,6 +165,11 @@ function enableListeners() {
             $(this).closest('.list_wrapper').removeClass('wide_wrapper');
             $(this).addClass('rotate');    
         }
+    });
+
+    // Delete (currently only removes from UI, does not delete from backend)
+    $('.remove').on('click', function() {
+        $(this).closest('.id').remove();    
     });
 };
 
@@ -268,6 +278,58 @@ function addNewCard(listObj, data) {
         })
     }
 };
+
+function addNewList() {
+
+    fetch('/app/c/new')
+        .then(response => response.json())
+        .then(newListID => {
+            
+            let newList = `
+            <div id="${newListID}" class="list_wrapper smooth id align-self-start ms-2 p-0">
+            <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
+            <span class="material-icons drag_handle">drag_handle</span>
+        
+                <div class="list_header_wrapper smooth row justify-content-between z-ind-2">
+                    <div class="col-10">
+                        <h2 contentEditable="false" class="list_header"></h2>
+                    </div>
+                    <div class="col-2 z-ind-3 text-end">
+                        <span class="material-icons mt-2 remove">close</span>
+                    </div>
+                </div>
+                </div>  <!-- Sortables target handle end -->
+            
+            <!-- List content: contains individual cards -->
+            <div class="list_content">
+            </div> <!-- List content end -->
+        
+            <!--  List tool bar: appends the new card after the last child of the list content div-->
+            <div class="list_tools row justify-content-between m-2 mt-1">
+                <p class="col-2 material-icons card_new">add</p>
+                <!-- <p class="col-2 material-icons text-center list_width">west</p> -->
+            </div><!-- list tool bar end -->
+        
+            </div>
+            <!-- individual list end -->
+            `
+
+            // Insert into page
+            $('#list_row').prepend(newList);
+
+            removeListeners();
+            enableListeners();
+
+            // Edit list name
+            let newListObj = $(`#${newListID} h2.list_header`);
+            editContent(newListObj, '/app/l/new', 'POST', 'new list');
+        })
+
+
+}
+
+
+
 
 // ---------------------- // Start // ---------------------- //
 // Because everything is loaded programically we need to set a delay otherwise this runs before there is anything on screen

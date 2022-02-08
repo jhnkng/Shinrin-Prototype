@@ -40,7 +40,11 @@ def get_data(user_key, data_type):
 def write_data():
     list_pos = []
     for list_obj in bd.current_list_objects:
-        cards = [c for c in list_obj.cards]
+        if len(list_obj.cards) == 0:
+            cards = []
+        else:
+            cards = [c for c in list_obj.cards]
+
         new_list = {
             "list_id": list_obj.list_id,
             "list_name": list_obj.list_name,
@@ -69,7 +73,7 @@ def write_data():
     }
     filename = f"user_data/test_data.json"
     with open(filename, mode='w') as data_file:
-        json.dump(save_data, data_file, indent=2)
+        json.dump(save_data, data_file, indent=4)
 
 
 def get_new_id():
@@ -188,20 +192,32 @@ def main():
                 cards_to_merge.append(make_card)
         item['cards'] = cards_to_merge
     # print(user_cards)
-    [print(obj.cards) for obj in bd.current_list_objects]
+    # [print(obj.cards) for obj in bd.current_list_objects]
     resp = make_response(render_template('test2.html', lists=user_lists, user_key=bd.user_key))
     return resp
 
 
 # ----------------- # List Routes # ----------------- #
-# todo: update template
-@app.route('/app/l/new')
+@app.route('/app/l/new', methods=['GET', 'POST'])
 def list_new():
-    new_list_id = get_new_id()
-    bd.current_list_id = new_list_id
-    resp = make_response(render_template('snippets/list_new.html', new_list_id=new_list_id))
-    resp.headers['HX-Trigger'] = 'syncChange'
-    return resp
+    if request.method == 'GET':
+        # Get a new id for the new list
+        return jsonify(get_new_id())
+
+    if request.method == 'POST':
+        new_list_data = request.get_json()
+        # returns ['20220208210219163284', 'new list', 'This is the new name']
+
+        # Create new card object and prepend to current list objects
+        new_list_obj = List()
+        new_list_obj.list_id = int(new_list_data[0])
+        new_list_obj.list_name = process_newlines(new_list_data[-1])
+        bd.current_list_objects.insert(0, new_list_obj)
+        # Update list object index
+        bd.current_list_obj_index = {each.list_id: bd.current_list_objects.index(each) for each in bd.current_list_objects}
+        # Write to disk
+        write_data()
+        return jsonify('ok'), 204
 
 
 @app.route('/app/l/close')
@@ -266,7 +282,7 @@ def card_new():
         # Create new card object and append to current card objects
         new_card_obj = Card()
         new_card_obj.card_id = new_card_data[0]
-        new_card_obj.card_body = new_card_data[-1]
+        new_card_obj.card_body = process_newlines(new_card_data[-1])
         bd.current_card_objects.append(new_card_obj)
 
         # Update card object index
@@ -349,7 +365,7 @@ def card_edit_content():
         # 1. accept the changes
         changed_data = request.get_json()
         # print(f"changed data: {changed_data}")
-
+        print(f"length current card objects before: {len(bd.current_card_objects)}")
         # 2. update card content
         # get card id
         changed_data_card_id = int(changed_data[0])
@@ -358,6 +374,7 @@ def card_edit_content():
         # update card object with new data
         bd.current_card_objects[changed_data_card_obj_index].card_body = changed_data[-1]
         # print(bd.current_card_objects[changed_data_card_obj_index].card_body)
+        print(f"length current card objects: {len(bd.current_card_objects)}")
 
         # 3. write changes to disk
         write_data()

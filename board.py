@@ -44,7 +44,7 @@ class List:
         self.list_id = int
         self.list_name = str
         self.is_notebook = False
-        self.cards = list
+        self.cards = []
 
 
 class Card:
