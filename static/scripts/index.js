@@ -169,7 +169,11 @@ function enableListeners() {
 
     // Delete (currently only removes from UI, does not delete from backend)
     $('.remove').on('click', function() {
-        $(this).closest('.id').remove();    
+        let objToDel = $(this).closest('.id');
+        let objToDelID = objToDel.attr('id');
+        alert(`Are you sure you want to delete the list ${objToDel.find('.list_header').text()}?`);
+        sendToBackend('/remove', 'DELETE', objToDelID);
+        objToDel.remove();    
     });
 };
 

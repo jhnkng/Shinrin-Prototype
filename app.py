@@ -389,9 +389,12 @@ def card_edit_content():
 # To delete lists and cards I'm basically swapping the existing data for nothing using this function.
 @app.route('/remove', methods=['DELETE'])
 def remove():
-    resp = make_response('')
-    resp.headers['HX-Trigger'] = 'syncChange'
-    return resp
+    if request.method == 'DELETE':
+        x = int(request.get_json())
+        x_index = bd.current_list_obj_index[x]
+        del bd.current_list_objects[x_index]
+        write_data()
+        return '', 204
 
 
 if __name__ == '__main__':

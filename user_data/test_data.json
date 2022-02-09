@@ -2,15 +2,6 @@
     "board": {},
     "lists": [
         {
-            "list_id": 20220120115816469292,
-            "list_name": "\ud83d\udc4b\ud83c\udffd Welcome!\ud83d\udc4b\ud83c\udffd",
-            "is_notebook": false,
-            "cards": [
-                20220120115820735302,
-                20220120161511268725
-            ]
-        },
-        {
             "list_id": 20220120161446357295,
             "list_name": "\ud83d\udc47\ud83c\udffdImportant Notes\ud83d\udc47\ud83c\udffd",
             "is_notebook": false,
@@ -45,14 +36,6 @@
             "cards": [
                 20220120162136605070,
                 20220208215419270595
-            ]
-        },
-        {
-            "list_id": 20220208214804688397,
-            "list_name": "New List",
-            "is_notebook": false,
-            "cards": [
-                20220208214813210624
             ]
         }
     ],
