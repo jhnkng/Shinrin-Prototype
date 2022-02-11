@@ -209,7 +209,7 @@ function editContent(editObj, endPoint, method, objType) {
             let clipboarddata =  window.event.clipboardData.getData('text/plain');    
             editObj.text(clipboarddata);
         });
-        
+
         // Listens for enter key, if pressed exits edit mode
         $(editObj).keydown(function(e) {
             if (e.key == "Enter" && e.ctrlKey) {
@@ -252,14 +252,16 @@ function addNewCard(listObj, data) {
     </div>  
     </div>
     `
+    
+    // Insert card
     $(listObj).append(newCard);
+    // reset listeners
     removeListeners();
     enableListeners();
+
+    // edit card content
     let newCardObj = $(`#${cardId}`).find('.card_content');
     let parentListId = newCardObj.closest('.list_wrapper').attr('id');
-    console.log(newCardObj);
-    console.log(parentListId);
-    // editContent(newCardObj, '/app/c/new', 'POST', 'new card');
     
     // Stops listening to clicks when editing
     if (newCardObj.attr('contentEditable') == 'false') {
@@ -304,9 +306,9 @@ function addNewCard(listObj, data) {
                     });
             }
         })
-        newCardObj.keydown(function(e) {
+        newCardObj.on('keydown', function(e) {
             if (e.key == "Escape") {
-                newCardObj.attr('contentEditable', 'false');
+                // newCardObj.attr('contentEditable', 'false');
                 $(`#${cardId}`).remove();
             }
         })
@@ -315,7 +317,7 @@ function addNewCard(listObj, data) {
 
 function addNewList() {
 
-    fetch('/app/c/new')
+    fetch('/app/l/new')
         .then(response => response.json())
         .then(newListID => {
             
@@ -347,12 +349,59 @@ function addNewList() {
             // Insert into page
             $('#list_row').prepend(newList);
 
+            // reset listeners
             removeListeners();
             enableListeners();
 
             // Edit list name
-            let newListObj = $(`#${newListID} h2.list_header`);
-            editContent(newListObj, '/app/l/new', 'POST', 'new list');
+            let newListObj = $(`#${newListID} h2.list_header`);            
+            // Stops listening to clicks when editing
+            if (newListObj.attr('contentEditable') == 'false') {
+                // create the array to be sent to the backend
+                const changedData = [newListID, 'new list'];
+                // Changes to contentEditable mode
+                newListObj.attr('contentEditable', 'true');
+                newListObj.focus();
+
+                // Listens for paste event, replaces formatted text with plain text
+                newListObj.on("paste",function(event){
+                    event.preventDefault();
+                    // console.log(window.event.clipboardData);
+                    let clipboarddata =  window.event.clipboardData.getData('text/plain');    
+                    // console.log("paste value" + clipboarddata);
+                    newListObj.text(clipboarddata);
+                });
+
+                // Listens for ctrl+s key, if pressed exits edit mode and saves data
+                newListObj.on('keydown', function(e) {
+                    if (e.key == "s" && e.ctrlKey) {
+                        e.preventDefault();
+                        newListObj.attr('contentEditable', 'false');
+                        // adds new text content to changedData array
+                        changedData.push($(this).prop('innerText'));
+                        // sends to the backend
+                        const request = new Request('/app/l/new', {
+                            method: 'POST',
+                            body: JSON.stringify(changedData),
+                            headers: new Headers({
+                                'Content-Type': 'application/json'
+                            })
+                        })
+                    
+                        fetch(request)
+                            .then(res => res.json())
+                            .then(res => {
+                                // replaces markdown code with processed markdown html
+                                newListObj.html(res);
+                            });
+                    }
+                })
+                newListObj.on('keydown', function(e) {
+                    if (e.key == "Escape") {
+                        $(`#${newListID}`).remove();
+                    }
+                })
+            }
         })
 }
 
