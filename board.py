@@ -8,9 +8,9 @@ class Board:
         self.current_list_obj_index = dict
         self.current_card_objects = list
         self.current_card_obj_index = dict
-        self.current_card_id = int
+        self.current_card_id = str
         # self.current_card_content = str
-        self.current_list_id = int
+        self.current_list_id = str
         self.current_list_name = str
         # self.current_notebook_id = int
         # self.current_notebook_name = str
@@ -21,7 +21,7 @@ class Board:
             new_list_obj = List()
             new_list_obj.list_id = each_list['list_id']
             new_list_obj.list_name = each_list['list_name']
-            new_list_obj.is_notebook = each_list['is_notebook']
+            # new_list_obj.is_notebook = each_list['is_notebook']
             new_list_obj.cards = each_list['cards']
             list_objects.append(new_list_obj)
         self.current_list_objects = list_objects
@@ -41,15 +41,15 @@ class Board:
 
 class List:
     def __init__(self):
-        self.list_id = int
+        self.list_id = str
         self.list_name = str
-        self.is_notebook = False
+        # self.is_notebook = False
         self.cards = []
 
 
 class Card:
     def __init__(self):
-        self.card_id = int
+        self.card_id = str
         # self.card_title = str
         self.card_body = str
         # self.tags = str

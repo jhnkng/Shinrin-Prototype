@@ -53,7 +53,7 @@
             <div contentEditable="false" class="card_content content_main col-9">
                 {{ card['card_body_html'] }}
                 <!-- <a href="app/c/{{ card['card_id'] }}">{{ card['card_id'] }}</a> -->
-                <span onclick="showFullscreen({{ card['card_id'] }})">{{ card['card_id'] }}</span>
+                <span onclick="showFullscreen('{{ card['card_id'] }}')">{{ card['card_id'] }}</span>
             </div>
             <div class="content_side col-3">
             <ul class="metadata">

@@ -32,45 +32,49 @@ function sendToBackend(endPoint, method, dataToSend) {
 
 // ---------------------- // App Logic // ---------------------- //
 
-// Enable Sortables for Cards
-var sortables = document.querySelectorAll(".list_content");
-for (var i = 0; i < sortables.length; i++) {
-    var sortable = sortables[i];
-    new Sortable(sortable, {
-    handle: '.card_sort_handle',
-    group: 'shared',
-    animation: 150,
-    easing: "cubic-bezier(1, 0, 0, 1)",
-    ghostClass: 'blue-background-class',
-    onEnd: function(evt) {
-        // Get the list ID from where the card was dragged to where the card was dropped
-        let from = evt.from.closest('.id').getAttribute('id');
-        let to = evt.to.closest('.id').getAttribute('id');
-        // Create array from the old index and the new index along with the lists it was dragged and dropped from
-        let changeIndex = [from, evt.oldIndex, to, evt.newIndex];
-        console.log(changeIndex);
-        sendToBackend('/app/c/update', 'POST', changeIndex);
-    }
+function enableSortable() {
+    // Enable Sortables for Cards
+    var sortables = document.querySelectorAll(".list_content");
+    for (var i = 0; i < sortables.length; i++) {
+        var sortable = sortables[i];
+        new Sortable(sortable, {
+        handle: '.card_sort_handle',
+        group: 'shared',
+        animation: 150,
+        easing: "cubic-bezier(1, 0, 0, 1)",
+        ghostClass: 'blue-background-class',
+        onEnd: function(evt) {
+            // Get the list ID from where the card was dragged to where the card was dropped
+            let from = evt.from.closest('.id').getAttribute('id');
+            let to = evt.to.closest('.id').getAttribute('id');
+            // Create array from the old index and the new index along with the lists it was dragged and dropped from
+            let changeIndex = [from, evt.oldIndex, to, evt.newIndex];
+            console.log(changeIndex);
+            sendToBackend('/app/c/update', 'POST', changeIndex);
+        }
+        });
+    };
+
+    // activate drag and drop for lists
+    var listRow = document.getElementById("list_row")
+    new Sortable(listRow, {
+        handle: '.list_sort_handle',
+        animation: 150,
+        easing: "cubic-bezier(1, 0, 0, 1)",
+        ghostClass: 'blue-background-class',
+        onEnd: function(evt) {
+            // grabs the old index and the new index to pass to backend to make change persistent
+            let changeIndex = [evt.oldIndex, evt.newIndex]
+            sendToBackend('/app/l/update', 'PUT', changeIndex);
+        }
     });
 };
 
-// activate drag and drop for lists
-var listRow = document.getElementById("list_row")
-new Sortable(listRow, {
-    handle: '.list_sort_handle',
-    animation: 150,
-    easing: "cubic-bezier(1, 0, 0, 1)",
-    ghostClass: 'blue-background-class',
-    onEnd: function(evt) {
-        // grabs the old index and the new index to pass to backend to make change persistent
-        let changeIndex = [evt.oldIndex, evt.newIndex]
-        sendToBackend('/app/l/update', 'PUT', changeIndex);
-    }
-});
+
 
 // Event Listeners
 function enableListeners() {
-    
+
     // Listens for clicks to edit list headers
     $("h2.list_header").on('click', function() {
         
@@ -223,7 +227,7 @@ function enableListeners() {
         let listToMinimiseText = listToMinimise.find('h2.list_header').text();
         sendToBackend('/app/l/minimise', 'PUT', listToMinimiseID);
         listToMinimise.remove();
-        $('#minimised_lists').append(`<li class='ps-3'>${listToMinimiseText}</li>`);
+        $('#minimised_lists').append(`<li class='ps-3 ${listToMinimiseID}' onclick='restoreMinimisedList("${listToMinimiseID}")'>${listToMinimiseText}</li>`);
     });
 
     // Change List Width
@@ -238,12 +242,15 @@ function enableListeners() {
     //         $(this).addClass('rotate');    
     //     }
     // });
+
+    console.log('listeners enabled');
 };
 
 
 function removeListeners() {
     // removes all listeners so listeners can be re-enabled when something new is added to the DOM
     $(document).add('*').off()
+    console.log('listeners removed');
 }
 
 // Turns on contentEditable, makes API call to save changed data
@@ -463,6 +470,95 @@ function addNewList() {
         })
 }
 
+// restore minimised list
+function restoreMinimisedList(listID) {
+    let endPoint = '/app/l/minimise';
+    let method = 'POST';
+    let dataToSend = listID;
+
+    const request = new Request(endPoint, {
+        method: method,
+        body: JSON.stringify(dataToSend),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    })
+
+    fetch(request)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            let listID = data.list_id;
+            // console.log(listID);
+            let listName = data.list_name;
+            // console.log(listName);
+            let list = `
+            <div id="${listID}" class="list_wrapper smooth id align-self-start ms-2 p-0">
+            <div class="list_sort_handle z-ind-0">
+            <span class="material-icons drag_handle">drag_handle</span>
+        
+                <div class="list_header_wrapper smooth row justify-content-between z-ind-2">
+                    <div class="col-9">
+                        <h2 contentEditable="false" class="list_header">${listName}</h2>
+                    </div>
+                    <div class="col-3 z-ind-3 text-end">
+                    <span class="material-icons minimise" style="position: relative; top: -2px; left: 4px;">minimize</span>
+                    <span class="material-icons mt-2 remove">close</span>    
+                    </div>
+                </div>
+                </div>
+            
+            <div class="list_content"><!-- Cards go here --></div>
+        
+            <div class="list_tools row justify-content-between m-2 mt-1">
+                <p class="col-2 material-icons card_new">add</p>
+                <!-- <p class="col-2 material-icons text-center list_width">west</p> -->
+            </div>        
+            </div>
+            `
+            $('#list_row').prepend(list);
+
+            for (let i = 0; i < data.cards.length; i++) {
+                cardId = data.cards[i].card_id;
+                card_body = data.cards[i].card_body;
+                let newCard = `
+                <div id="${cardId}" class="card id">
+                <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
+                <div class="row">
+                    <div class="edit_handle">
+                        <span class="material-icons">edit</span>
+                    </div>
+                    <div contentEditable="false" class="card_content content_main col-9">
+                    ${card_body}
+                    <span onclick="showFullscreen('${cardId}')">${cardId}</span>
+                    </div>
+                    <div class="content_side col-3">
+                    <ul class="metadata">
+                        <li>${cardId}</li>
+                        <li>Show Parent</li>
+                        <li>Related Cards</li>
+                        <li>Share Link</li>
+                    </ul>
+                    </div>
+                </div>  
+                </div>
+                `
+                $(`#${listID} .list_content`).append(newCard);
+            };
+
+            // reset listeners
+            removeListeners();
+            enableListeners();
+
+            // Re-enable sortable
+            enableSortable();
+
+            // Remove the link from minimised lists list
+            $(`#minimised_lists .${listID}`).remove();
+        })
+};
+
+// Show full screen card
 function showFullscreen(cardID) {
     
     console.log(cardID);
@@ -511,9 +607,6 @@ function showFullscreen(cardID) {
 // ---------------------- // Start // ---------------------- //
 // Because everything is loaded programically we need to set a delay otherwise this runs before there is anything on screen
 $(document).ready(function(){
-    enableListeners();       
+    enableListeners();
+    enableSortable();
 });
-
-// setTimeout(function(){
-//     enableListeners();
-// }, 1000)

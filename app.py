@@ -1,5 +1,5 @@
 # Shinrin, Prototype v2
-
+import requests
 from flask import Flask, render_template, request, make_response, jsonify
 from markupsafe import Markup
 import datetime as dt
@@ -23,18 +23,14 @@ def get_data(user_key, data_type):
     :return: processed requested data
     """
     filename = f"user_data/{user_key}.json"
-    # filename = 'user_data/test_data.json'
     try:
         with open(filename, mode='r') as data_file:
             data = json.load(data_file)
     except FileNotFoundError:
         with open('user_data/test_data.json', mode='r') as data_file:
             data = json.load(data_file)
-    # Converting list/card IDs back to ints because JSON requires them to be stored as strings.
-    # cleaned = {int(key): value for key, value in data[data_type].items()}
-    cleaned = [value for value in data[data_type]]
-    # print(f"loaded data: {data}")
-    return cleaned
+    selected_data = [value for value in data[data_type]]
+    return selected_data
 
 
 def write_data():
@@ -48,7 +44,7 @@ def write_data():
         new_list = {
             "list_id": list_obj.list_id,
             "list_name": list_obj.list_name,
-            "is_notebook": list_obj.is_notebook,
+            # "is_notebook": list_obj.is_notebook,
             "cards": cards
         }
         list_pos.append(new_list)
@@ -78,7 +74,8 @@ def write_data():
 
 def get_new_id():
     # Generates a new id for each element created.
-    new_id = dt.datetime.now().strftime('%Y%m%d%H%M%S')
+    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    new_id = ''.join(choices(alphabet, k=8))
     return new_id
 
 
@@ -96,7 +93,7 @@ def get_new_user_key():
 def process_newlines(text):
     """
     Escapes \n or unescapes \\n as required.
-    :param text: string to be processed
+    param text: string to be processed
     :return: string
     """
     if text.find('\\n'):
@@ -215,11 +212,13 @@ def list_new():
 
         # Create new card object and prepend to current list objects
         new_list_obj = List()
-        new_list_obj.list_id = int(new_list_data[0])
+        # new_list_obj.list_id = int(new_list_data[0])
+        new_list_obj.list_id = new_list_data[0]
         new_list_obj.list_name = process_newlines(new_list_data[-1])
         bd.current_list_objects.insert(0, new_list_obj)
         # Update list object index
-        bd.current_list_obj_index = {each.list_id: bd.current_list_objects.index(each) for each in bd.current_list_objects}
+        bd.current_list_obj_index = {each.list_id: bd.current_list_objects.index(each) for each in
+                                     bd.current_list_objects}
         # Write to disk
         write_data()
         return jsonify('ok'), 204
@@ -234,7 +233,8 @@ def list_rename():
     if request.method == 'PUT':
         changed_data = request.get_json()
         # returns ['20220211134152', 'list name', 'IDs Rename']
-        changed_data_list_id = int(changed_data[0])
+        # changed_data_list_id = int(changed_data[0])
+        changed_data_list_id = changed_data[0]
         new_list_name = changed_data[-1]
         list_to_change_index = bd.current_list_obj_index[changed_data_list_id]
         bd.current_list_objects[list_to_change_index].list_name = new_list_name
@@ -242,19 +242,42 @@ def list_rename():
         return 'ok', 204
 
 
-@app.route('/app/l/minimise', methods=['POST'])
+@app.route('/app/l/minimise', methods=['POST', 'PUT'])
 def card_add_to_minimise():
     if request.method == 'POST':
+        list_id_to_restore = request.get_json()
+        list_index = bd.current_list_obj_index[list_id_to_restore]
+        list_name = bd.current_list_objects[list_index].list_name
+        card_ids = bd.current_list_objects[list_index].cards
+        cards = []
+        for item in card_ids:
+            card_id = item
+            card_body = Markup(md.markdown(bd.current_card_objects[bd.current_card_obj_index[item]].card_body))
+            card_obj = {
+                "card_id": card_id,
+                "card_body": card_body
+            }
+            cards.append(card_obj)
+
+        resp = {
+            "list_id": list_id_to_restore,
+            "list_name": list_name,
+            "cards": cards
+        }
+        return jsonify(resp)
+
+    if request.method == 'PUT':
         print(request.get_json())
-    return '', 204
+        return '', 204
 
 
 @app.route('/app/l/trash', methods=['DELETE'])
 def list_move_to_trash():
     if request.method == 'DELETE':
-        x = int(request.get_json())
+        # x = int(request.get_json())
+        x = request.get_json()
         x_index = bd.current_list_obj_index[x]
-        del bd.current_list_objects[x_index]
+        bd.current_list_objects.pop(x_index)
         write_data()
         return '', 204
 
@@ -285,10 +308,8 @@ def list_order_update():
 # Show full-screen
 @app.route('/app/c/<card_id>')
 def card(card_id):
-    print(type(card_id), card_id)
-    print(bd.current_card_obj_index)
-    card_index = bd.current_card_obj_index[int(card_id)]
-    # card_index = bd.current_card_obj_index[card_id]
+    # card_index = bd.current_card_obj_index[int(card_id)]
+    card_index = bd.current_card_obj_index[card_id]
 
     card_content = Markup(md.markdown(process_newlines(bd.current_card_objects[card_index].card_body)))
     card_metadata = bd.current_card_objects[card_index].card_id
@@ -307,7 +328,8 @@ def card_new():
     if request.method == 'POST':
         # print(request.get_json())
         new_card_data = request.get_json()
-        new_card_data[0] = int(new_card_data[0])
+        # new_card_data[0] = int(new_card_data[0])
+        new_card_data[0] = new_card_data[0]
         # Returns ['new card id', 'new card', 'list id', 'card body']
 
         # Create new card object and append to current card objects
@@ -322,7 +344,8 @@ def card_new():
 
         # update list object with the new card id and position
         list_objects = bd.current_list_objects
-        to_list_index = bd.current_list_obj_index[int(new_card_data[2])]
+        # to_list_index = bd.current_list_obj_index[int(new_card_data[2])]
+        to_list_index = bd.current_list_obj_index[new_card_data[2]]
         to_list = list_objects[to_list_index].cards
         to_list.append(new_card_data[0])
 
@@ -345,7 +368,8 @@ def card_order_update():
         # get list objects
         list_objects = bd.current_list_objects
         # get the index of where the card to replace is
-        from_list_index = bd.current_list_obj_index[int(changed_data[0])]
+        # from_list_index = bd.current_list_obj_index[int(changed_data[0])]
+        from_list_index = bd.current_list_obj_index[changed_data[0]]
         from_list = list_objects[from_list_index].cards
         card_to_remove = from_list[changed_data[1]]
         card_to_remove_index = from_list.index(card_to_remove)
@@ -354,7 +378,8 @@ def card_order_update():
 
         # so far I've removed the card id from the list it was at. Next:
         # 3. insert the card id to the new list id + index
-        to_list_index = bd.current_list_obj_index[int(changed_data[2])]
+        # to_list_index = bd.current_list_obj_index[int(changed_data[2])]
+        to_list_index = bd.current_list_obj_index[changed_data[2]]
         to_list = list_objects[to_list_index].cards
         to_list.insert(changed_data[3], removed_card)
         # print([obj.cards for obj in bd.current_list_objects])
@@ -379,7 +404,8 @@ def card_edit_content():
     if request.method == 'POST':
         # accept the cardID, get the unwrapped content of that card and pass it through
         # 1. get the passed card id
-        req_card_id = int(request.get_json())
+        # req_card_id = int(request.get_json())
+        req_card_id = request.get_json()
         # print(f"req_card_id: {req_card_id}")
 
         # 2. look up the index of that card object
@@ -396,16 +422,18 @@ def card_edit_content():
         # 1. accept the changes
         changed_data = request.get_json()
         # print(f"changed data: {changed_data}")
-        print(f"length current card objects before: {len(bd.current_card_objects)}")
+        # print(f"length current card objects before: {len(bd.current_card_objects)}")
+
         # 2. update card content
         # get card id
-        changed_data_card_id = int(changed_data[0])
+        # changed_data_card_id = int(changed_data[0])
+        changed_data_card_id = changed_data[0]
         # get the index of the matching card object
         changed_data_card_obj_index = bd.current_card_obj_index[changed_data_card_id]
         # update card object with new data
         bd.current_card_objects[changed_data_card_obj_index].card_body = changed_data[-1]
         # print(bd.current_card_objects[changed_data_card_obj_index].card_body)
-        print(f"length current card objects: {len(bd.current_card_objects)}")
+        # print(f"length current card objects: {len(bd.current_card_objects)}")
 
         # 3. write changes to disk
         write_data()
@@ -413,19 +441,6 @@ def card_edit_content():
         # 4. wrap in markdown and return
         convert_to_markdown = Markup(md.markdown(changed_data[2]))
         return jsonify(convert_to_markdown)
-
-
-# ----------------- # Delete Things # ----------------- #
-
-# To delete lists and cards I'm basically swapping the existing data for nothing using this function.
-@app.route('/remove', methods=['DELETE'])
-def remove():
-    if request.method == 'DELETE':
-        x = int(request.get_json())
-        x_index = bd.current_list_obj_index[x]
-        del bd.current_list_objects[x_index]
-        write_data()
-        return '', 204
 
 
 if __name__ == '__main__':
