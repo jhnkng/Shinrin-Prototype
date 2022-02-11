@@ -64,15 +64,66 @@ new Sortable(listRow, {
     onEnd: function(evt) {
         // grabs the old index and the new index to pass to backend to make change persistent
         let changeIndex = [evt.oldIndex, evt.newIndex]
-        sendToBackend('/app/l/update', 'POST', changeIndex);
+        sendToBackend('/app/l/update', 'PUT', changeIndex);
     }
 });
 
 // Event Listeners
 function enableListeners() {
+    
     // Listens for clicks to edit list headers
     $("h2.list_header").on('click', function() {
-        editContent(this, '/app/l/rename', 'POST', 'list name');
+        
+        if ($(this).attr('contentEditable') == 'false') {
+            // Stops listening to clicks when editing
+            $(this).off();
+            // create the array to be sent to the backend
+            const changedData = [$(this).closest('.id').attr('id'), 'rename list'];
+            // Changes to contentEditable mode
+            $(this).attr('contentEditable', 'true');
+            $(this).focus();
+
+            // Listens for paste event, replaces formatted text with plain text
+            $(this).on("paste",function(event){
+                event.preventDefault();
+                // console.log(window.event.clipboardData);
+                let clipboarddata =  window.event.clipboardData.getData('text/plain');    
+                // console.log("paste value" + clipboarddata);
+                $(this).text(clipboarddata);
+            });
+
+            // Listens for enter key, if pressed exits edit mode and saves data
+            $(this).on('keydown', function(e) {
+                if (e.key == "Enter") {
+                    e.preventDefault();
+                    $(this).attr('contentEditable', 'false');
+                    // adds new text content to changedData array
+                    changedData.push($(this).prop('innerText'));
+                    // sends to the backend
+                    const request = new Request('/app/l/rename', {
+                        method: 'PUT',
+                        body: JSON.stringify(changedData),
+                        headers: new Headers({
+                            'Content-Type': 'application/json'
+                        })
+                    })
+                
+                    fetch(request);
+
+                    // Reenables the listeners
+                    removeListeners();
+                    enableListeners();
+                }
+            })
+            $(this).on('keydown', function(e) {
+                if (e.key == "Escape") {
+                    $(this).attr('contentEditable', 'false');
+                    // Reenables the listeners
+                    removeListeners();
+                    enableListeners();
+                }
+            })
+        }
     });
 
     // Listens for clicks to edit card content
@@ -109,7 +160,8 @@ function enableListeners() {
                     cardContentContainer.focus();
                     // Listens for enter key, if pressed exits edit mode
                     cardContentContainer.on('keydown', function(e) {
-                        if (e.key == "Enter" && e.ctrlKey) {
+                        if (e.key == "s" && e.ctrlKey) {
+                            e.preventDefault();
                             cardContentContainer.attr('contentEditable', 'false');
                             // adds new text content to changedData array
                             changedData.push($(this).prop('innerText'));
@@ -154,18 +206,6 @@ function enableListeners() {
         getFromBackend('/app/c/new', addNewCard, targetElem)
     });
     
-    // Change List Width
-    // Todo: add persistence 
-    // $(".list_width").on('click', function() {
-    //     console.log(this);
-    //     if ($(this).hasClass('rotate')) {
-    //         $(this).closest('.list_wrapper').addClass('wide_wrapper');
-    //         $(this).removeClass('rotate');
-    //     } else {
-    //         $(this).closest('.list_wrapper').removeClass('wide_wrapper');
-    //         $(this).addClass('rotate');    
-    //     }
-    // });
 
     // Delete list
     $('.remove').on('click', function() {
@@ -185,6 +225,19 @@ function enableListeners() {
         listToMinimise.remove();
         $('#minimised_lists').append(`<li class='ps-3'>${listToMinimiseText}</li>`);
     });
+
+    // Change List Width
+    // Todo: add persistence 
+    // $(".list_width").on('click', function() {
+    //     console.log(this);
+    //     if ($(this).hasClass('rotate')) {
+    //         $(this).closest('.list_wrapper').addClass('wide_wrapper');
+    //         $(this).removeClass('rotate');
+    //     } else {
+    //         $(this).closest('.list_wrapper').removeClass('wide_wrapper');
+    //         $(this).addClass('rotate');    
+    //     }
+    // });
 };
 
 
@@ -204,15 +257,15 @@ function editContent(editObj, endPoint, method, objType) {
         $(editObj).focus();
 
         // Listens for paste event, replaces formatted text with plain text
-        editObj.on("paste",function(event){
+        $(editObj).on("paste",function(event){
             event.preventDefault();
             let clipboarddata =  window.event.clipboardData.getData('text/plain');    
-            editObj.text(clipboarddata);
+            $(editObj).text(clipboarddata);
         });
 
         // Listens for enter key, if pressed exits edit mode
-        $(editObj).keydown(function(e) {
-            if (e.key == "Enter" && e.ctrlKey) {
+        $(editObj).on('keydown', function(e) {
+            if (e.key == "Enter") {
                 $(editObj).attr('contentEditable', 'false');
                 // adds new text content to changedData array
                 changedData.push($(this).prop('innerText'));
@@ -220,7 +273,7 @@ function editContent(editObj, endPoint, method, objType) {
                 sendToBackend(endPoint, method, changedData);
             }
         })
-        $(editObj).keydown(function(e) {
+        $(editObj).on('keydown', function(e) {
             if (e.key == "Escape") {
                 $(editObj).attr('contentEditable', 'false');
             }
@@ -303,6 +356,7 @@ function addNewCard(listObj, data) {
                     .then(res => {
                         // replaces markdown code with processed markdown html
                         newCardObj.html(res);
+                        newCardObj.off();
                     });
             }
         })
@@ -310,11 +364,13 @@ function addNewCard(listObj, data) {
             if (e.key == "Escape") {
                 // newCardObj.attr('contentEditable', 'false');
                 $(`#${cardId}`).remove();
+                newCardObj.off();
             }
         })
     }
 };
 
+// add new list
 function addNewList() {
 
     fetch('/app/l/new')
@@ -372,9 +428,9 @@ function addNewList() {
                     newListObj.text(clipboarddata);
                 });
 
-                // Listens for ctrl+s key, if pressed exits edit mode and saves data
+                // Listens for enter key, if pressed exits edit mode and saves data
                 newListObj.on('keydown', function(e) {
-                    if (e.key == "s" && e.ctrlKey) {
+                    if (e.key == "Enter") {
                         e.preventDefault();
                         newListObj.attr('contentEditable', 'false');
                         // adds new text content to changedData array
@@ -393,12 +449,14 @@ function addNewList() {
                             .then(res => {
                                 // replaces markdown code with processed markdown html
                                 newListObj.html(res);
+                                newListObj.off();
                             });
                     }
                 })
                 newListObj.on('keydown', function(e) {
                     if (e.key == "Escape") {
                         $(`#${newListID}`).remove();
+                        newListObj.off();
                     }
                 })
             }

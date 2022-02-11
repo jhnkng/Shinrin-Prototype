@@ -210,6 +210,7 @@ def list_new():
 
     if request.method == 'POST':
         new_list_data = request.get_json()
+        print(f"new_list_data: {new_list_data}")
         # returns ['20220208210219163284', 'new list', 'This is the new name']
 
         # Create new card object and prepend to current list objects
@@ -222,6 +223,23 @@ def list_new():
         # Write to disk
         write_data()
         return jsonify('ok'), 204
+
+
+@app.route('/app/l/rename', methods=['POST', 'PUT'])
+def list_rename():
+    if request.method == 'POST':
+        print(request.get_json())
+        return '', 204
+
+    if request.method == 'PUT':
+        changed_data = request.get_json()
+        # returns ['20220211134152', 'list name', 'IDs Rename']
+        changed_data_list_id = int(changed_data[0])
+        new_list_name = changed_data[-1]
+        list_to_change_index = bd.current_list_obj_index[changed_data_list_id]
+        bd.current_list_objects[list_to_change_index].list_name = new_list_name
+        write_data()
+        return 'ok', 204
 
 
 @app.route('/app/l/minimise', methods=['POST'])
@@ -246,9 +264,9 @@ def list_add_to_archive():
     pass
 
 
-@app.route('/app/l/update', methods=['POST'])
+@app.route('/app/l/update', methods=['PUT'])
 def list_order_update():
-    if request.method == 'POST':
+    if request.method == 'PUT':
         # the data passed is an array with the old index to the new index
         # 1. get changed data
         changed_data = request.get_json()
@@ -260,13 +278,6 @@ def list_order_update():
         bd.current_list_obj_index = {each.list_id: list_objects.index(each) for each in list_objects}
         bd.current_list_objects = list_objects
         write_data()
-    return '', 204
-
-
-@app.route('/app/l/rename', methods=['POST', 'PUT'])
-def list_rename():
-    if request.method == 'POST':
-        print(request.get_json())
     return '', 204
 
 
