@@ -22,8 +22,8 @@ def get_data(user_key, data_type):
     :param data_type: lists or cards
     :return: processed requested data
     """
-    # filename = f"user_data/{user_key}.json"
-    filename = 'user_data/test_data.json'
+    filename = f"user_data/{user_key}.json"
+    # filename = 'user_data/test_data.json'
     try:
         with open(filename, mode='r') as data_file:
             data = json.load(data_file)
@@ -71,18 +71,22 @@ def write_data():
         'lists': list_pos,
         'cards': content
     }
-    filename = f"user_data/test_data.json"
+    filename = f"user_data/{bd.user_key}.json"
     with open(filename, mode='w') as data_file:
         json.dump(save_data, data_file, indent=4)
 
 
 def get_new_id():
     # Generates a new id for each element created.
-    new_id = dt.datetime.now().strftime('%Y%m%d%H%M%S%f')
+    new_id = dt.datetime.now().strftime('%Y%m%d%H%M%S')
     return new_id
 
 
 def get_new_user_key():
+    # alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+    # 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+    # 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
     alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
                 'U', 'V', 'W', 'X', 'Y', 'Z']
     new_key = ''.join(choices(alphabet, k=6))
@@ -112,7 +116,7 @@ def process_newlines(text):
 # ----------------- # Start Here # ----------------- #
 @app.route('/')
 def login():
-    resp = make_response(render_template('test.html'))
+    resp = make_response(render_template('login.html'))
     return resp
 
 
@@ -193,7 +197,7 @@ def main():
         item['cards'] = cards_to_merge
     # print(user_cards)
     # [print(obj.cards) for obj in bd.current_list_objects]
-    resp = make_response(render_template('test2.html', lists=user_lists, user_key=bd.user_key))
+    resp = make_response(render_template('index.html', lists=user_lists, user_key=bd.user_key))
     return resp
 
 
@@ -220,14 +224,21 @@ def list_new():
         return jsonify('ok'), 204
 
 
-@app.route('/app/l/close')
-def list_close():
-    pass
+@app.route('/app/l/minimise', methods=['POST'])
+def card_add_to_minimise():
+    if request.method == 'POST':
+        print(request.get_json())
+    return '', 204
 
 
-@app.route('/app/l/trash')
+@app.route('/app/l/trash', methods=['DELETE'])
 def list_move_to_trash():
-    pass
+    if request.method == 'DELETE':
+        x = int(request.get_json())
+        x_index = bd.current_list_obj_index[x]
+        del bd.current_list_objects[x_index]
+        write_data()
+        return '', 204
 
 
 @app.route('/app/l/archive')
@@ -260,10 +271,19 @@ def list_rename():
 
 
 # ----------------- # Card Routes # ----------------- #
-# Show fullscreen
+# Show full-screen
 @app.route('/app/c/<card_id>')
-def card():
-    pass
+def card(card_id):
+    print(type(card_id), card_id)
+    print(bd.current_card_obj_index)
+    card_index = bd.current_card_obj_index[int(card_id)]
+    # card_index = bd.current_card_obj_index[card_id]
+
+    card_content = Markup(md.markdown(process_newlines(bd.current_card_objects[card_index].card_body)))
+    card_metadata = bd.current_card_objects[card_index].card_id
+    # return render_template('fullscreen.html', content=card_content, metadata=card_metadata)
+    resp = [card_content, card_metadata]
+    return jsonify(resp)
 
 
 # todo: update template
@@ -338,7 +358,7 @@ def card_add_to_archive():
     pass
 
 
-@app.route('/app/c/trash')
+@app.route('/app/c/trash', methods=['DELETE'])
 def card_move_to_trash():
     pass
 

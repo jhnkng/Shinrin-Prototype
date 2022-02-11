@@ -156,24 +156,34 @@ function enableListeners() {
     
     // Change List Width
     // Todo: add persistence 
-    $(".list_width").on('click', function() {
-        console.log(this);
-        if ($(this).hasClass('rotate')) {
-            $(this).closest('.list_wrapper').addClass('wide_wrapper');
-            $(this).removeClass('rotate');
-        } else {
-            $(this).closest('.list_wrapper').removeClass('wide_wrapper');
-            $(this).addClass('rotate');    
-        }
+    // $(".list_width").on('click', function() {
+    //     console.log(this);
+    //     if ($(this).hasClass('rotate')) {
+    //         $(this).closest('.list_wrapper').addClass('wide_wrapper');
+    //         $(this).removeClass('rotate');
+    //     } else {
+    //         $(this).closest('.list_wrapper').removeClass('wide_wrapper');
+    //         $(this).addClass('rotate');    
+    //     }
+    // });
+
+    // Delete list
+    $('.remove').on('click', function() {
+        let listToDel = $(this).closest('.id');
+        let listToDelID = listToDel.attr('id');
+        alert(`Are you sure you want to delete the list ${listToDel.find('.list_header').text()}?`);
+        sendToBackend('/app/l/trash', 'DELETE', listToDelID);
+        listToDel.remove();    
     });
 
-    // Delete (currently only removes from UI, does not delete from backend)
-    $('.remove').on('click', function() {
-        let objToDel = $(this).closest('.id');
-        let objToDelID = objToDel.attr('id');
-        alert(`Are you sure you want to delete the list ${objToDel.find('.list_header').text()}?`);
-        sendToBackend('/remove', 'DELETE', objToDelID);
-        objToDel.remove();    
+    // Minimise list
+    $('.minimise').on('click', function() {
+        let listToMinimise = $(this).closest('.id');
+        let listToMinimiseID = listToMinimise.attr('id');
+        let listToMinimiseText = listToMinimise.find('h2.list_header').text();
+        sendToBackend('/app/l/minimise', 'PUT', listToMinimiseID);
+        listToMinimise.remove();
+        $('#minimised_lists').append(`<li class='ps-3'>${listToMinimiseText}</li>`);
     });
 };
 
@@ -192,6 +202,14 @@ function editContent(editObj, endPoint, method, objType) {
         // Changes to contentEditable mode
         $(editObj).attr('contentEditable', 'true');
         $(editObj).focus();
+
+        // Listens for paste event, replaces formatted text with plain text
+        editObj.on("paste",function(event){
+            event.preventDefault();
+            let clipboarddata =  window.event.clipboardData.getData('text/plain');    
+            editObj.text(clipboarddata);
+        });
+        
         // Listens for enter key, if pressed exits edit mode
         $(editObj).keydown(function(e) {
             if (e.key == "Enter" && e.ctrlKey) {
@@ -250,9 +268,20 @@ function addNewCard(listObj, data) {
         // Changes to contentEditable mode
         newCardObj.attr('contentEditable', 'true');
         newCardObj.focus();
+
+        // Listens for paste event, replaces formatted text with plain text
+        newCardObj.on("paste",function(event){
+            event.preventDefault();
+            // console.log(window.event.clipboardData);
+            let clipboarddata =  window.event.clipboardData.getData('text/plain');    
+            // console.log("paste value" + clipboarddata);
+            newCardObj.text(clipboarddata);
+        });
+
         // Listens for enter key, if pressed exits edit mode
-        newCardObj.keydown(function(e) {
-            if (e.key == "Enter" && e.ctrlKey) {
+        newCardObj.on('keydown', function(e) {
+            if (e.key == "s" && e.ctrlKey) {
+                e.preventDefault();
                 newCardObj.attr('contentEditable', 'false');
                 // adds new text content to changedData array
                 changedData.push($(this).prop('innerText'));
@@ -278,6 +307,7 @@ function addNewCard(listObj, data) {
         newCardObj.keydown(function(e) {
             if (e.key == "Escape") {
                 newCardObj.attr('contentEditable', 'false');
+                $(`#${cardId}`).remove();
             }
         })
     }
@@ -291,31 +321,27 @@ function addNewList() {
             
             let newList = `
             <div id="${newListID}" class="list_wrapper smooth id align-self-start ms-2 p-0">
-            <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
+            <div class="list_sort_handle z-ind-0">
             <span class="material-icons drag_handle">drag_handle</span>
         
                 <div class="list_header_wrapper smooth row justify-content-between z-ind-2">
-                    <div class="col-10">
+                    <div class="col-9">
                         <h2 contentEditable="false" class="list_header"></h2>
                     </div>
-                    <div class="col-2 z-ind-3 text-end">
-                        <span class="material-icons mt-2 remove">close</span>
+                    <div class="col-3 z-ind-3 text-end">
+                    <span class="material-icons minimise" style="position: relative; top: -2px; left: 4px;">minimize</span>
+                    <span class="material-icons mt-2 remove">close</span>    
                     </div>
                 </div>
-                </div>  <!-- Sortables target handle end -->
+                </div>
             
-            <!-- List content: contains individual cards -->
-            <div class="list_content">
-            </div> <!-- List content end -->
+            <div class="list_content"><!-- Cards go here --></div>
         
-            <!--  List tool bar: appends the new card after the last child of the list content div-->
             <div class="list_tools row justify-content-between m-2 mt-1">
                 <p class="col-2 material-icons card_new">add</p>
                 <!-- <p class="col-2 material-icons text-center list_width">west</p> -->
-            </div><!-- list tool bar end -->
-        
+            </div>        
             </div>
-            <!-- individual list end -->
             `
 
             // Insert into page
@@ -328,15 +354,59 @@ function addNewList() {
             let newListObj = $(`#${newListID} h2.list_header`);
             editContent(newListObj, '/app/l/new', 'POST', 'new list');
         })
-
-
 }
 
+function showFullscreen(cardID) {
+    
+    console.log(cardID);
+    request = `/app/c/${cardID}`
+    fetch(request)
+        .then(response => response.json())
+        .then(response => {
+            let cardContent = response[0];
+            let cardMetadata = response[1];
+            let fsContainer = `
+            <div id="fullscreen" class="fs_wrapper container-fluid m-0 p-0">
+                <div><a href="/app">Back to lists</a></div> 
+                <div id="fs_frame" class="fs_frame row flex-nowrap m-3 ms-5">
+                    <div class="fs_list_main content_main fs_list">
+                        <div class="row">
+                        <div class="fs_card">
+                            ${cardContent}
+                        </div>
+                        <div class="fs_card_meta">
+                            ${cardMetadata}
+                        </div>
+                        </div>
+                    </div>
+                    <div class="fs_list_scratch content_main fs_list"></div>
+                </div>        
+            </div>
+            `
 
+            $('#target').html(fsContainer);
+            // Sortables for Fullscreen
+            var fs = document.querySelectorAll(".fs_list");
+            for (var i = 0; i < fs.length; i++) {
+                var sortable = fs[i];
+                new Sortable(sortable, {
+                group: 'shared',
+                animation: 150,
+                easing: "cubic-bezier(1, 0, 0, 1)",
+                ghostClass: 'blue-background-class',
+                });
+            };
+        });
+    
+};
 
 
 // ---------------------- // Start // ---------------------- //
 // Because everything is loaded programically we need to set a delay otherwise this runs before there is anything on screen
-setTimeout(function(){
-    enableListeners();
-}, 1000)
+$(document).ready(function(){
+    enableListeners();       
+});
+
+// setTimeout(function(){
+//     enableListeners();
+// }, 1000)

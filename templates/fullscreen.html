@@ -1,0 +1,26 @@
+{% include "header.html" %}
+<body>
+    <!-- Flexbox Container -->
+    <div class="container-fluid m-0 p-0">
+    
+    <!-- Bootstrap flexbox row -->
+    <div id="fullscreen" class="fs_wrapper">
+        <div><a href="/app">Back to lists</a></div> 
+        <div id="fs_frame" class="fs_frame row flex-nowrap m-3 ms-5">
+            <div class="fs_list_main content_main fs_list">
+                <div class="row">
+                <div class="fs_card">
+                    {{ content }}
+                </div>
+                <div class="fs_card_meta">
+                    {{ metadata }}
+                </div>
+                </div>
+            </div>
+        </div>        
+    </div>    <!-- Bootstrap flexbox row end -->
+    
+    </div>    <!-- Flexbox Container end -->
+
+</body>
+{% include "footer.html" %}

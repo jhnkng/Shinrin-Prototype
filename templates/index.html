@@ -1,159 +1,86 @@
 {% include "header.html" %}
 <body>
-    <header id="main_menu h-100" class="smooth">
-        <h1 class="p-3">森林</h1>
-        <ul class='list-group p-3'>
-            <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('new_list') }}" hx-target=".list_row" hx-swap="afterbegin">Add New List</li>
-            <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('new_notebook') }}" hx-target=".list_row" hx-swap="afterbegin">Add New Notebook</li> 
-            <!--<li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_board_index') }}" hx-target=".list_row" hx-swap="beforeend">Current List Index</li>-->
-            <li class='list-group-item list-group-item-dark' hx-get="{{ url_for('show_archive') }}" hx-target=".list_row" hx-swap="afterbegin">Open Archives</li>
-            <li class='list-group-item list-group-item-dark'>Settings</li>
-            <!-- <li class='list-group-item list-group-item-dark' hx-get="/board/fullscreen" hx-target="#target" hx-swap="outerHTML" hx-push-url="true">Fullscreen Test</li> -->
-            <!-- <li class='list-group-item list-group-item-dark' >Help</li> -->
-        </ul>
-        <p class="position-absolute bottom-0 start-0 p-4">Your user key is {{user_key}}.<br>To access this page again please use this key to login.</p>
-    </header>
+<header id="main_menu" class="smooth h-100 w-50">
+    <h1 class="p-3">森林</h1>
+    <ul class='list-group p-3 w-25'>
+        <li class='list-group-item list-group-item-dark' onclick="addNewList()">Add New List</li>
+    </ul>
+    <ul id="minimised_lists" class='p-3 w-50' >
+        <li class='ps-3'>Minimised Lists:</li>
+    </ul>
+    <p class="position-absolute bottom-0 start-0 p-4">Your user key is {{user_key}}.<br>To access this page again please use this key to login.</p>
+</header>
 
-    <div id="target" class="z-ind-5" style="position: fixed; z-index: 1000;"></div>
+<div id="target">target</div>
 
-    <!-- Flexbox Container -->
-    <div class="container-fluid">
+<!-- Flexbox Container -->
+<div class="container-fluid">
+
+
+<!-- Bootstrap flexbox row -->
+<div id="list_row" class="list_row row flex-nowrap smooth">
+
+    {% for list in lists: %}
+
+    <!-- Normal Lists -->
+    <!-- individual list -->
+    <div id="{{ list['list_id'] }}" class="list_wrapper smooth id align-self-start ms-2 p-0">
+    <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
+    <span class="material-icons drag_handle">drag_handle</span>
+
+        <div class="list_header_wrapper smooth row justify-content-between z-ind-2">
+            <div class="col-9">
+                <h2 contentEditable="false" class="list_header">{{ list['list_name'] }}</h2>
+            </div>
+            <div class="col-3 z-ind-3 text-end">
+                <span class="material-icons minimise" style="position: relative; top: -2px; left: 4px;">minimize</span>
+                <span class="material-icons mt-2 remove">close</span>
+            </div>
+        </div>
+    </div>  <!-- Sortables target handle end -->
     
-    <!-- List location form -->
-    <form id="content_change" hx-post="{{ url_for('change_list_card_order') }}" hx-trigger="load, end, syncChange from:body delay:3s, every:60s">
+    <!-- List content: contains individual cards -->
+    <div class="list_content">
 
-        <!-- Bootstrap flexbox row -->
-        <div id="list_row" class="list_row row flex-nowrap smooth">
-
-            {% for list in lists: %}
-
-            {% if list['is_notebook'] == True %} <!-- Notebook Lists -->
-            <!-- individual list -->
-            <!-- the h-100 class gives each column its own height, overriding
-            bootstrap's auto same height columns -->
-            <div class="list_wrapper notebook_wrapper fade_out align-self-start ms-2 p-0">
-                <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
-                <span class="material-icons drag_handle">drag_handle</span>
-                <!-- list location marker -->
-                <input type="hidden" name="id" value="list_id {{ list['list_id'] }} note" />
-
-                <div class="list_header_wrapper row justify-content-between z-ind-2">
-                    <div class="col-10">
-                        <div class="list_header" hx-post="{{ url_for('change_notebook_name') }}" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-vals='{"current_notebook": "{{ list['list_id'] }}:{{ list['list_name'] }}" }'>
-                            <input type="hidden" name="list_name" value="{{ list['list_name'] }}"/>
-                            <h2>{{ list['list_name'] }}</h2>
-                        </div>
-                    </div>
-                    <div class="col-2 z-ind-3 text-end" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
-                        <span class="material-icons mt-2">close</span>
-                    </div>
-                </div>
-                </div>  <!-- Sortables target handle end -->
-
-                <!-- List content: contains individual cards -->
-                <div id="listID{{ list['list_id'] }}" class="list_content">
-
-                <!-- Individual Cards -->
-                {% for card in list['cards']: %}
-                <div id="cardID{{ card['card_id'] }}" class="card">
-                    
-                    <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
-                    <div class="row">                        
-                        
-                        <div class="edit_handle" hx-post="{{ url_for('change_card_content') }}" hx-trigger="click" hx-target="closest .row" hx-swap="outerHTML" hx-vals='{"current_card_content": "{{ card['card_id'] }}::::{{ card['card_body'] }}" }'>
-                            <span class="material-icons">edit</span>
-                        </div>
-
-                        <input type="hidden" name="id" value="card_id {{ card['card_id'] }}"/>
-                        <input type="hidden" name="card_body" value="{{ card['card_body'] }}"/>
-                        <div class="card_content notebook_main col-9">
-                                {{ card['card_body_html'] }}
-                        </div>
-
-                        <div class="notebook_side col-3">
-                            <ul class="metadata">
-                                <li>{{ card['card_id'] }}</li>
-                                <li>Tags</li>
-                                <li>Related Cards</li>
-                                <li>Share Link</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-                <!-- Individual Cards end -->
-                </div>
-                <!-- List content end -->
-
-                {% include "snippets/notebook_tool_bar.html" %}
-
+    <!-- Individual Cards -->
+    {% for card in list['cards']: %}
+    <div id="{{ card['card_id'] }}" class="card id">
+        <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
+        <div class="row">
+            <div class="edit_handle">
+                <span class="material-icons">edit</span>
             </div>
-            {% else %} <!-- Normal Lists -->
-            <!-- individual list -->
-            <div class="list_wrapper fade_out align-self-start ms-2 p-0">
-            <div class="list_sort_handle z-ind-0">  <!-- Sortables target handle -->
-            <span class="material-icons drag_handle">drag_handle</span>
-            <!-- list location marker -->
-            <input type="hidden" name="id" value="list_id {{ list['list_id'] }}"/>
-
-                <div class="list_header_wrapper row justify-content-between z-ind-2">
-                    <div class="col-10">
-                        <div class="list_header" hx-post="{{ url_for('change_list_name') }}" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-vals='{"current_list": "{{ list['list_id'] }}:{{ list['list_name'] }}" }'>
-                            <input type="hidden" name="list_name" value="{{ list['list_name'] }}"/>
-                            <h2 class="">{{ list['list_name'] }}</h2>
-                        </div>
-                    </div>
-                    <div class="col-2 z-ind-3 text-end" hx-delete="/remove" hx-target="closest .list_wrapper" hx-swap="outerHTML swap:0.9s" hx-confirm="Are you sure?">
-                        <span class="material-icons mt-2">close</span>
-                    </div>
-                </div>
-            </div>  <!-- Sortables target handle end -->
-            
-                <!-- List content: contains individual cards -->
-                <div id="listID{{ list['list_id'] }}" class="list_content">
-
-                <!-- Individual Cards -->
-                {% for card in list['cards']: %}
-                <div id="cardID{{ card['card_id'] }}" class="card">
-                    <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
-                    <div class="row">
-                        <div class="edit_handle" _="on click get .notebook_main in closest .card then put its innerText into .card_content_change in .change_event in closest .card then remove .hidden from .change_event in closest .card then hide .notebook_main in closest .card">
-                            <span class="material-icons">edit</span>
-                        </div>
-                            <input type="hidden" name="id" value="card_id {{ card['card_id'] }}"/>
-                            <input type="hidden" name="card_body" value="{{ card['card_body'] }}"/>
-                        <div class="card_content notebook_main col-9">
-                            {{ card['card_body_html'] }}
-                        </div>
-                        <div class="change_event hidden">
-                            <textarea class="card_content_change" name="new_card_content" autofocus></textarea>
-                            <button class="btn btn-dark btn-sm" type="submit" hx-put="/board/card/edit" hx-target="closest div" hx-swap="outerHTML">Save</button>
-                            <button class="btn btn-danger btn-sm" _="on click remove closest .card">Delete Card</button>
-                        </div>
-                       <div class="notebook_side col-3">
-                        <ul class="metadata">
-                            <li>{{ card['card_id'] }}</li>
-                            <!--<li>Tags</li>
-                            <li>Related Cards</li>
-                            <li>Share Link</li>-->
-                        </ul>
-                       </div>
-                    </div>  
-                </div>
-                {% endfor %}
-                <!-- Individual Cards end -->
-                </div> <!-- List content end -->
-
-                {% include "snippets/list_tool_bar.html" %}
-
+            <div contentEditable="false" class="card_content content_main col-9">
+                {{ card['card_body_html'] }}
+                <!-- <a href="app/c/{{ card['card_id'] }}">{{ card['card_id'] }}</a> -->
+                <span onclick="showFullscreen({{ card['card_id'] }})">{{ card['card_id'] }}</span>
             </div>
-            <!-- individual list end -->
-            {% endif %}
-            {% endfor %}
+            <div class="content_side col-3">
+            <ul class="metadata">
+                <li>{{ card['card_id'] }}</li>
+                <li>Tags</li>
+                <li>Related Cards</li>
+                <li>Share Link</li>
+            </ul>
+            </div>
+        </div>  
+    </div>
+    {% endfor %}
+    <!-- Individual Cards end -->
+    </div> <!-- List content end -->
 
-        </div>    <!-- Bootstrap flexbox row end -->
-    </form>    <!-- List location form end -->
-    </div>    <!-- Flexbox Container end -->
+    <!--  List tool bar: appends the new card after the last child of the list content div-->
+    <div class="list_tools row justify-content-between m-2 mt-1">
+        <p class="col-2 material-icons card_new">add</p>
+        <!-- <p class="col-2 material-icons text-center list_width">west</p> -->
+    </div><!-- list tool bar end -->
+
+    </div>
+    <!-- individual list end -->
+    {% endfor %}
+
+</div>    <!-- Bootstrap flexbox row end -->
+</div>    <!-- Flexbox Container end -->
 
 
 </body>
