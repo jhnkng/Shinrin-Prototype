@@ -570,7 +570,7 @@ function showFullscreen(cardID) {
             let cardMetadata = response[1];
             let fsContainer = `
             <div id="fullscreen" class="fs_wrapper container-fluid m-0 p-0">
-                <div><a href="/app">Back to lists</a></div> 
+                <div onclick="closeFS()" style="color: white">Back to lists</div> 
                 <div id="fs_frame" class="fs_frame row flex-nowrap m-3 ms-5">
                     <div class="fs_list_main content_main fs_list">
                         <div class="row">
@@ -603,6 +603,9 @@ function showFullscreen(cardID) {
     
 };
 
+function closeFS() {
+    $("#fullscreen").remove();
+};
 
 // ---------------------- // Start // ---------------------- //
 // Because everything is loaded programically we need to set a delay otherwise this runs before there is anything on screen

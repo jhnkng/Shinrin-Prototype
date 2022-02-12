@@ -1,8 +1,6 @@
 # Shinrin, Prototype v2
-import requests
 from flask import Flask, render_template, request, make_response, jsonify
 from markupsafe import Markup
-import datetime as dt
 import markdown as md
 import json
 from random import choices
@@ -74,7 +72,9 @@ def write_data():
 
 def get_new_id():
     # Generates a new id for each element created.
-    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+                'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     new_id = ''.join(choices(alphabet, k=8))
     return new_id
 
@@ -178,13 +178,13 @@ def main():
         cards_to_merge = []
         for card_id_num in card_locations:
             if card_id_num in user_cards.keys():
-                card = user_cards[card_id_num]
+                my_card = user_cards[card_id_num]
                 # \n characters mess up templates, so they are stored escaped.
                 # Here we unescape it before it goes to the UI
-                unescaped_text = process_newlines(card['card_body'])
+                unescaped_text = process_newlines(my_card['card_body'])
                 # Raw text is sent through markdown to convert to HTML, then HTML characters unescaped using Markup
-                card['card_body_html'] = Markup(md.markdown(unescaped_text))
-                cards_to_merge.append(card)
+                my_card['card_body_html'] = Markup(md.markdown(unescaped_text))
+                cards_to_merge.append(my_card)
             else:
                 make_card = {
                     'card_id': card_id_num,

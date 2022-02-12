@@ -3,11 +3,11 @@ class Board:
     def __init__(self):
         # self.new_id = shinrin.get_data('id')
         self.user_key = 'new_user'
-        self.current_board_index = dict
-        self.current_list_objects = list
-        self.current_list_obj_index = dict
-        self.current_card_objects = list
-        self.current_card_obj_index = dict
+        self.current_board_index = {}
+        self.current_list_objects = []
+        self.current_list_obj_index = {}
+        self.current_card_objects = []
+        self.current_card_obj_index = {}
         self.current_card_id = str
         # self.current_card_content = str
         self.current_list_id = str
@@ -53,4 +53,3 @@ class Card:
         # self.card_title = str
         self.card_body = str
         # self.tags = str
-
