@@ -54,7 +54,7 @@ def write_data():
             "card_title": "",
             "card_body": card_obj.card_body,
             "tags": "",
-            "card_children": [],
+            "card_children": card_obj.card_children,
             "related_cards": ""
         }
         content.append(new_card)
@@ -313,12 +313,12 @@ def card(card_id):
 
     card_content = Markup(md.markdown(process_newlines(bd.current_card_objects[card_index].card_body)))
     card_metadata = bd.current_card_objects[card_index].card_id
-    # return render_template('fullscreen.html', content=card_content, metadata=card_metadata)
-    resp = [card_content, card_metadata]
+    card_children = bd.current_card_objects[card_index].card_children
+
+    resp = [card_content, card_metadata, card_children]
     return jsonify(resp)
 
 
-# todo: update template
 @app.route('/app/c/new', methods=['GET', 'POST'])
 def card_new():
     if request.method == 'GET':
@@ -328,8 +328,6 @@ def card_new():
     if request.method == 'POST':
         # print(request.get_json())
         new_card_data = request.get_json()
-        # new_card_data[0] = int(new_card_data[0])
-        new_card_data[0] = new_card_data[0]
         # Returns ['new card id', 'new card', 'list id', 'card body']
 
         # Create new card object and append to current card objects
@@ -348,6 +346,35 @@ def card_new():
         to_list_index = bd.current_list_obj_index[new_card_data[2]]
         to_list = list_objects[to_list_index].cards
         to_list.append(new_card_data[0])
+
+        # Write to disk
+        write_data()
+
+        # Return markdown processed card body
+        convert_to_markdown = Markup(md.markdown(new_card_data[-1]))
+        return jsonify(convert_to_markdown)
+
+
+@app.route('/app/c/new/subcard', methods=['GET', 'POST'])
+def card_new_subcard():
+    if request.method == 'GET':
+        # Get a new id for the new card
+        return jsonify(get_new_id())
+
+    if request.method == 'POST':
+        new_card_data = request.get_json()
+        # Returns ['new subcard id', 'new sub card', 'parent card id', 'card body']
+        subcard_id = new_card_data[0]
+        parent_card_id = new_card_data[2]
+        subcard_body = new_card_data[-1]
+        new_subcard = {
+            "subcard_id": subcard_id,
+            "subcard_body": subcard_body
+        }
+
+        parent_card_obj_index = bd.current_card_obj_index[parent_card_id]
+        # update card_children with new_subcard
+        bd.current_card_objects[parent_card_obj_index].card_children.append(new_subcard)
 
         # Write to disk
         write_data()
@@ -406,7 +433,7 @@ def card_edit_content():
         # 1. get the passed card id
         # req_card_id = int(request.get_json())
         req_card_id = request.get_json()
-        # print(f"req_card_id: {req_card_id}")
+        print(f"req_card_id: {req_card_id}")
 
         # 2. look up the index of that card object
         if req_card_id in bd.current_card_obj_index:

@@ -5,7 +5,7 @@ body {
     background: linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#73a14b",endColorstr="#ffcedc",GradientType=1);
 
-    background-image: url(/static/img/bg5.jpg);
+    background-image: url(/static/img/bg7.jpg);
     background-repeat: no-repeat;
     background-position: 0 80%;
     background-attachment: fixed;
@@ -308,10 +308,11 @@ strong {
 
 .content_side {
     font-size: 0.85rem;
-    width: 80%;
+    /* width: 80%; */
     /* align-self:flex-end; */
-    padding: 0.5rem 0 1rem 0;
-    margin-left: 1rem;
+    /* padding: 0.5rem 0 1rem 0; */
+    padding: 1rem 2rem;
+    /* margin-left: 1rem; */
     border-top: 1px solid lightgrey;
 }
 
@@ -443,7 +444,7 @@ strong {
     
 .content_main h1 {
     font-family: 'Zen Kaku Gothic New', sans-serif;
-    font-size: 1.2rem;
+    font-size: 2rem;
     font-weight: 700;
     padding-bottom: 0.5rem;
 }
@@ -518,28 +519,52 @@ ul {
 }
 
 .fs_wrapper {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
     z-index: 10000;
     backdrop-filter: blur(10px);
     background-color: rgba(0, 0, 0, 0.3);
-    overflow-y: hidden;
+    overflow: hidden;
     height: 100%;
     width: 100%;
     border-radius: 0;
 }
 
+.freeze_scroll {
+    /* added to body to freeze scrolling during fullscreen */
+    overflow: hidden;
+}
+
 .fs_frame {
     /* background-color: aliceblue; */
-    height: 89vh;
+    height: 93%;
+    width: 100%;
+    margin: 0 auto;
+    overflow-y: auto;
 }
 
 .fs_list {
     overflow-y: auto;
     overflow-x: hidden;
+    margin: 1rem;
+    /* background-color: rgba(120, 120, 120, 0.1); */
+    border-top: thin gray solid;
+    padding: 0;
 }
+    .fs_list:first-child {
+        margin-left: 4rem;
+    }
+    .fs_list .card {
+        border-radius: 0;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    .fs_list .card_content {
+        padding: 1rem 2rem;
+    }
 
 .fs_list_main {
     width: 650px;
@@ -549,16 +574,3 @@ ul {
     width: 380px;
 }
 
-.fs_card {
-    width: 100%;
-    background-color:white;
-    border-radius: 4px;
-}
-
-.fs_card_meta {
-    width: 20%;
-    color: white;
-    align-self:flex-end;
-    /* position: absolute;
-    right:0; */
-}

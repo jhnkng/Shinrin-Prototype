@@ -38,19 +38,19 @@ function enableSortable() {
     for (var i = 0; i < sortables.length; i++) {
         var sortable = sortables[i];
         new Sortable(sortable, {
-        handle: '.card_sort_handle',
-        group: 'shared',
-        animation: 150,
-        easing: "cubic-bezier(1, 0, 0, 1)",
-        ghostClass: 'blue-background-class',
-        onEnd: function(evt) {
-            // Get the list ID from where the card was dragged to where the card was dropped
-            let from = evt.from.closest('.id').getAttribute('id');
-            let to = evt.to.closest('.id').getAttribute('id');
-            // Create array from the old index and the new index along with the lists it was dragged and dropped from
-            let changeIndex = [from, evt.oldIndex, to, evt.newIndex];
-            console.log(changeIndex);
-            sendToBackend('/app/c/update', 'POST', changeIndex);
+            handle: '.card_sort_handle',
+            group: 'shared',
+            animation: 150,
+            easing: "cubic-bezier(1, 0, 0, 1)",
+            ghostClass: 'blue-background-class',
+            onEnd: function(evt) {
+                // Get the list ID from where the card was dragged to where the card was dropped
+                let from = evt.from.closest('.id').getAttribute('id');
+                let to = evt.to.closest('.id').getAttribute('id');
+                // Create array from the old index and the new index along with the lists it was dragged and dropped from
+                let changeIndex = [from, evt.oldIndex, to, evt.newIndex];
+                console.log(changeIndex);
+                sendToBackend('/app/c/update', 'POST', changeIndex);
         }
         });
     };
@@ -71,8 +71,8 @@ function enableSortable() {
 };
 
 
-
-// Event Listeners
+// ---------------------- // Event Listeners // ---------------------- //
+ 
 function enableListeners() {
 
     // Listens for clicks to edit list headers
@@ -132,6 +132,7 @@ function enableListeners() {
 
     // Listens for clicks to edit card content
     $(".edit_handle").on('click', function() {
+        console.log('clicked');
         // Goes up one level in the DOM tree and finds the card content container
         let cardContentContainer = $(this).parent().find('.card_content');
         // gets the card ID
@@ -185,6 +186,9 @@ function enableListeners() {
                                     cardContentContainer.html(res);
                                     // turns off listeners, otherwise multiple listeners are active at once
                                     cardContentContainer.off();
+                                    // reset listeners
+                                    removeListeners();
+                                    enableListeners();
                                 });
                         }
                     })
@@ -195,6 +199,9 @@ function enableListeners() {
                             cardContentContainer.attr('contentEditable', 'false');
                             // turns off listeners, otherwise multiple listeners are active at once
                             cardContentContainer.off();
+                            // reset listeners
+                            removeListeners();
+                            enableListeners();
                         }
                     })
                     
@@ -243,6 +250,13 @@ function enableListeners() {
     //     }
     // });
 
+    $('.card_content').on('click', function() {
+        if ($(this).attr('contentEditable') == 'false') {
+            id = $(this).closest('.id').attr('id');
+            showFullscreen(id);    
+        };
+    });
+
     console.log('listeners enabled');
 };
 
@@ -290,8 +304,7 @@ function editContent(editObj, endPoint, method, objType) {
 
 
 // Make new card
-function addNewCard(listObj, data) {
-    let cardId = data;
+function addNewCard(listObj, cardId) {
     let newCard = `
     <div id="${cardId}" class="card id">
     <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
@@ -315,9 +328,6 @@ function addNewCard(listObj, data) {
     
     // Insert card
     $(listObj).append(newCard);
-    // reset listeners
-    removeListeners();
-    enableListeners();
 
     // edit card content
     let newCardObj = $(`#${cardId}`).find('.card_content');
@@ -364,6 +374,10 @@ function addNewCard(listObj, data) {
                         // replaces markdown code with processed markdown html
                         newCardObj.html(res);
                         newCardObj.off();
+                        // reset listeners
+                        removeListeners();
+                        enableListeners();
+
                     });
             }
         })
@@ -372,6 +386,9 @@ function addNewCard(listObj, data) {
                 // newCardObj.attr('contentEditable', 'false');
                 $(`#${cardId}`).remove();
                 newCardObj.off();
+                // reset listeners
+                removeListeners();
+                enableListeners();
             }
         })
     }
@@ -475,6 +492,7 @@ function restoreMinimisedList(listID) {
     let endPoint = '/app/l/minimise';
     let method = 'POST';
     let dataToSend = listID;
+    console.log(`Unminimising List ${listID}`)
 
     const request = new Request(endPoint, {
         method: method,
@@ -487,7 +505,7 @@ function restoreMinimisedList(listID) {
     fetch(request)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            // console.log(data);
             let listID = data.list_id;
             // console.log(listID);
             let listName = data.list_name;
@@ -530,7 +548,6 @@ function restoreMinimisedList(listID) {
                     </div>
                     <div contentEditable="false" class="card_content content_main col-9">
                     ${card_body}
-                    <span onclick="showFullscreen('${cardId}')">${cardId}</span>
                     </div>
                     <div class="content_side col-3">
                     <ul class="metadata">
@@ -560,30 +577,46 @@ function restoreMinimisedList(listID) {
 
 // Show full screen card
 function showFullscreen(cardID) {
-    
     console.log(cardID);
+    $('body').addClass('freeze_scroll');
     request = `/app/c/${cardID}`
     fetch(request)
         .then(response => response.json())
         .then(response => {
             let cardContent = response[0];
             let cardMetadata = response[1];
+            let cardChildren = response[2];
+            console.log(cardChildren);
             let fsContainer = `
             <div id="fullscreen" class="fs_wrapper container-fluid m-0 p-0">
-                <div onclick="closeFS()" style="color: white">Back to lists</div> 
-                <div id="fs_frame" class="fs_frame row flex-nowrap m-3 ms-5">
-                    <div class="fs_list_main content_main fs_list">
+                
+            <ul class="row" style="color: white; background-color: black; font-size: 0.85rem;">
+            <li class="col-2" onclick="closeFS()">Back to lists</li>
+            <li class="col-2" onclick="fsAddNewCard()">Add new sub card</li>
+            <li class="col-2" onclick="fsAddNewList()">Add new sub list</li>
+            </ul>
+
+            <div id="fs_frame" class="fs_frame row flex-nowrap">
+                <div class="fs_list_main content_main fs_list">
+                    
+                    <div id="${cardMetadata}" class="card id">
+                        <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
                         <div class="row">
-                        <div class="fs_card">
-                            ${cardContent}
+                        <div class="edit_handle"><span class="material-icons">edit</span></div>
+                        <div contentEditable="false" class="card_content content_main">
+                        ${cardContent}
                         </div>
-                        <div class="fs_card_meta">
-                            ${cardMetadata}
+                        <div class="content_side">
+                            <ul class="metadata">
+                            <li>${cardMetadata}</li>
+                            </ul>
                         </div>
                         </div>
-                    </div>
-                    <div class="fs_list_scratch content_main fs_list"></div>
-                </div>        
+                    </div>                        
+                    
+                </div>
+                <div class="fs_list_scratch content_main fs_list"></div>
+            </div>
             </div>
             `
 
@@ -593,18 +626,209 @@ function showFullscreen(cardID) {
             for (var i = 0; i < fs.length; i++) {
                 var sortable = fs[i];
                 new Sortable(sortable, {
-                group: 'shared',
-                animation: 150,
-                easing: "cubic-bezier(1, 0, 0, 1)",
-                ghostClass: 'blue-background-class',
+                    handle: '.card_sort_handle',
+                    group: 'shared',
+                    animation: 150,
+                    easing: "cubic-bezier(1, 0, 0, 1)",
+                    ghostClass: 'blue-background-class',
                 });
             };
+
+            // Listens for clicks to edit card content
+            $(".edit_handle").on('click', function() {
+                // Goes up one level in the DOM tree and finds the card content container
+                let cardContentContainer = $(this).parent().find('.card_content');
+                console.log(cardContentContainer);
+                // gets the card ID
+                let cardId = cardContentContainer.closest('.id').attr('id');
+
+                // fetches the un-markdown-ed text as stored
+                const request = new Request('/app/c/edit', {
+                    method: 'POST',
+                    body: JSON.stringify(cardId),
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    })
+                });
+            
+                fetch(request)
+                    .then(res => res.json())
+                    .then(res => {
+                        // save the current text in case we want to cancel
+                        let beforeEditContent = cardContentContainer.html();
+                        // replace newlines with line breaks. Without this text is jammed into the edit window with no line breaks at all.
+                        let result = res.replace(/\n/g, "<br>");
+                        // replace current text with markdown in edit window
+                        cardContentContainer.html(result);
+                        // Stops listening to clicks when editing
+                        if (cardContentContainer.attr('contentEditable') == 'false') {
+                            // create the array to be sent to the backend
+                            const changedData = [cardId, 'Card Content'];
+                            // Changes to contentEditable mode
+                            cardContentContainer.attr('contentEditable', 'true');
+                            cardContentContainer.focus();
+                            // Listens for enter key, if pressed exits edit mode
+                            cardContentContainer.on('keydown', function(e) {
+                                if (e.key == "s" && e.ctrlKey) {
+                                    e.preventDefault();
+                                    cardContentContainer.attr('contentEditable', 'false');
+                                    // adds new text content to changedData array
+                                    changedData.push($(this).prop('innerText'));
+                                    // sends to the backend
+                                    const request = new Request('/app/c/edit', {
+                                        method: 'PUT',
+                                        body: JSON.stringify(changedData),
+                                        headers: new Headers({
+                                            'Content-Type': 'application/json'
+                                        })
+                                    })
+                                
+                                    fetch(request)
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            // replaces markdown code with processed markdown html
+                                            cardContentContainer.html(res);
+                                            // turns off listeners, otherwise multiple listeners are active at once
+                                            cardContentContainer.off();
+                                            // reset listeners
+                                            removeListeners();
+                                            enableListeners();
+                                        });
+                                }
+                            })
+                            // Cancel function
+                            cardContentContainer.on('keydown', function(e) {
+                                if (e.key == "Escape") {
+                                    cardContentContainer.html(beforeEditContent);
+                                    cardContentContainer.attr('contentEditable', 'false');
+                                    // turns off listeners, otherwise multiple listeners are active at once
+                                    cardContentContainer.off();
+                                    // reset listeners
+                                    removeListeners();
+                                    enableListeners();
+                                }
+                            })
+                            
+                        }
+                    })
+                
+            });
+
+
         });
+        
     
 };
 
+function fsAddNewCard() {
+    let listObj = $('.fs_list_scratch')
+    let endPoint = "/app/c/new/subcard"
+    fetch(endPoint)
+        .then(resp => resp.json())
+        .then(cardId => {
+            let newCard = `
+            <div id="${cardId}" class="card id">
+            <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
+            <div class="row">
+            <div class="edit_handle"><span class="material-icons">edit</span></div>
+            <div contentEditable="false" class="card_content content_main"></div>
+            <div class="content_side">
+                <ul class="metadata">
+                <li>${cardId}</li>
+                </ul>
+            </div>
+            </div>
+            </div>
+            `
+            
+            // Insert card
+            $(listObj).append(newCard);
+
+            // edit card content
+            let newCardObj = $(`#${cardId}`).find('.card_content');
+            let parentCardId = $(`#${cardId}`).closest('.fs_list').find('.id').attr('id');
+            console.log(parentCardId);
+            // Stops listening to clicks when editing
+            if (newCardObj.attr('contentEditable') == 'false') {
+                // create the array to be sent to the backend
+                const changedData = [newCardObj.closest('.id').attr('id'), 'new subcard', parentCardId];
+                // Changes to contentEditable mode
+                newCardObj.attr('contentEditable', 'true');
+                newCardObj.focus();
+
+                // Listens for paste event, replaces formatted text with plain text
+                newCardObj.on("paste",function(event){
+                    event.preventDefault();
+                    // console.log(window.event.clipboardData);
+                    let clipboarddata =  window.event.clipboardData.getData('text/plain');    
+                    // console.log("paste value" + clipboarddata);
+                    newCardObj.text(clipboarddata);
+                });
+
+                // Listens for enter key, if pressed exits edit mode
+                newCardObj.on('keydown', function(e) {
+                    if (e.key == "s" && e.ctrlKey) {
+                        e.preventDefault();
+                        newCardObj.attr('contentEditable', 'false');
+                        // adds new text content to changedData array
+                        changedData.push($(this).prop('innerText'));
+                        // sends to the backend
+                        const request = new Request(endPoint, {
+                            method: 'POST',
+                            body: JSON.stringify(changedData),
+                            headers: new Headers({
+                                'Content-Type': 'application/json'
+                            })
+                        })
+                    
+                        fetch(request)
+                            .then(res => res.json())
+                            .then(res => {
+                                // replaces markdown code with processed markdown html
+                                newCardObj.html(res);
+                                newCardObj.off();
+                                // reset listeners
+                                removeListeners();
+                                enableListeners();
+
+                            });
+                    }
+                })
+                newCardObj.on('keydown', function(e) {
+                    if (e.key == "Escape") {
+                        // newCardObj.attr('contentEditable', 'false');
+                        $(`#${cardId}`).remove();
+                        newCardObj.off();
+                        // reset listeners
+                        removeListeners();
+                        enableListeners();
+                    }
+                })
+            }
+        }) 
+};
+
+function fsAddNewList() {
+    $('#fs_frame').append('<div class="fs_list_scratch content_main fs_list"></div>');
+
+    // Sortables for Fullscreen
+    var fs = document.querySelectorAll(".fs_list");
+    for (var i = 0; i < fs.length; i++) {
+        var sortable = fs[i];
+        new Sortable(sortable, {
+            handle: '.card_sort_handle',
+            group: 'shared',
+            animation: 150,
+            easing: "cubic-bezier(1, 0, 0, 1)",
+            ghostClass: 'blue-background-class',
+        });
+    };
+};
+
+
 function closeFS() {
     $("#fullscreen").remove();
+    $('body').removeClass('freeze_scroll');
 };
 
 // ---------------------- // Start // ---------------------- //

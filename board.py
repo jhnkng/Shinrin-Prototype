@@ -32,8 +32,8 @@ class Board:
         for each_card in saved_card_data:
             new_card_obj = Card()
             new_card_obj.card_id = each_card['card_id']
-            # new_card_obj.card_title = each_card['card_title']
             new_card_obj.card_body = each_card['card_body']
+            new_card_obj.card_children = each_card['card_children']
             card_objects.append(new_card_obj)
         self.current_card_objects = card_objects
         return self.current_card_objects
@@ -43,13 +43,11 @@ class List:
     def __init__(self):
         self.list_id = str
         self.list_name = str
-        # self.is_notebook = False
         self.cards = []
 
 
 class Card:
     def __init__(self):
         self.card_id = str
-        # self.card_title = str
         self.card_body = str
-        # self.tags = str
+        self.card_children = []

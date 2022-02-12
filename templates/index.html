@@ -6,16 +6,15 @@
         <li class='list-group-item list-group-item-dark' onclick="addNewList()">Add New List</li>
     </ul>
     <ul id="minimised_lists" class='p-3 w-50' >
-        <li class='ps-3'>Minimised Lists:</li>
+        <!-- <li class='ps-3'><h3>Minimised Lists:</h3></li> -->
     </ul>
     <p class="position-absolute bottom-0 start-0 p-4">Your user key is {{user_key}}.<br>To access this page again please use this key to login.</p>
 </header>
 
-<div id="target">target</div>
+<div id="target"></div>
 
 <!-- Flexbox Container -->
 <div class="container-fluid">
-
 
 <!-- Bootstrap flexbox row -->
 <div id="list_row" class="list_row row flex-nowrap smooth">
@@ -51,9 +50,9 @@
                 <span class="material-icons">edit</span>
             </div>
             <div contentEditable="false" class="card_content content_main col-9">
+                <!-- <span onclick="showFullscreen('{{ card['card_id'] }}')">{{ card['card_id'] }}</span> -->
+
                 {{ card['card_body_html'] }}
-                <!-- <a href="app/c/{{ card['card_id'] }}">{{ card['card_id'] }}</a> -->
-                <span onclick="showFullscreen('{{ card['card_id'] }}')">{{ card['card_id'] }}</span>
             </div>
             <div class="content_side col-3">
             <ul class="metadata">
@@ -85,3 +84,6 @@
 
 </body>
 {% include "footer.html" %}
+
+
+
