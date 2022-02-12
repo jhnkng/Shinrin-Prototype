@@ -307,16 +307,93 @@ def list_order_update():
 # ----------------- # Card Routes # ----------------- #
 # Show full-screen
 @app.route('/app/c/<card_id>')
-def card(card_id):
-    # card_index = bd.current_card_obj_index[int(card_id)]
+def card_fullscreen_view(card_id):
     card_index = bd.current_card_obj_index[card_id]
+    requested_card_obj = deepcopy(bd.current_card_objects[card_index])
 
-    card_content = Markup(md.markdown(process_newlines(bd.current_card_objects[card_index].card_body)))
-    card_metadata = bd.current_card_objects[card_index].card_id
-    card_children = bd.current_card_objects[card_index].card_children
+    card_content = Markup(md.markdown(process_newlines(requested_card_obj.card_body)))
+    card_metadata = requested_card_obj.card_id
+    card_children = requested_card_obj.card_children
+    for item in card_children:
+        item['subcard_body'] = Markup(md.markdown(item['subcard_body']))
 
     resp = [card_content, card_metadata, card_children]
     return jsonify(resp)
+
+
+@app.route('/app/cards/subcard/new', methods=['GET', 'POST'])
+def card_new_subcard():
+    if request.method == 'GET':
+        # Get a new id for the new card
+        return jsonify(get_new_id())
+
+    if request.method == 'POST':
+        new_card_data = request.get_json()
+        # Returns ['new subcard id', 'new sub card', 'parent card id', 'card body']
+        subcard_id = new_card_data[0]
+        parent_card_id = new_card_data[2]
+        subcard_body = new_card_data[-1]
+        new_subcard = {
+            "subcard_id": subcard_id,
+            "subcard_body": subcard_body
+        }
+
+        parent_card_obj_index = bd.current_card_obj_index[parent_card_id]
+        # update card_children with new_subcard
+        bd.current_card_objects[parent_card_obj_index].card_children.append(new_subcard)
+
+        # Write to disk
+        write_data()
+
+        # Return markdown processed card body
+        convert_to_markdown = Markup(md.markdown(new_card_data[-1]))
+        return jsonify(convert_to_markdown)
+
+
+@app.route('/app/cards/subcard/edit', methods=['POST', 'PUT'])
+def card_edit_subcard():
+    if request.method == 'POST':
+        # accept the cardID, get the unwrapped content of that card and pass it through
+        # 1. get the passed card id
+        req_card_id = request.get_json()
+        # print(f"req_card_id: {req_card_id}")
+        # returns ['card id', 'parent card id']
+        # 2. get the parent card ID
+        card_id = req_card_id[0]
+        parent_card_id = req_card_id[1]
+        # 3. find the index of the card
+        parent_card_id_index = bd.current_card_obj_index[parent_card_id]
+        # 4. get the card object
+        parent_card_obj = bd.current_card_objects[parent_card_id_index]
+        # 5. search the child cards and return the body text of the matching card, and send
+        req_data = next(item['subcard_body'] for item in parent_card_obj.card_children if item['subcard_id'] == card_id)
+        return jsonify(req_data)
+
+    if request.method == 'PUT':
+        changed_data = request.get_json()
+        # print(f"changed data: {changed_data}")
+        # ['card id', 'Sub Card Content', 'parent card id', 'changed content']
+
+        # 2. get the parent card ID
+        card_id = changed_data[0]
+        parent_card_id = changed_data[2]
+        changed_content = changed_data[-1]
+
+        # 3. find the index of the card
+        parent_card_id_index = bd.current_card_obj_index[parent_card_id]
+
+        # 4. get the card object and make the changes
+        parent_card_obj = bd.current_card_objects[parent_card_id_index]
+        # return the index for each item in parent_card_obj.card_children if it matches the card id
+        change_obj_index = next((index for (index, item) in enumerate(parent_card_obj.card_children) if
+                                 item['subcard_id'] == card_id))
+        parent_card_obj.card_children[change_obj_index]['subcard_body'] = changed_content
+        # 5. write to disk
+        write_data()
+
+        # 6. return markdown formatted text
+        resp = Markup(md.markdown(changed_content))
+        return jsonify(resp)
 
 
 @app.route('/app/c/new', methods=['GET', 'POST'])
@@ -346,35 +423,6 @@ def card_new():
         to_list_index = bd.current_list_obj_index[new_card_data[2]]
         to_list = list_objects[to_list_index].cards
         to_list.append(new_card_data[0])
-
-        # Write to disk
-        write_data()
-
-        # Return markdown processed card body
-        convert_to_markdown = Markup(md.markdown(new_card_data[-1]))
-        return jsonify(convert_to_markdown)
-
-
-@app.route('/app/c/new/subcard', methods=['GET', 'POST'])
-def card_new_subcard():
-    if request.method == 'GET':
-        # Get a new id for the new card
-        return jsonify(get_new_id())
-
-    if request.method == 'POST':
-        new_card_data = request.get_json()
-        # Returns ['new subcard id', 'new sub card', 'parent card id', 'card body']
-        subcard_id = new_card_data[0]
-        parent_card_id = new_card_data[2]
-        subcard_body = new_card_data[-1]
-        new_subcard = {
-            "subcard_id": subcard_id,
-            "subcard_body": subcard_body
-        }
-
-        parent_card_obj_index = bd.current_card_obj_index[parent_card_id]
-        # update card_children with new_subcard
-        bd.current_card_objects[parent_card_obj_index].card_children.append(new_subcard)
 
         # Write to disk
         write_data()
@@ -433,7 +481,7 @@ def card_edit_content():
         # 1. get the passed card id
         # req_card_id = int(request.get_json())
         req_card_id = request.get_json()
-        print(f"req_card_id: {req_card_id}")
+        # print(f"req_card_id: {req_card_id}")
 
         # 2. look up the index of that card object
         if req_card_id in bd.current_card_obj_index:

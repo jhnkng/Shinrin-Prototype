@@ -549,8 +549,8 @@ ul {
     overflow-y: auto;
     overflow-x: hidden;
     margin: 1rem;
-    /* background-color: rgba(120, 120, 120, 0.1); */
-    border-top: thin gray solid;
+    background-color: rgba(120, 120, 120, 0.1);
+    /* border-top: thin gray solid; */
     padding: 0;
 }
     .fs_list:first-child {
@@ -563,14 +563,18 @@ ul {
     }
 
     .fs_list .card_content {
-        padding: 1rem 2rem;
+        padding: 0.5rem 1.5rem;
+    }
+
+    .fs_list .content_side {
+        display: none;
     }
 
 .fs_list_main {
     width: 650px;
 }
 
-.fs_list_scratch {
+.fs_list_sub {
     width: 380px;
 }
 

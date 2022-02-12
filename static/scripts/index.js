@@ -577,7 +577,6 @@ function restoreMinimisedList(listID) {
 
 // Show full screen card
 function showFullscreen(cardID) {
-    console.log(cardID);
     $('body').addClass('freeze_scroll');
     request = `/app/c/${cardID}`
     fetch(request)
@@ -590,7 +589,7 @@ function showFullscreen(cardID) {
             let fsContainer = `
             <div id="fullscreen" class="fs_wrapper container-fluid m-0 p-0">
                 
-            <ul class="row" style="color: white; background-color: black; font-size: 0.85rem;">
+            <ul class="row pt-1 pb-1" style="color: white; background-color: black; font-size: 0.85rem;">
             <li class="col-2" onclick="closeFS()">Back to lists</li>
             <li class="col-2" onclick="fsAddNewCard()">Add new sub card</li>
             <li class="col-2" onclick="fsAddNewList()">Add new sub list</li>
@@ -615,12 +614,36 @@ function showFullscreen(cardID) {
                     </div>                        
                     
                 </div>
-                <div class="fs_list_scratch content_main fs_list"></div>
+                <div class="fs_list_sub content_main fs_list"></div>
             </div>
             </div>
             `
-
+            // Insert into page
             $('#target').html(fsContainer);
+
+            // Render sub cards
+            for (let i = 0; i < cardChildren.length; i++) {
+                let subCardID = cardChildren[i].subcard_id;
+                let subCardBody = cardChildren[i].subcard_body;
+                let newCard = `
+                <div id="${subCardID}" class="card id">
+                <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
+                <div class="row">
+                <div class="edit_handle"><span class="material-icons">edit</span></div>
+                <div contentEditable="false" class="card_content content_main">
+                ${subCardBody}
+                </div>
+                <div class="content_side">
+                    <ul class="metadata">
+                    <li>${subCardID}</li>
+                    </ul>
+                </div>
+                </div>
+                </div>
+                `
+                $('.fs_list_sub').append(newCard);
+            };
+
             // Sortables for Fullscreen
             var fs = document.querySelectorAll(".fs_list");
             for (var i = 0; i < fs.length; i++) {
@@ -636,16 +659,19 @@ function showFullscreen(cardID) {
 
             // Listens for clicks to edit card content
             $(".edit_handle").on('click', function() {
+                console.log("edit clicked");
+                let endPoint = '/app/cards/subcard/edit';
                 // Goes up one level in the DOM tree and finds the card content container
                 let cardContentContainer = $(this).parent().find('.card_content');
-                console.log(cardContentContainer);
                 // gets the card ID
                 let cardId = cardContentContainer.closest('.id').attr('id');
+                let parentCardId = $('.fs_list_main').find('.id').attr('id');
+                const dataRequest = [cardId, parentCardId]
 
                 // fetches the un-markdown-ed text as stored
-                const request = new Request('/app/c/edit', {
+                const request = new Request(endPoint, {
                     method: 'POST',
-                    body: JSON.stringify(cardId),
+                    body: JSON.stringify(dataRequest),
                     headers: new Headers({
                         'Content-Type': 'application/json'
                     })
@@ -663,7 +689,7 @@ function showFullscreen(cardID) {
                         // Stops listening to clicks when editing
                         if (cardContentContainer.attr('contentEditable') == 'false') {
                             // create the array to be sent to the backend
-                            const changedData = [cardId, 'Card Content'];
+                            const changedData = [cardId, 'Sub Card Content', parentCardId];
                             // Changes to contentEditable mode
                             cardContentContainer.attr('contentEditable', 'true');
                             cardContentContainer.focus();
@@ -675,7 +701,7 @@ function showFullscreen(cardID) {
                                     // adds new text content to changedData array
                                     changedData.push($(this).prop('innerText'));
                                     // sends to the backend
-                                    const request = new Request('/app/c/edit', {
+                                    const request = new Request(endPoint, {
                                         method: 'PUT',
                                         body: JSON.stringify(changedData),
                                         headers: new Headers({
@@ -708,21 +734,16 @@ function showFullscreen(cardID) {
                                     enableListeners();
                                 }
                             })
-                            
                         }
-                    })
-                
+                    }) 
             });
-
-
         });
-        
-    
 };
 
+
 function fsAddNewCard() {
-    let listObj = $('.fs_list_scratch')
-    let endPoint = "/app/c/new/subcard"
+    let listObj = $('.fs_list_sub')
+    let endPoint = "/app/cards/subcard/new"
     fetch(endPoint)
         .then(resp => resp.json())
         .then(cardId => {
@@ -746,7 +767,7 @@ function fsAddNewCard() {
 
             // edit card content
             let newCardObj = $(`#${cardId}`).find('.card_content');
-            let parentCardId = $(`#${cardId}`).closest('.fs_list').find('.id').attr('id');
+            let parentCardId = $('.fs_list_main').find('.id').attr('id');
             console.log(parentCardId);
             // Stops listening to clicks when editing
             if (newCardObj.attr('contentEditable') == 'false') {
