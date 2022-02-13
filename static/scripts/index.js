@@ -576,9 +576,9 @@ function restoreMinimisedList(listID) {
 };
 
 // Show full screen card
-function showFullscreen(cardID) {
+function showFullscreen(parentCardID) {
     $('body').addClass('freeze_scroll');
-    request = `/app/c/${cardID}`
+    request = `/app/c/${parentCardID}`
     fetch(request)
         .then(response => response.json())
         .then(response => {
@@ -597,24 +597,22 @@ function showFullscreen(cardID) {
 
             <div id="fs_frame" class="fs_frame row flex-nowrap">
                 <div class="fs_list_main content_main fs_list">
-                    
                     <div id="${cardMetadata}" class="card id">
-                        <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
-                        <div class="row">
-                        <div class="edit_handle"><span class="material-icons">edit</span></div>
-                        <div contentEditable="false" class="card_content content_main">
-                        ${cardContent}
-                        </div>
-                        <div class="content_side">
-                            <ul class="metadata">
-                            <li>${cardMetadata}</li>
-                            </ul>
-                        </div>
-                        </div>
-                    </div>                        
-                    
-                </div>
+                    <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
+                    <div class="row">
+                    <div class="edit_handle"><span class="material-icons">edit</span></div>
+                    <div contentEditable="false" class="card_content content_main">
+                    ${cardContent}
+                    </div>
+                    <div class="content_side">
+                        <ul class="metadata">
+                        <li>${cardMetadata}</li>
+                        </ul>
+                    </div>
+                    </div>
+                    </div>    
                 <div class="fs_list_sub content_main fs_list"></div>
+                </div>
             </div>
             </div>
             `
@@ -645,7 +643,7 @@ function showFullscreen(cardID) {
             };
 
             // Sortables for Fullscreen
-            var fs = document.querySelectorAll(".fs_list");
+            var fs = document.querySelectorAll(".fs_list_sub");
             for (var i = 0; i < fs.length; i++) {
                 var sortable = fs[i];
                 new Sortable(sortable, {
@@ -654,6 +652,12 @@ function showFullscreen(cardID) {
                     animation: 150,
                     easing: "cubic-bezier(1, 0, 0, 1)",
                     ghostClass: 'blue-background-class',
+                    onEnd: function(evt) {
+                        // Create array from the old index and the new index along with the lists it was dragged and dropped from
+                        let changeIndex = [parentCardID, evt.oldIndex, evt.newIndex];
+                        console.log(changeIndex);
+                        sendToBackend('/app/cards/subcard/update', 'POST', changeIndex);
+                }
                 });
             };
 
@@ -664,10 +668,10 @@ function showFullscreen(cardID) {
                 // Goes up one level in the DOM tree and finds the card content container
                 let cardContentContainer = $(this).parent().find('.card_content');
                 // gets the card ID
-                let cardId = cardContentContainer.closest('.id').attr('id');
-                let parentCardId = $('.fs_list_main').find('.id').attr('id');
-                const dataRequest = [cardId, parentCardId]
-
+                let subCardID = cardContentContainer.closest('.id').attr('id');
+                let parentCardID = $('.fs_list_main').find('.id').attr('id');
+                const dataRequest = [subCardID, parentCardID]
+                console.log(dataRequest);
                 // fetches the un-markdown-ed text as stored
                 const request = new Request(endPoint, {
                     method: 'POST',
@@ -683,13 +687,14 @@ function showFullscreen(cardID) {
                         // save the current text in case we want to cancel
                         let beforeEditContent = cardContentContainer.html();
                         // replace newlines with line breaks. Without this text is jammed into the edit window with no line breaks at all.
-                        let result = res.replace(/\n/g, "<br>");
+                        // let result = res.replace(/\n/g, "<br>");
+                        let result = res
                         // replace current text with markdown in edit window
                         cardContentContainer.html(result);
                         // Stops listening to clicks when editing
                         if (cardContentContainer.attr('contentEditable') == 'false') {
                             // create the array to be sent to the backend
-                            const changedData = [cardId, 'Sub Card Content', parentCardId];
+                            const changedData = [subCardID, 'Sub Card Content', parentCardID];
                             // Changes to contentEditable mode
                             cardContentContainer.attr('contentEditable', 'true');
                             cardContentContainer.focus();
@@ -717,8 +722,8 @@ function showFullscreen(cardID) {
                                             // turns off listeners, otherwise multiple listeners are active at once
                                             cardContentContainer.off();
                                             // reset listeners
-                                            removeListeners();
-                                            enableListeners();
+                                            // removeListeners();
+                                            // enableListeners();
                                         });
                                 }
                             })
@@ -730,8 +735,8 @@ function showFullscreen(cardID) {
                                     // turns off listeners, otherwise multiple listeners are active at once
                                     cardContentContainer.off();
                                     // reset listeners
-                                    removeListeners();
-                                    enableListeners();
+                                    // removeListeners();
+                                    // enableListeners();
                                 }
                             })
                         }

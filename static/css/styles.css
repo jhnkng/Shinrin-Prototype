@@ -239,8 +239,8 @@ h3 {
 .content_main {
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1.6rem;
-    margin-bottom: 0.5rem;
+    line-height: 1.3rem;
+    margin-bottom: 0.2rem;
 }
 
 .content_main ol {
@@ -259,12 +259,10 @@ strong {
     background-color: salmon;
 }
 
-.card:first-child {
+/* .card:first-child { */
     /* There is a 1px border in the card just in the left most list. No idea why, but this turns it off */
-    border: 0;
-}
-
-
+    /* border: 0; */
+/* } */
 
 /* .fade_out {
     width: 0;
@@ -325,10 +323,10 @@ strong {
     }
 
 
-.content_main textarea {
+/* .content_main textarea {
     width: 100%;
     outline: rgba(60, 60, 60, 0.5);
-}
+} */
 
 .list_sort_handle:hover {
     /* Highlight list drag handle */
@@ -573,6 +571,11 @@ ul {
 .fs_list_main {
     width: 650px;
 }
+
+    .fs_list_main .fs_list_sub {
+        margin: 0;
+        width: 100%;
+    }
 
 .fs_list_sub {
     width: 380px;

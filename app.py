@@ -396,6 +396,26 @@ def card_edit_subcard():
         return jsonify(resp)
 
 
+@app.route('/app/cards/subcard/update', methods=['POST'])
+def subcard_order_change():
+    # the data passed is an array with the old index to the new index
+    # 1. get changed data
+    changed_data = request.get_json()
+    print(changed_data)
+    # returns ['parent card id', old index, new index]
+    parent_card_id = changed_data[0]
+    old_pos = changed_data[1]
+    new_pos = changed_data[2]
+    # 2. grab the current list of subcards, take the card object from old index and re-insert it at new index
+    parent_card_obj_index = bd.current_card_obj_index[parent_card_id]
+    parent_card_obj = bd.current_card_objects[parent_card_obj_index]
+    child_cards = parent_card_obj.card_children
+    # swap child card positions!
+    child_cards.insert(new_pos, child_cards.pop(old_pos))
+    write_data()
+    return '', 204
+
+
 @app.route('/app/c/new', methods=['GET', 'POST'])
 def card_new():
     if request.method == 'GET':
