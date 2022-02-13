@@ -25,7 +25,7 @@ def get_data(user_key, data_type):
         with open(filename, mode='r') as data_file:
             data = json.load(data_file)
     except FileNotFoundError:
-        with open('user_data/test_data.json', mode='r') as data_file:
+        with open('user_data/new.json', mode='r') as data_file:
             data = json.load(data_file)
     selected_data = [value for value in data[data_type]]
     return selected_data
