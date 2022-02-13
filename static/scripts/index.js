@@ -432,6 +432,7 @@ function addNewList() {
             // reset listeners
             removeListeners();
             enableListeners();
+            enableSortable();
 
             // Edit list name
             let newListObj = $(`#${newListID} h2.list_header`);            
@@ -835,7 +836,7 @@ function fsAddNewCard() {
 };
 
 function fsAddNewList() {
-    $('#fs_frame').append('<div class="fs_list_scratch content_main fs_list"></div>');
+    $('#fs_frame').append('<div class="fs_list_sub content_main fs_list"></div>');
 
     // Sortables for Fullscreen
     var fs = document.querySelectorAll(".fs_list");

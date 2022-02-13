@@ -2,11 +2,25 @@
     "board": {},
     "lists": [
         {
+            "list_id": "NmvlaqDS",
+            "list_name": "\u65b0\u3057\u3044\u6f22\u5b57 \ud83c\udd95",
+            "cards": [
+                "HcUirWmk",
+                "ohSrlFEw"
+            ]
+        },
+        {
             "list_id": "mxEBgrXo",
             "list_name": "\u554f\u984c\u2753",
             "cards": [
-                "Lowoxwfz",
                 "cnIgIjXF"
+            ]
+        },
+        {
+            "list_id": "StkYiFaA",
+            "list_name": "Grammar Points",
+            "cards": [
+                "Lowoxwfz"
             ]
         },
         {
@@ -23,14 +37,6 @@
                 "bCCGwctI",
                 "CrJnGisn",
                 "YRfPdQQy"
-            ]
-        },
-        {
-            "list_id": "NmvlaqDS",
-            "list_name": "\u65b0\u3057\u3044\u6f22\u5b57 \ud83c\udd95",
-            "cards": [
-                "HcUirWmk",
-                "ohSrlFEw"
             ]
         }
     ],
@@ -153,16 +159,16 @@
             "tags": "",
             "card_children": [
                 {
+                    "subcard_id": "NunpvTCx",
+                    "subcard_body": "###### Readings:\n\n\u307b\u304b\n\n\n\nedit"
+                },
+                {
                     "subcard_id": "NbolZbaQ",
                     "subcard_body": "###### Meanings:\n\n\nOthers"
                 },
                 {
                     "subcard_id": "lIvrvlOR",
                     "subcard_body": "###### Words using this kanji:\n\n\n\u4ed6\u306b\uff1aWhat else?"
-                },
-                {
-                    "subcard_id": "NunpvTCx",
-                    "subcard_body": "###### Readings:\n\n\u307b\u304b\n\n\n\nedit"
                 }
             ],
             "related_cards": ""
