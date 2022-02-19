@@ -132,6 +132,14 @@ h2[contentEditable=true] {
     margin: 0 auto;
 }
 
+    .minimise:hover {
+        color: gray;
+    }
+
+    .remove:hover {
+        color: gray;
+    }
+
 .list_change_input {
     font-size: 1rem;
     font-weight: 700;

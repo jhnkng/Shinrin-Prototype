@@ -139,12 +139,12 @@ function enableListeners() {
         alert("are you sure you want to delete this card?");
         sendToBackend('/app/c/trash', 'DELETE', dataToSend);
         cardToDel.remove();
+        console.log('card removed');
     });
 
 
     // Listens for clicks to edit card content
     $(".edit_handle").on('click', function() {
-        console.log('clicked');
         // Goes up one level in the DOM tree and finds the card content container
         let cardContentContainer = $(this).parent().find('.card_content');
         // gets the card ID
@@ -248,19 +248,6 @@ function enableListeners() {
         listToMinimise.remove();
         $('#minimised_lists').append(`<li class='ps-3 ${listToMinimiseID}' onclick='restoreMinimisedList("${listToMinimiseID}")'>${listToMinimiseText}</li>`);
     });
-
-    // Change List Width
-    // Todo: add persistence 
-    // $(".list_width").on('click', function() {
-    //     console.log(this);
-    //     if ($(this).hasClass('rotate')) {
-    //         $(this).closest('.list_wrapper').addClass('wide_wrapper');
-    //         $(this).removeClass('rotate');
-    //     } else {
-    //         $(this).closest('.list_wrapper').removeClass('wide_wrapper');
-    //         $(this).addClass('rotate');    
-    //     }
-    // });
 
     $('.card_content').on('click', function() {
         if ($(this).attr('contentEditable') == 'false') {
@@ -604,7 +591,6 @@ function showFullscreen(parentCardID) {
             let cardContent = response[0];
             let cardMetadata = response[1];
             let cardChildren = response[2];
-            console.log(cardChildren);
             let fsContainer = `
             <div id="fullscreen" class="fs_wrapper container-fluid m-0 p-0">
                 
@@ -691,19 +677,22 @@ function showFullscreen(parentCardID) {
                 alert("are you sure you want to delete this card?");
                 sendToBackend('/app/cards/subcard/trash', 'DELETE', dataToSend);
                 subcardToDel.remove();
+                console.log('sub card removed');
             });
 
             // Listens for clicks to edit card content
             $(".edit_handle").on('click', function() {
-                console.log("edit clicked");
-                let endPoint = '/app/cards/subcard/edit';
                 // Goes up one level in the DOM tree and finds the card content container
                 let cardContentContainer = $(this).parent().find('.card_content');
                 // gets the card ID
                 let subCardID = cardContentContainer.closest('.id').attr('id');
                 let parentCardID = $('.fs_list_main').find('.id').attr('id');
+
+                let endPoint = '/app/cards/subcard/edit';
+                // if(subCardID == parentCardID) {
+                //     endPoint = '/app/c/edit';
+                // }
                 const dataRequest = [subCardID, parentCardID]
-                console.log(dataRequest);
                 // fetches the un-markdown-ed text as stored
                 const request = new Request(endPoint, {
                     method: 'POST',

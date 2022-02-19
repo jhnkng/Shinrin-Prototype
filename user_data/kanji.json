@@ -2,6 +2,24 @@
     "board": {},
     "lists": [
         {
+            "list_id": "GPJxurjo",
+            "list_name": "\u65b0\u3057\u3044\u5358\u8a9e\ud83c\udd95",
+            "cards": []
+        },
+        {
+            "list_id": "jeTRJAfg",
+            "list_name": "To-dos \u2705",
+            "cards": [
+                "piqLzSem",
+                "RxhvVlue"
+            ]
+        },
+        {
+            "list_id": "LshAcHPK",
+            "list_name": "JLPT N5 \u6f22\u5b57\ud83d\udc4c\ud83c\udffd",
+            "cards": []
+        },
+        {
             "list_id": "NmvlaqDS",
             "list_name": "\u65b0\u3057\u3044\u6f22\u5b57 \ud83c\udd95",
             "cards": [
@@ -22,50 +40,13 @@
             "cards": [
                 "Lowoxwfz"
             ]
-        },
-        {
-            "list_id": "LshAcHPK",
-            "list_name": "JLPT N5 \u6f22\u5b57\ud83d\udc4c\ud83c\udffd",
-            "cards": [
-                "NrEnxHkS",
-                "IaSmyVty",
-                "srvovWum",
-                "NYvHwXxi",
-                "cxhKjlXk",
-                "QoWbKqpR",
-                "RfRjdKMC",
-                "bCCGwctI",
-                "CrJnGisn",
-                "YRfPdQQy"
-            ]
         }
     ],
     "cards": [
         {
-            "card_id": "NrEnxHkS",
-            "card_title": "",
-            "card_body": "#\u00a0\u4e00\n",
-            "tags": "",
-            "card_children": [
-                {
-                    "subcard_id": "DwDMRAVf",
-                    "subcard_body": "###### Readings:\n\n\u8a13\u8aad\u307f\uff1a\u3072\u3068\u3001\u3072\u3068\u30fc\u3064\n\n\u97f3\u8aad\u307f\uff1a\u3044\u3061\u3001\u3044\u3064"
-                }
-            ],
-            "related_cards": ""
-        },
-        {
             "card_id": "IaSmyVty",
             "card_title": "",
             "card_body": "# \u4e8c",
-            "tags": "",
-            "card_children": [],
-            "related_cards": ""
-        },
-        {
-            "card_id": "srvovWum",
-            "card_title": "",
-            "card_body": "#\u4e09",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -76,80 +57,6 @@
             "card_body": "#\u56db",
             "tags": "",
             "card_children": [],
-            "related_cards": ""
-        },
-        {
-            "card_id": "cxhKjlXk",
-            "card_title": "",
-            "card_body": "#\u4e94",
-            "tags": "",
-            "card_children": [
-                {
-                    "subcard_id": "QMtjKLkm",
-                    "subcard_body": "Testing 123"
-                }
-            ],
-            "related_cards": ""
-        },
-        {
-            "card_id": "QoWbKqpR",
-            "card_title": "",
-            "card_body": "#\u516d",
-            "tags": "",
-            "card_children": [],
-            "related_cards": ""
-        },
-        {
-            "card_id": "RfRjdKMC",
-            "card_title": "",
-            "card_body": "#\u4e03",
-            "tags": "",
-            "card_children": [],
-            "related_cards": ""
-        },
-        {
-            "card_id": "bCCGwctI",
-            "card_title": "",
-            "card_body": "#\u516b",
-            "tags": "",
-            "card_children": [],
-            "related_cards": ""
-        },
-        {
-            "card_id": "CrJnGisn",
-            "card_title": "",
-            "card_body": "#\u4e5d",
-            "tags": "",
-            "card_children": [],
-            "related_cards": ""
-        },
-        {
-            "card_id": "YRfPdQQy",
-            "card_title": "",
-            "card_body": "#\u5341",
-            "tags": "",
-            "card_children": [],
-            "related_cards": ""
-        },
-        {
-            "card_id": "HcUirWmk",
-            "card_title": "",
-            "card_body": "**001**\n#\u5316",
-            "tags": "",
-            "card_children": [
-                {
-                    "subcard_id": "ZbrjFdGB",
-                    "subcard_body": "###### Readings:\n\n\u3070\u304b\u3059\uff1atransitive verb\nto bewitch, to confuse, to enchant, to delude\n\n\n\u3070\u3051\u308b\uff1aintransitive verb\nto take the form of (in spirit), to assume the shape of, to turn/transform oneself into\n\n\n\u304b\u3001\u3051"
-                },
-                {
-                    "subcard_id": "ZOrhLChe",
-                    "subcard_body": "###### Meanings:\n\n\nchange, take the form of, influence, enchant, delude, ~isation."
-                },
-                {
-                    "subcard_id": "HUOMtGyr",
-                    "subcard_body": "###### Words using this kanji:\n\n\u6587\u5316\uff08\u3076\u3093\u304b) \uff1aCulture\n\n\u5316\u5b66\uff08\u304b\u304c\u304f\uff09: Science\n\n\u5909\u5316\uff08\u3078\u3093\u304b\uff09: Change\n\n\u6e29\u6696\u5316\uff08\u304a\u3093\u3060\u3093\u304b\uff09: Climate Change\n\n\n\u5c11\u5b50\u9ad8\u9f62\u5316\uff08\u3057\u3087\u3046\u3057\u3053\u3046\u308c\u3044\u304b\uff09: Declining birthday and aging population.\n"
-                }
-            ],
             "related_cards": ""
         },
         {
@@ -174,17 +81,25 @@
             "related_cards": ""
         },
         {
-            "card_id": "cnIgIjXF",
+            "card_id": "Lowoxwfz",
             "card_title": "",
-            "card_body": "What's the difference between \u9055\u3046and \u9593\u9055\u3046?",
+            "card_body": "### Reported Speech\n\nPattern:\n*someone* \u304c\u300creported speech\u300d\u3068\u8a00\u3063\u3066\u3044\u305f\u3002",
             "tags": "",
             "card_children": [],
             "related_cards": ""
         },
         {
-            "card_id": "Lowoxwfz",
+            "card_id": "piqLzSem",
             "card_title": "",
-            "card_body": "### Reported Speech\n\nPattern:\n*someone* \u304c\u300creported speech\u300d\u3068\u8a00\u3063\u3066\u3044\u305f\u3002",
+            "card_body": "Review the list of unknown N4-N5 kanji and add in to list.",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "RxhvVlue",
+            "card_title": "",
+            "card_body": "Add in the first 10 of the new Kanji.",
             "tags": "",
             "card_children": [],
             "related_cards": ""

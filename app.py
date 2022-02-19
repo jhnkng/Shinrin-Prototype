@@ -532,6 +532,7 @@ def card_move_to_trash():
         from_list.pop(card_to_remove_index)
 
         write_data()
+        print("card deleted")
         return '', 204
 
 
