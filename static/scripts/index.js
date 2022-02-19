@@ -130,6 +130,18 @@ function enableListeners() {
         }
     });
 
+    // Listens for delete card clicks
+    $(".delete_handle").on('click', function() {
+        let cardToDel = $(this).closest('.id');
+        let cardToDelID = cardToDel.attr('id');
+        let listIDOfCard = $(this).closest('.list_wrapper').attr('id');
+        const dataToSend = [listIDOfCard, cardToDelID]
+        alert("are you sure you want to delete this card?");
+        sendToBackend('/app/c/trash', 'DELETE', dataToSend);
+        cardToDel.remove();
+    });
+
+
     // Listens for clicks to edit card content
     $(".edit_handle").on('click', function() {
         console.log('clicked');
@@ -224,7 +236,7 @@ function enableListeners() {
         let listToDelID = listToDel.attr('id');
         alert(`Are you sure you want to delete the list ${listToDel.find('.list_header').text()}?`);
         sendToBackend('/app/l/trash', 'DELETE', listToDelID);
-        listToDel.remove();    
+        listToDel.remove();
     });
 
     // Minimise list
@@ -311,6 +323,9 @@ function addNewCard(listObj, cardId) {
     <div class="row">
         <div class="edit_handle">
             <span class="material-icons">edit</span>
+        </div>
+        <div class="delete_handle">
+        <span class="material-icons">clear</span>
         </div>
         <div contentEditable="false" class="card_content content_main col-9">
         </div>
@@ -547,6 +562,9 @@ function restoreMinimisedList(listID) {
                     <div class="edit_handle">
                         <span class="material-icons">edit</span>
                     </div>
+                    <div class="delete_handle">
+                    <span class="material-icons">clear</span>
+                    </div>
                     <div contentEditable="false" class="card_content content_main col-9">
                     ${card_body}
                     </div>
@@ -629,6 +647,7 @@ function showFullscreen(parentCardID) {
                 <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
                 <div class="row">
                 <div class="edit_handle"><span class="material-icons">edit</span></div>
+                <div class="delete_handle subcard_delete"><span class="material-icons">clear</span></div>
                 <div contentEditable="false" class="card_content content_main">
                 ${subCardBody}
                 </div>
@@ -661,6 +680,18 @@ function showFullscreen(parentCardID) {
                 }
                 });
             };
+
+            // Listens for delete subcard clicks
+            $(".subcard_delete").on('click', function() {
+                let subcardToDel = $(this).closest('.id');
+                let subcardToDelID = subcardToDel.attr('id');
+                let parentCardID = $('.fs_list_main').find('.id').attr('id');
+                const dataToSend = [parentCardID, subcardToDelID]
+                console.log(dataToSend)
+                alert("are you sure you want to delete this card?");
+                sendToBackend('/app/cards/subcard/trash', 'DELETE', dataToSend);
+                subcardToDel.remove();
+            });
 
             // Listens for clicks to edit card content
             $(".edit_handle").on('click', function() {
@@ -758,6 +789,7 @@ function fsAddNewCard() {
             <div class="card_sort_handle"><span class="material-icons">drag_handle</span></div>
             <div class="row">
             <div class="edit_handle"><span class="material-icons">edit</span></div>
+            <div class="delete_handle subcard_delete"><span class="material-icons">clear</span></div>
             <div contentEditable="false" class="card_content content_main"></div>
             <div class="content_side">
                 <ul class="metadata">
@@ -857,6 +889,7 @@ function closeFS() {
     $("#fullscreen").remove();
     $('body').removeClass('freeze_scroll');
 };
+
 
 // ---------------------- // Start // ---------------------- //
 // Because everything is loaded programically we need to set a delay otherwise this runs before there is anything on screen

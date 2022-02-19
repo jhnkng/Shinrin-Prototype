@@ -355,7 +355,7 @@ strong {
     visibility: visible;
 }
 
-.card:hover .edit_handle {
+.card:hover .edit_handle, .card:hover .delete_handle {
     color: lightgray;
 }
 
@@ -389,7 +389,6 @@ strong {
     color: white;
     padding: 0;
     margin-left: 4px;
-
 }
 
     .edit_handle span {
@@ -402,8 +401,24 @@ strong {
         color: gray;
     }
 
-
-
+.delete_handle {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0;
+    width: 37px;
+    color: white;
+    padding: 0;
+    /* margin-left: 4px; */
+}
+    .delete_handle span {
+        font-size: 18px;
+        width: 100%;
+        padding-right: 0.5rem;
+        text-align: right;
+    }
+    .delete_handle:hover span {
+        color: gray;
+    }
 
 
 

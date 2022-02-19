@@ -274,7 +274,6 @@ def card_add_to_minimise():
 @app.route('/app/l/trash', methods=['DELETE'])
 def list_move_to_trash():
     if request.method == 'DELETE':
-        # x = int(request.get_json())
         x = request.get_json()
         x_index = bd.current_list_obj_index[x]
         bd.current_list_objects.pop(x_index)
@@ -322,7 +321,7 @@ def card_fullscreen_view(card_id):
 
 
 @app.route('/app/cards/subcard/new', methods=['GET', 'POST'])
-def card_new_subcard():
+def subcard_new():
     if request.method == 'GET':
         # Get a new id for the new card
         return jsonify(get_new_id())
@@ -351,7 +350,7 @@ def card_new_subcard():
 
 
 @app.route('/app/cards/subcard/edit', methods=['POST', 'PUT'])
-def card_edit_subcard():
+def subcard_edit():
     if request.method == 'POST':
         # accept the cardID, get the unwrapped content of that card and pass it through
         # 1. get the passed card id
@@ -413,6 +412,25 @@ def subcard_order_change():
     # swap child card positions!
     child_cards.insert(new_pos, child_cards.pop(old_pos))
     write_data()
+    return '', 204
+
+
+@app.route('/app/cards/subcard/trash', methods=['DELETE'])
+def subcard_trash():
+    if request.method == 'DELETE':
+        changed_data = request.get_json()
+        # returns [parent card ID, card to delete]
+        card_id = changed_data[1]
+        parent_card_id = changed_data[0]
+        parent_card_index = bd.current_card_obj_index[parent_card_id]
+        parent_card_obj = bd.current_card_objects[parent_card_index]
+        # return the index for each item in parent_card_obj.card_children if it matches the card id
+        change_obj_index = next((index for (index, item) in enumerate(parent_card_obj.card_children) if
+                                 item['subcard_id'] == card_id))
+        # delete card
+        parent_card_obj.card_children.pop(change_obj_index)
+        
+        write_data()
     return '', 204
 
 
@@ -491,7 +509,30 @@ def card_add_to_archive():
 
 @app.route('/app/c/trash', methods=['DELETE'])
 def card_move_to_trash():
-    pass
+    if request.method == 'DELETE':
+        changed_data = request.get_json()
+        # returns [listIDOfCard, cardToDelID]
+        card_to_delete_index = bd.current_card_obj_index[changed_data[1]]
+        # Delete matching card object
+        bd.current_card_objects.pop(card_to_delete_index)
+
+        # TODO: Refactor. Basically the same code as card_order_update()
+        # 2. remove the card id from the first list id + index
+        # get list objects
+        list_objects = bd.current_list_objects
+        # get the index of where the card to replace is
+        from_list_index = bd.current_list_obj_index[changed_data[0]]
+        # print(from_list_index)
+        from_list = list_objects[from_list_index].cards
+        # print(from_list)
+        card_to_remove = changed_data[1]
+        card_to_remove_index = from_list.index(card_to_remove)
+        # print(card_to_remove_index)
+        # remove card
+        from_list.pop(card_to_remove_index)
+
+        write_data()
+        return '', 204
 
 
 @app.route('/app/c/edit', methods=['POST', 'PUT'])
