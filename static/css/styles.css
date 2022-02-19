@@ -1,9 +1,9 @@
 body {
-    /* background: rgb(115,161,75);
+    background: rgb(115,161,75);
     background: -moz-linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
     background: -webkit-linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
     background: linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#73a14b",endColorstr="#ffcedc",GradientType=1); */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#73a14b",endColorstr="#ffcedc",GradientType=1);
 
     background-image: url(/static/img/bg7.jpg);
     background-repeat: no-repeat;
@@ -11,7 +11,7 @@ body {
     background-attachment: fixed;
     background-size: cover;
     font-family: 'Zen Kaku Gothic New', sans-serif;
-    font-weight: 500;
+    font-weight: 400;
     overscroll-behavior: none;
 }
 
@@ -66,7 +66,7 @@ h1 {
 .list_wrapper {
     border-radius: 6px;
     box-shadow: 0.1rem 0.1rem 5px rgba(60, 60, 60, 0.5);
-    width: 285px;
+    width: 350px;
     background-color: rgb(235, 235, 235);
     background-color: rgba(235, 235, 235, 0.7);
     backdrop-filter: blur(5px);
@@ -80,27 +80,27 @@ h1 {
 }
 
 /* This set hides the metadata column in lists but shows in notebook format. */
-    .list_wrapper .notebook_main {
+    .list_wrapper .content_main {
         width: 100%;
     }
 
-    .list_wrapper .notebook_side {
+    .list_wrapper .content_side {
         display: none;
     }
 
-    .notebook_wrapper {
-        width: 650px;
+    .wide_wrapper {
+        width: 350px;
     }
-
-    .notebook_wrapper .notebook_side {
+    
+    .wide_wrapper .content_side {
         display: block;
     }
 
-    .notebook_wrapper .notebook_main {
-        width: 75%;
+    .wide_wrapper .content_main {
+        width: 100%;
     }
 
-    /* .notebook_wrapper .list_tools p:last-child {
+    /* .wide_wrapper .list_tools p:last-child {
         -moz-transform: rotate(180deg);
         -ms-transform: rotate(180deg);
         -o-transform: rotate(180deg);
@@ -110,15 +110,25 @@ h1 {
 
 
 /* List titles */
-.list_header h2 {
+h2.list_header  {
     font-weight: 700;
     font-size: 1rem;
     color: rgb(60, 60, 60);
     padding: 0.8rem 0.5rem 0 0.3rem;
 }
 
+h2[contentEditable=true] {
+    outline: 0px solid black;
+    border-radius: 3px;
+    background-color: white;
+    margin-top: 0.3rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.3rem;
+}
+
+
 .list_header_wrapper {
-    width:285px;
+    /* width: 285px; */
+    width: 350px;
     margin: 0 auto;
 }
 
@@ -150,6 +160,21 @@ input:focus {
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
 }
 
+.card_content[contentEditable=true] {
+    outline: 0px solid black;
+    border-radius: 3px;
+    background-color: rgb(235, 240, 240);
+    width: 100%;
+    padding: 0.5rem;
+    box-shadow: 0px 2px 3px rgba(205, 210, 210, 0.8);
+    min-height: 10rem;
+}
+
+.wide_wrapper .card_content[contentEditable=true] {
+    width: 100%;
+    padding: 0.6rem;
+    margin: 0.5rem 0;
+}
 
 .list_tools {
     border-radius: 3px;
@@ -187,9 +212,8 @@ h3 {
 }
 
 
-textarea {
+/* textarea {
     font-size: 0.85rem;
-    /* width: 250px; */
     width: 100%;
     margin: 0.5rem 0;
     padding: 0.5rem;
@@ -197,12 +221,12 @@ textarea {
     min-height: 10rem;
     border-width: 1px;
     line-height: 1.2rem;
-}
+} */
 
-textarea:focus {
+/* textarea:focus {
     outline: 0;
     font-weight: 500;
-}
+} */
 
 .hidden {
     display: none;
@@ -212,14 +236,14 @@ textarea:focus {
     height: 10rem;
 }
 
-p, .notebook_main ul {
-    font-size: 0.9rem;
-    font-weight: 500;
-    line-height: 1.2rem;
-    margin-bottom: 0.5rem;
+.content_main {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.3rem;
+    margin-bottom: 0.2rem;
 }
 
-.notebook_main ol {
+.content_main ol {
     /* reset existing padding */
     padding-left: 0;    
     padding-left: 1.2rem;
@@ -235,30 +259,27 @@ strong {
     background-color: salmon;
 }
 
-.card:first-child {
+/* .card:first-child { */
     /* There is a 1px border in the card just in the left most list. No idea why, but this turns it off */
-    border: 0;
-}
+    /* border: 0; */
+/* } */
 
-
-
-
-.fade_out.htmx-swapping {
+/* .fade_out {
     width: 0;
     opacity: 0;
     transition: width 0.7s, opacity 0.3s ease-out;
-}
+} */
 
 .smooth {
-    transition: all 0.7s ease;
+    transition: all 0.3s ease;
 }
 
 
-.notebook_wrapper .list_header_wrapper {
-    width: 650px;
+.wide_wrapper .list_header_wrapper {
+    width: 350px;
 }
 
-.notebook_wrapper .card {
+.wide_wrapper .card {
     box-shadow: none;
     margin: 0 0.5rem;
     border-radius: 0;
@@ -266,28 +287,31 @@ strong {
     padding-bottom: 1rem;
 }
 
-.notebook_wrapper .card:first-child {
+.wide_wrapper .card:first-child {
     /* box-shadow: none; */
     margin: 0.3rem 0.5rem 0 0.5rem;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
-.notebook_wrapper .card:last-child {
+.wide_wrapper .card:last-child {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
 }
 
 
-.notebook_wrapper .card_content p {
+.wide_wrapper .card_content p {
     margin: 0;
     padding: 0 0 0.5rem 0;
 }
 
-.notebook_side {
+.content_side {
     font-size: 0.85rem;
-    align-self:flex-end;
-    padding-bottom: 2rem;
-    border-left: 1px solid lightgrey;
+    /* width: 80%; */
+    /* align-self:flex-end; */
+    /* padding: 0.5rem 0 1rem 0; */
+    padding: 1rem 2rem;
+    /* margin-left: 1rem; */
+    border-top: 1px solid lightgrey;
 }
 
     .metadata {
@@ -299,10 +323,10 @@ strong {
     }
 
 
-.notebook_main textarea {
+/* .content_main textarea {
     width: 100%;
     outline: rgba(60, 60, 60, 0.5);
-}
+} */
 
 .list_sort_handle:hover {
     /* Highlight list drag handle */
@@ -331,7 +355,7 @@ strong {
     visibility: visible;
 }
 
-.card:hover .edit_handle {
+.card:hover .edit_handle, .card:hover .delete_handle {
     color: lightgray;
 }
 
@@ -365,7 +389,6 @@ strong {
     color: white;
     padding: 0;
     margin-left: 4px;
-
 }
 
     .edit_handle span {
@@ -378,8 +401,24 @@ strong {
         color: gray;
     }
 
-
-
+.delete_handle {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0;
+    width: 37px;
+    color: white;
+    padding: 0;
+    /* margin-left: 4px; */
+}
+    .delete_handle span {
+        font-size: 18px;
+        width: 100%;
+        padding-right: 0.5rem;
+        text-align: right;
+    }
+    .delete_handle:hover span {
+        color: gray;
+    }
 
 
 
@@ -411,21 +450,25 @@ strong {
     z-index: 500;
 }
 
+.z-ind-top {
+    z-index: 5000;
+}
+
     
-.notebook_main h1 {
+.content_main h1 {
     font-family: 'Zen Kaku Gothic New', sans-serif;
-    font-size: 1.2rem;
+    font-size: 2rem;
     font-weight: 700;
     padding-bottom: 0.5rem;
 }
 
-.notebook_main h2 {
+.content_main h2 {
     font-size: 1.2rem;
     font-weight: 500;
     padding-bottom: 0.3rem;
 }
 
-.notebook_main h3 {
+.content_main h3 {
     font-size: 1.1rem;
     font-weight: 500;
     padding-bottom: 0.2rem;
@@ -433,17 +476,17 @@ strong {
 
 }
 
-.notebook_main h4 {
+.content_main h4 {
     font-size: 1rem;
     font-weight: 700;
 }
 
-.notebook_main h5 {
+.content_main h5 {
     font-size: 0.9rem;
     font-weight: 900;
 }
 
-.notebook_main h6 {
+.content_main h6 {
     font-size: 0.85rem;
     font-weight: 900;
     padding-bottom: 0.2rem;
@@ -481,3 +524,75 @@ strong {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
     }
+
+
+
+ul {
+    list-style-type: none;
+}
+
+.fs_wrapper {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+}
+
+.freeze_scroll {
+    /* added to body to freeze scrolling during fullscreen */
+    overflow: hidden;
+}
+
+.fs_frame {
+    /* background-color: aliceblue; */
+    height: 93%;
+    width: 100%;
+    margin: 0 auto;
+    overflow-y: auto;
+}
+
+.fs_list {
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 1rem;
+    background-color: rgba(120, 120, 120, 0.1);
+    /* border-top: thin gray solid; */
+    padding: 0;
+}
+    .fs_list:first-child {
+        margin-left: 4rem;
+    }
+    .fs_list .card {
+        border-radius: 0;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    .fs_list .card_content {
+        padding: 0.5rem 1.5rem;
+    }
+
+    .fs_list .content_side {
+        display: none;
+    }
+
+.fs_list_main {
+    width: 650px;
+}
+
+    .fs_list_main .fs_list_sub {
+        margin: 0;
+        width: 100%;
+    }
+
+.fs_list_sub {
+    width: 380px;
+}
+

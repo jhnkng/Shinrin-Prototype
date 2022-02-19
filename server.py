@@ -1,5 +1,4 @@
-# Shinrin, Prototype v0351
-# This continues from v0301
+# Shinrin, Prototype v2
 
 from flask import Flask, render_template, request, make_response
 from markupsafe import Markup
