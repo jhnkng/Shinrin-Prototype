@@ -90,10 +90,12 @@ function enableListeners() {
             // Listens for paste event, replaces formatted text with plain text
             $(this).on("paste",function(event){
                 event.preventDefault();
-                // console.log(window.event.clipboardData);
-                let clipboarddata =  window.event.clipboardData.getData('text/plain');    
-                // console.log("paste value" + clipboarddata);
-                $(this).text(clipboarddata);
+                let clipboarddata = window.event.clipboardData.getData('text/plain');
+                // Pastes in the plain text version of the clipboard (lifted from MDN docs)
+                const selection = window.getSelection();
+                if (!selection.rangeCount) return false;
+                selection.deleteFromDocument();
+                selection.getRangeAt(0).insertNode(document.createTextNode(clipboarddata));
             });
 
             // Listens for enter key, if pressed exits edit mode and saves data
@@ -280,7 +282,12 @@ function editContent(editObj, endPoint, method, objType) {
         $(editObj).on("paste",function(event){
             event.preventDefault();
             let clipboarddata =  window.event.clipboardData.getData('text/plain');    
-            $(editObj).text(clipboarddata);
+            // $(editObj).text(clipboarddata);
+            // Pastes in the plain text version of the clipboard (lifted from MDN docs)
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return false;
+            selection.deleteFromDocument();
+            selection.getRangeAt(0).insertNode(document.createTextNode(clipboarddata));
         });
 
         // Listens for enter key, if pressed exits edit mode
@@ -346,10 +353,12 @@ function addNewCard(listObj, cardId) {
         // Listens for paste event, replaces formatted text with plain text
         newCardObj.on("paste",function(event){
             event.preventDefault();
-            // console.log(window.event.clipboardData);
-            let clipboarddata =  window.event.clipboardData.getData('text/plain');    
-            // console.log("paste value" + clipboarddata);
-            newCardObj.text(clipboarddata);
+            let clipboarddata =  window.event.clipboardData.getData('text/plain');
+            // Pastes in the plain text version of the clipboard (lifted from MDN docs)
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return false;
+            selection.deleteFromDocument();
+            selection.getRangeAt(0).insertNode(document.createTextNode(clipboarddata));
         });
 
         // Listens for enter key, if pressed exits edit mode
@@ -449,10 +458,13 @@ function addNewList() {
                 // Listens for paste event, replaces formatted text with plain text
                 newListObj.on("paste",function(event){
                     event.preventDefault();
-                    // console.log(window.event.clipboardData);
-                    let clipboarddata =  window.event.clipboardData.getData('text/plain');    
-                    // console.log("paste value" + clipboarddata);
-                    newListObj.text(clipboarddata);
+                    let clipboarddata =  window.event.clipboardData.getData('text/plain');
+                    // newListObj.text(clipboarddata);
+                    // Pastes in the plain text version of the clipboard (lifted from MDN docs)
+                    const selection = window.getSelection();
+                    if (!selection.rangeCount) return false;
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(document.createTextNode(clipboarddata));
                 });
 
                 // Listens for enter key, if pressed exits edit mode and saves data
@@ -807,10 +819,13 @@ function fsAddNewCard() {
                 // Listens for paste event, replaces formatted text with plain text
                 newCardObj.on("paste",function(event){
                     event.preventDefault();
-                    // console.log(window.event.clipboardData);
-                    let clipboarddata =  window.event.clipboardData.getData('text/plain');    
-                    // console.log("paste value" + clipboarddata);
-                    newCardObj.text(clipboarddata);
+                    let clipboarddata =  window.event.clipboardData.getData('text/plain');
+                    // newCardObj.text(clipboarddata);
+                    // Pastes in the plain text version of the clipboard (lifted from MDN docs)
+                    const selection = window.getSelection();
+                    if (!selection.rangeCount) return false;
+                    selection.deleteFromDocument();
+                    selection.getRangeAt(0).insertNode(document.createTextNode(clipboarddata));
                 });
 
                 // Listens for enter key, if pressed exits edit mode

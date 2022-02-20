@@ -1,0 +1,88 @@
+{
+    "board": {},
+    "lists": [
+        {
+            "list_id": "UHInBMoD",
+            "list_name": "Section 18 - Node.js Basics",
+            "cards": [
+                "uCuAeUWM",
+                "klPXhGaA",
+                "PUHqsqbI",
+                "nNspgykM",
+                "vyoYGUKZ"
+            ]
+        },
+        {
+            "list_id": "NpmsieIi",
+            "list_name": "Section 19 - Express.js with Node.js",
+            "cards": [
+                "KhaoEblM"
+            ]
+        }
+    ],
+    "cards": [
+        {
+            "card_id": "klPXhGaA",
+            "card_title": "",
+            "card_body": "The **Node REPL** is a way to run JS one line at a time. **REPL** stands for ***Read Evaluate Print Loops***.",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "uCuAeUWM",
+            "card_title": "",
+            "card_body": "###What is Node.js?\n**Node.js** is a way to liberate JavaScript from the browser. That way you can build in more robust functionality, like handling direct requests to the computer and dealing with filesystems.",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "PUHqsqbI",
+            "card_title": "",
+            "card_body": "**NPM** is a *package manager*, kinda like PyPi for Python. You can find it [here](https://www.npmjs.com/)",
+            "tags": "",
+            "card_children": [
+                {
+                    "subcard_id": "tZYjAGZc",
+                    "subcard_body": "The Udemy lecture about using and installing NPM is [here](https://www.udemy.com/course/the-complete-web-development-bootcamp/learn/lecture/12384340#overview)"
+                }
+            ],
+            "related_cards": ""
+        },
+        {
+            "card_id": "nNspgykM",
+            "card_title": "",
+            "card_body": "### Using external packages in Node\nIn order to use a package in Node, you need to \"require\" it by:\n\n`const fs = require(\"fs\");`\n\n\nwhere the variable is the name it is available as, require is the keyword and the name of the module is in the brackets following require.\n\n\nTo use a method in the package:\n\n\n`fs.someMethod()`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "vyoYGUKZ",
+            "card_title": "",
+            "card_body": "###In order to start using NPM:\n\n1. You have to initialise NPM inside your project by using the `npm init` command to generate a *package.json*\n2. Then you can install a package with `npm install `",
+            "tags": "",
+            "card_children": [
+                {
+                    "subcard_id": "tsKAeDou",
+                    "subcard_body": "Note that when installing a package, it will also install the dependencies those packages require, eventually leading to Log4j."
+                }
+            ],
+            "related_cards": ""
+        },
+        {
+            "card_id": "KhaoEblM",
+            "card_title": "",
+            "card_body": "### Getting Started\nIn order to start any web development project in Node with Express, you have to make a new directory, create a new root JS file (e.g. server.js or index.js), initialise NPM, and then install Express.\n\nHere are the [install instructions](http://expressjs.com/en/starter/installing.html) for Express.",
+            "tags": "",
+            "card_children": [
+                {
+                    "subcard_id": "TIXYYOcG",
+                    "subcard_body": "As always, [check out the docs](http://expressjs.com/)!"
+                }
+            ],
+            "related_cards": ""
+        }
+    ]
+}

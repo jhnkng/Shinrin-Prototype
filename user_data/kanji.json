@@ -10,16 +10,18 @@
             ]
         },
         {
-            "list_id": "GPJxurjo",
-            "list_name": "\ud83c\udd95 New Words",
+            "list_id": "GRXRkAsG",
+            "list_name": "Chapter 1 Section 1 - \u5bb6\u65cf",
             "cards": [
-                "EFKHLqhw",
-                "vEkDfung"
+                "gIdTMHeS",
+                "fHdbMQyl",
+                "ISeGyNPZ",
+                "fPeUcOUq"
             ]
         },
         {
             "list_id": "NmvlaqDS",
-            "list_name": "\u65b0\u3057\u3044\u6f22\u5b57 \ud83c\udd95",
+            "list_name": "\ud83c\udd95N3\u306e\u65b0\u3057\u3044\u6f22\u5b57",
             "cards": [
                 "HcUirWmk",
                 "ohSrlFEw"
@@ -66,11 +68,6 @@
                 "HrTDxdrG",
                 "kNMjefWB"
             ]
-        },
-        {
-            "list_id": "mxEBgrXo",
-            "list_name": "\u554f\u984c\u2753Questions",
-            "cards": []
         },
         {
             "list_id": "StkYiFaA",
@@ -121,7 +118,7 @@
         {
             "card_id": "Lowoxwfz",
             "card_title": "",
-            "card_body": "### Reported Speech\n\nPattern:\n*someone* \u304c\u300creported speech\u300d\u3068\u8a00\u3063\u3066\u3044\u305f\u3002",
+            "card_body": "### **Reported Speech**\n\nPattern:\n*someone* \u304c\u300creported speech\u300d\u3068\u8a00\u3063\u3066\u3044\u305f\u3002",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -129,7 +126,7 @@
         {
             "card_id": "piqLzSem",
             "card_title": "",
-            "card_body": "Review the list of unknown N4-N5 kanji and add in to list.",
+            "card_body": "**Review** the list of unknown N4-N5 kanji and add in to list.",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -137,7 +134,7 @@
         {
             "card_id": "RxhvVlue",
             "card_title": "",
-            "card_body": "Add in the first 10 of the new Kanji.",
+            "card_body": "**Add** in the first 10 of the new Kanji.",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -164,36 +161,16 @@
             "related_cards": ""
         },
         {
-            "card_id": "EFKHLqhw",
-            "card_title": "",
-            "card_body": "**001**\n#\u5bb6\u65cf",
-            "tags": "",
-            "card_children": [
-                {
-                    "subcard_id": "ORqedaXV",
-                    "subcard_body": "### Meaning\nFamily"
-                },
-                {
-                    "subcard_id": "RSoLTMQe",
-                    "subcard_body": "### Reading\n\u304b\u305e\u304f"
-                }
-            ],
-            "related_cards": ""
-        },
-        {
-            "card_id": "vEkDfung",
-            "card_title": "",
-            "card_body": "**002**\n#\u68ee\u6797",
-            "tags": "",
-            "card_children": [],
-            "related_cards": ""
-        },
-        {
             "card_id": "kIYCxxHm",
             "card_title": "",
             "card_body": "#\u767e",
             "tags": "",
-            "card_children": [],
+            "card_children": [
+                {
+                    "subcard_id": "xmyuUYQG",
+                    "subcard_body": "### Reading"
+                }
+            ],
             "related_cards": ""
         },
         {
@@ -201,13 +178,18 @@
             "card_title": "",
             "card_body": "#\u5343",
             "tags": "",
-            "card_children": [],
+            "card_children": [
+                {
+                    "subcard_id": "CNQBUhEo",
+                    "subcard_body": "### Reading"
+                }
+            ],
             "related_cards": ""
         },
         {
             "card_id": "OEsNyZQR",
             "card_title": "",
-            "card_body": "\u4e07",
+            "card_body": "#\u4e07",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -215,7 +197,7 @@
         {
             "card_id": "VjdltaXO",
             "card_title": "",
-            "card_body": "\u571f",
+            "card_body": "#\u571f",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -223,7 +205,7 @@
         {
             "card_id": "dScceYng",
             "card_title": "",
-            "card_body": "\u793e",
+            "card_body": "#\u793e",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -231,7 +213,7 @@
         {
             "card_id": "hjuGEEXX",
             "card_title": "",
-            "card_body": "\u5e97",
+            "card_body": "#\u5e97",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -239,7 +221,7 @@
         {
             "card_id": "ekEKSBzA",
             "card_title": "",
-            "card_body": "\u9593",
+            "card_body": "#\u9593",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -247,7 +229,7 @@
         {
             "card_id": "lbzlIlTg",
             "card_title": "",
-            "card_body": "\u5e74",
+            "card_body": "#\u5e74",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -255,7 +237,7 @@
         {
             "card_id": "AhxCWSca",
             "card_title": "",
-            "card_body": "\u53bb",
+            "card_body": "#\u53bb",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -263,7 +245,7 @@
         {
             "card_id": "psFgOdIK",
             "card_title": "",
-            "card_body": "\u534a",
+            "card_body": "#\u534a",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -271,7 +253,7 @@
         {
             "card_id": "TnlrIqfd",
             "card_title": "",
-            "card_body": "\u4e0a",
+            "card_body": "#\u4e0a",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -279,7 +261,7 @@
         {
             "card_id": "VESwxsIg",
             "card_title": "",
-            "card_body": "\u4e0b",
+            "card_body": "#\u4e0b",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -287,7 +269,7 @@
         {
             "card_id": "TxgbTXsv",
             "card_title": "",
-            "card_body": "\u5916",
+            "card_body": "#\u5916",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -295,7 +277,7 @@
         {
             "card_id": "ikZzLwyL",
             "card_title": "",
-            "card_body": "\u5f8c",
+            "card_body": "#\u5f8c",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -303,7 +285,7 @@
         {
             "card_id": "ySvWlrlL",
             "card_title": "",
-            "card_body": "\u6771",
+            "card_body": "#\u6771",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -311,7 +293,7 @@
         {
             "card_id": "BCEtTlps",
             "card_title": "",
-            "card_body": "\u897f",
+            "card_body": "#\u897f",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -319,7 +301,7 @@
         {
             "card_id": "vcrsdvdS",
             "card_title": "",
-            "card_body": "\u5357",
+            "card_body": "#\u5357",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -327,7 +309,7 @@
         {
             "card_id": "wqsOqsES",
             "card_title": "",
-            "card_body": "\u5317",
+            "card_body": "#\u5317",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -335,7 +317,7 @@
         {
             "card_id": "niLOnvSd",
             "card_title": "",
-            "card_body": "\u5b89",
+            "card_body": "#\u5b89",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -343,7 +325,7 @@
         {
             "card_id": "vnYAexOx",
             "card_title": "",
-            "card_body": "\u53e4",
+            "card_body": "#\u53e4",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -351,7 +333,7 @@
         {
             "card_id": "RFpoVmmy",
             "card_title": "",
-            "card_body": "\u9577",
+            "card_body": "#\u9577",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -359,7 +341,7 @@
         {
             "card_id": "NGOlBMVG",
             "card_title": "",
-            "card_body": "\u884c",
+            "card_body": "#\u884c",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -367,7 +349,7 @@
         {
             "card_id": "FwPpstfI",
             "card_title": "",
-            "card_body": "\u6765",
+            "card_body": "#\u6765",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -375,7 +357,7 @@
         {
             "card_id": "bAJNNUIK",
             "card_title": "",
-            "card_body": "\u5165",
+            "card_body": "#\u5165",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -383,7 +365,7 @@
         {
             "card_id": "pGtpmSAt",
             "card_title": "",
-            "card_body": "\u51fa",
+            "card_body": "#\u51fa",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -391,7 +373,7 @@
         {
             "card_id": "umBCuwyn",
             "card_title": "",
-            "card_body": "\u7acb",
+            "card_body": "#\u7acb",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -399,7 +381,7 @@
         {
             "card_id": "lhhgYMMw",
             "card_title": "",
-            "card_body": "\u4f11",
+            "card_body": "#\u4f11",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -407,7 +389,7 @@
         {
             "card_id": "HhEtcaSR",
             "card_title": "",
-            "card_body": "\u898b",
+            "card_body": "#\u898b",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -415,7 +397,7 @@
         {
             "card_id": "YaehXdiO",
             "card_title": "",
-            "card_body": "\u805e",
+            "card_body": "#\u805e",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -423,7 +405,7 @@
         {
             "card_id": "GaxycYXw",
             "card_title": "",
-            "card_body": "\u8a00",
+            "card_body": "#\u8a00",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -431,7 +413,7 @@
         {
             "card_id": "lQYQlLLX",
             "card_title": "",
-            "card_body": "\u8a71",
+            "card_body": "#\u8a71",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -439,7 +421,7 @@
         {
             "card_id": "wTLKhmZI",
             "card_title": "",
-            "card_body": "\u98df",
+            "card_body": "#\u98df",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -447,7 +429,7 @@
         {
             "card_id": "MydVvgfo",
             "card_title": "",
-            "card_body": "\u98f2",
+            "card_body": "#\u98f2",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -455,7 +437,7 @@
         {
             "card_id": "RPfCyAjP",
             "card_title": "",
-            "card_body": "\u8cb7",
+            "card_body": "#\u8cb7",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -463,7 +445,7 @@
         {
             "card_id": "HrTDxdrG",
             "card_title": "",
-            "card_body": "\u8aad",
+            "card_body": "#\u8aad",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -471,7 +453,52 @@
         {
             "card_id": "kNMjefWB",
             "card_title": "",
-            "card_body": "\u66f8",
+            "card_body": "#\u66f8",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "gIdTMHeS",
+            "card_title": "",
+            "card_body": "**001**\n#\u7236\u89aa",
+            "tags": "",
+            "card_children": [
+                {
+                    "subcard_id": "ELFOAXSJ",
+                    "subcard_body": "\u3061\u3061\u304a\u3084"
+                },
+                {
+                    "subcard_id": "QecTqlFn",
+                    "subcard_body": "Father"
+                },
+                {
+                    "subcard_id": "lhOJeUTu",
+                    "subcard_body": "\u7236\u89aa\u306f\u4eca\u5e74\uff15\uff10\u6b73\u306b\u306a\u308b\u3002"
+                }
+            ],
+            "related_cards": ""
+        },
+        {
+            "card_id": "fHdbMQyl",
+            "card_title": "",
+            "card_body": "**002**\n#\u6bcd\u89aa",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "ISeGyNPZ",
+            "card_title": "",
+            "card_body": "**003**\n#\u9577\u5973",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "fPeUcOUq",
+            "card_title": "",
+            "card_body": "**004**\n#\u9577\u7537",
             "tags": "",
             "card_children": [],
             "related_cards": ""
