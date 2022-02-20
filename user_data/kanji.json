@@ -11,9 +11,10 @@
         },
         {
             "list_id": "GPJxurjo",
-            "list_name": "\u65b0\u3057\u3044\u5358\u8a9e\ud83c\udd95",
+            "list_name": "\ud83c\udd95 New Words",
             "cards": [
-                "EFKHLqhw"
+                "EFKHLqhw",
+                "vEkDfung"
             ]
         },
         {
@@ -26,8 +27,45 @@
         },
         {
             "list_id": "LshAcHPK",
-            "list_name": "JLPT N5 \u6f22\u5b57\ud83d\udc4c\ud83c\udffd",
-            "cards": []
+            "list_name": "N5 \u6f22\u5b57 To Review",
+            "cards": [
+                "kIYCxxHm",
+                "UuBVvVnx",
+                "OEsNyZQR",
+                "VjdltaXO",
+                "dScceYng",
+                "hjuGEEXX",
+                "ekEKSBzA",
+                "lbzlIlTg",
+                "AhxCWSca",
+                "psFgOdIK",
+                "TnlrIqfd",
+                "VESwxsIg",
+                "TxgbTXsv",
+                "ikZzLwyL",
+                "ySvWlrlL",
+                "BCEtTlps",
+                "vcrsdvdS",
+                "wqsOqsES",
+                "niLOnvSd",
+                "vnYAexOx",
+                "RFpoVmmy",
+                "NGOlBMVG",
+                "FwPpstfI",
+                "bAJNNUIK",
+                "pGtpmSAt",
+                "umBCuwyn",
+                "lhhgYMMw",
+                "HhEtcaSR",
+                "YaehXdiO",
+                "GaxycYXw",
+                "lQYQlLLX",
+                "wTLKhmZI",
+                "MydVvgfo",
+                "RPfCyAjP",
+                "HrTDxdrG",
+                "kNMjefWB"
+            ]
         },
         {
             "list_id": "mxEBgrXo",
@@ -140,6 +178,302 @@
                     "subcard_body": "### Reading\n\u304b\u305e\u304f"
                 }
             ],
+            "related_cards": ""
+        },
+        {
+            "card_id": "vEkDfung",
+            "card_title": "",
+            "card_body": "**002**\n#\u68ee\u6797",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "kIYCxxHm",
+            "card_title": "",
+            "card_body": "#\u767e",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "UuBVvVnx",
+            "card_title": "",
+            "card_body": "#\u5343",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "OEsNyZQR",
+            "card_title": "",
+            "card_body": "\u4e07",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "VjdltaXO",
+            "card_title": "",
+            "card_body": "\u571f",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "dScceYng",
+            "card_title": "",
+            "card_body": "\u793e",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "hjuGEEXX",
+            "card_title": "",
+            "card_body": "\u5e97",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "ekEKSBzA",
+            "card_title": "",
+            "card_body": "\u9593",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "lbzlIlTg",
+            "card_title": "",
+            "card_body": "\u5e74",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "AhxCWSca",
+            "card_title": "",
+            "card_body": "\u53bb",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "psFgOdIK",
+            "card_title": "",
+            "card_body": "\u534a",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "TnlrIqfd",
+            "card_title": "",
+            "card_body": "\u4e0a",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "VESwxsIg",
+            "card_title": "",
+            "card_body": "\u4e0b",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "TxgbTXsv",
+            "card_title": "",
+            "card_body": "\u5916",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "ikZzLwyL",
+            "card_title": "",
+            "card_body": "\u5f8c",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "ySvWlrlL",
+            "card_title": "",
+            "card_body": "\u6771",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "BCEtTlps",
+            "card_title": "",
+            "card_body": "\u897f",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "vcrsdvdS",
+            "card_title": "",
+            "card_body": "\u5357",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "wqsOqsES",
+            "card_title": "",
+            "card_body": "\u5317",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "niLOnvSd",
+            "card_title": "",
+            "card_body": "\u5b89",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "vnYAexOx",
+            "card_title": "",
+            "card_body": "\u53e4",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "RFpoVmmy",
+            "card_title": "",
+            "card_body": "\u9577",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "NGOlBMVG",
+            "card_title": "",
+            "card_body": "\u884c",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "FwPpstfI",
+            "card_title": "",
+            "card_body": "\u6765",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "bAJNNUIK",
+            "card_title": "",
+            "card_body": "\u5165",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "pGtpmSAt",
+            "card_title": "",
+            "card_body": "\u51fa",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "umBCuwyn",
+            "card_title": "",
+            "card_body": "\u7acb",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "lhhgYMMw",
+            "card_title": "",
+            "card_body": "\u4f11",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "HhEtcaSR",
+            "card_title": "",
+            "card_body": "\u898b",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "YaehXdiO",
+            "card_title": "",
+            "card_body": "\u805e",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "GaxycYXw",
+            "card_title": "",
+            "card_body": "\u8a00",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "lQYQlLLX",
+            "card_title": "",
+            "card_body": "\u8a71",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "wTLKhmZI",
+            "card_title": "",
+            "card_body": "\u98df",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "MydVvgfo",
+            "card_title": "",
+            "card_body": "\u98f2",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "RPfCyAjP",
+            "card_title": "",
+            "card_body": "\u8cb7",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "HrTDxdrG",
+            "card_title": "",
+            "card_body": "\u8aad",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "kNMjefWB",
+            "card_title": "",
+            "card_body": "\u66f8",
+            "tags": "",
+            "card_children": [],
             "related_cards": ""
         }
     ]

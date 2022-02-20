@@ -6,7 +6,6 @@ import json
 from random import choices
 from board import Board, List, Card
 from copy import deepcopy
-# from itertools import zip_longest
 
 app = Flask(__name__)
 bd = Board()
@@ -242,7 +241,7 @@ def list_rename():
 
 
 @app.route('/app/l/minimise', methods=['POST', 'PUT'])
-def card_add_to_minimise():
+def list_add_to_minimise():
     if request.method == 'POST':
         list_id_to_restore = request.get_json()
         list_index = bd.current_list_obj_index[list_id_to_restore]
@@ -266,6 +265,7 @@ def card_add_to_minimise():
         return jsonify(resp)
 
     if request.method == 'PUT':
+        # Todo: save list minimise
         print(request.get_json())
         return '', 204
 
