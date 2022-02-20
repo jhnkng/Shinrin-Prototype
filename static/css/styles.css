@@ -91,7 +91,7 @@ h1 {
     .wide_wrapper {
         width: 350px;
     }
-    
+
     .wide_wrapper .content_side {
         display: block;
     }
@@ -105,7 +105,7 @@ h1 {
         -ms-transform: rotate(180deg);
         -o-transform: rotate(180deg);
         -webkit-transform: rotate(180deg);
-        transform: rotate(180deg);    
+        transform: rotate(180deg);
     } */
 
 
@@ -245,7 +245,7 @@ h3 {
 
 .content_main ol {
     /* reset existing padding */
-    padding-left: 0;    
+    padding-left: 0;
     padding-left: 1.2rem;
     padding-right: 0.8rem;
     font-size: 0.9rem;
@@ -361,7 +361,7 @@ strong {
 
 .card_sort_handle {
     /* neg margin offsets the padding from .card */
-    margin: -0.5rem -0.5rem 0rem -0.5rem;   
+    margin: -0.5rem -0.5rem 0rem -0.5rem;
     /* position: relative;
     top: 0;
     right: 0; */
@@ -429,7 +429,7 @@ strong {
 .z-ind-0 {
     z-index: 1;
 }
-    
+
 .z-ind-1 {
     z-index: 100;
 }
@@ -454,7 +454,7 @@ strong {
     z-index: 5000;
 }
 
-    
+
 .content_main h1 {
     font-family: 'Zen Kaku Gothic New', sans-serif;
     font-size: 2rem;
@@ -490,7 +490,7 @@ strong {
     font-size: 0.85rem;
     font-weight: 900;
     padding-bottom: 0.2rem;
-    border-bottom: 1px solid rgb(185, 185, 185);   
+    border-bottom: 1px solid rgb(185, 185, 185);
 }
 
 
@@ -500,16 +500,16 @@ strong {
     scrollbar-width: thin;
     scrollbar-color: rgb(235, 235, 235) rgb(255, 255, 255);
   }
-  
+
   /* Works on Chrome, Edge, and Safari */
   *::-webkit-scrollbar {
     width: 10px;
   }
-  
+
   *::-webkit-scrollbar-track {
     background: rgba(235, 235, 235, 0.1);
   }
-  
+
   *::-webkit-scrollbar-thumb {
     background-color:  rgb(185, 185, 185);
     border-radius: 20px;
@@ -562,7 +562,7 @@ ul {
     overflow-y: auto;
     overflow-x: hidden;
     margin: 1rem;
-    background-color: rgba(120, 120, 120, 0.1);
+    background-color: rgba(120, 120, 120, 0.7);
     /* border-top: thin gray solid; */
     padding: 0;
 }
@@ -595,4 +595,3 @@ ul {
 .fs_list_sub {
     width: 380px;
 }
-
