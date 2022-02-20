@@ -42,7 +42,6 @@ def write_data():
         new_list = {
             "list_id": list_obj.list_id,
             "list_name": list_obj.list_name,
-            # "is_notebook": list_obj.is_notebook,
             "cards": cards
         }
         list_pos.append(new_list)
@@ -151,19 +150,18 @@ def main():
     # list_objects: [<board.List object at 0x000002C2049B4F10>, <board.List object at 0x000002C2049B4D30>]
 
     card_objects = bd.create_card_objects(saved_card_data)
-    # bd.current_card_objects = card_objects
     # print(f"card_objects: {card_objects}")
-    # card_objects: [<board.Card object at 0x00000196545D65E0>, <board.Card object at 0x00000196545D6040>,
-    # <board.Card object at 0x00000196545D65B0>, <board.Card object at 0x00000196545D66A0>]
 
     # Creates {CardID:Index of Card Obj in Card Objects list} so we know which object to access to update content.
-    bd.current_card_obj_index = {each.card_id: card_objects.index(each) for each in card_objects}
+    bd.create_card_objects_index()
+    # bd.current_card_obj_index = {each.card_id: card_objects.index(each) for each in card_objects}
     # print(f"Card Obj Index: {bd.current_card_obj_index}")
     # Card Obj Index: {20220120115820735302: 0, 20220120120149112482: 1,
     # 20220120132630684721: 2, 20220120154744804753: 3}
 
     # Do the same for lists
-    bd.current_list_obj_index = {each.list_id: list_objects.index(each) for each in list_objects}
+    bd.create_list_objects_index()
+    # bd.current_list_obj_index = {each.list_id: list_objects.index(each) for each in list_objects}
     # print(bd.current_list_obj_index)
 
     # Because the template is expecting a single list of dictionaries (with dictionary == 1 list) we
@@ -176,9 +174,9 @@ def main():
     for item in user_lists:
         card_locations = item['cards']
         cards_to_merge = []
-        for card_id_num in card_locations:
-            if card_id_num in user_cards.keys():
-                my_card = user_cards[card_id_num]
+        for card_id in card_locations:
+            if card_id in user_cards.keys():
+                my_card = user_cards[card_id]
                 # \n characters mess up templates, so they are stored escaped.
                 # Here we unescape it before it goes to the UI
                 unescaped_text = process_newlines(my_card['card_body'])
@@ -187,8 +185,8 @@ def main():
                 cards_to_merge.append(my_card)
             else:
                 make_card = {
-                    'card_id': card_id_num,
-                    'card_body': f"Sorry, we couldn't find the data for {card_id_num}."
+                    'card_id': card_id,
+                    'card_body': f"Sorry, we couldn't find the data for {card_id}."
                 }
                 cards_to_merge.append(make_card)
         item['cards'] = cards_to_merge
@@ -217,8 +215,9 @@ def list_new():
         new_list_obj.list_name = process_newlines(new_list_data[-1])
         bd.current_list_objects.insert(0, new_list_obj)
         # Update list object index
-        bd.current_list_obj_index = {each.list_id: bd.current_list_objects.index(each) for each in
-                                     bd.current_list_objects}
+        bd.create_list_objects_index()
+        # bd.current_list_obj_index = {each.list_id: bd.current_list_objects.index(each) for each in
+        #                              bd.current_list_objects}
         # Write to disk
         write_data()
         return jsonify('ok'), 204
@@ -277,6 +276,8 @@ def list_move_to_trash():
         x = request.get_json()
         x_index = bd.current_list_obj_index[x]
         bd.current_list_objects.pop(x_index)
+        # Todo: rebuild new index
+        bd.create_list_objects_index()
         write_data()
         return '', 204
 
@@ -296,8 +297,9 @@ def list_order_update():
         list_objects = bd.current_list_objects
         card_to_move = list_objects.pop(changed_data[0])
         list_objects.insert(changed_data[1], card_to_move)
-        # 3. update the new card objects index, the new card objects, and write to disk
-        bd.current_list_obj_index = {each.list_id: list_objects.index(each) for each in list_objects}
+        # 3. update the new list objects index, the new card objects, and write to disk
+        bd.create_list_objects_index()
+        # bd.current_list_obj_index = {each.list_id: list_objects.index(each) for each in list_objects}
         bd.current_list_objects = list_objects
         write_data()
     return '', 204
@@ -452,12 +454,12 @@ def card_new():
         bd.current_card_objects.append(new_card_obj)
 
         # Update card object index
-        card_objects = bd.current_card_objects
-        bd.current_card_obj_index = {each.card_id: card_objects.index(each) for each in card_objects}
+        # card_objects = bd.current_card_objects
+        bd.create_card_objects_index()
+        # bd.current_card_obj_index = {each.card_id: card_objects.index(each) for each in card_objects}
 
         # update list object with the new card id and position
         list_objects = bd.current_list_objects
-        # to_list_index = bd.current_list_obj_index[int(new_card_data[2])]
         to_list_index = bd.current_list_obj_index[new_card_data[2]]
         to_list = list_objects[to_list_index].cards
         to_list.append(new_card_data[0])
@@ -530,7 +532,8 @@ def card_move_to_trash():
         # print(card_to_remove_index)
         # remove card
         from_list.pop(card_to_remove_index)
-
+        # recreate new card object index
+        bd.create_card_objects_index()
         write_data()
         print("card deleted")
         return '', 204
