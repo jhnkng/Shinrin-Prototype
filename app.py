@@ -115,15 +115,18 @@ def login():
     return resp
 
 
-@app.route('/app', methods=['GET', 'POST'])
-def main():
-    if request.method == 'POST':
-        requested = request.form
-        user_key = requested.get('user')
-        if user_key:
-            bd.user_key = user_key
-        else:
-            bd.user_key = get_new_user_key()
+@app.route('/app/<board>', methods=['GET'])
+def main(board):
+    if request.method == 'GET':
+        bd.user_key = board
+
+    # if request.method == 'POST':
+    #     requested = request.form
+    #     user_key = requested.get('user')
+    #     if user_key:
+    #         bd.user_key = user_key
+    #     else:
+    #         bd.user_key = get_new_user_key()
 
     # ---------------- # 1. Get Data # ---------------- #
     # First we get the saved data and wrangle it to send to the template.

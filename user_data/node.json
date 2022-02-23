@@ -16,7 +16,8 @@
             "list_id": "NpmsieIi",
             "list_name": "Section 19 - Express.js with Node.js",
             "cards": [
-                "KhaoEblM"
+                "KhaoEblM",
+                "stohAtZe"
             ]
         }
     ],
@@ -80,6 +81,27 @@
                 {
                     "subcard_id": "TIXYYOcG",
                     "subcard_body": "As always, [check out the docs](http://expressjs.com/)!"
+                }
+            ],
+            "related_cards": ""
+        },
+        {
+            "card_id": "stohAtZe",
+            "card_title": "",
+            "card_body": "### app.get()\nAccepting GET requests and handling what to do when that happens.\n\n`app.get('/', function(req, res) {\n\u00a0 \u00a0 // Do a thing\n})`",
+            "tags": "",
+            "card_children": [
+                {
+                    "subcard_id": "FBkCNLxe",
+                    "subcard_body": "This is a method that handles what the server should do if it received a GET request. It takes two parameters -- the URL, and the callback function that tells the server what to do when GET is called."
+                },
+                {
+                    "subcard_id": "lyifkNzc",
+                    "subcard_body": "Or it can be even shorter with an arrow function:\n\n\n\u00a0 ` \u00a0app.get('/', (req, res) => { // Do a thing })`"
+                },
+                {
+                    "subcard_id": "BWotNHku",
+                    "subcard_body": "We then use the `.send()` method to send a response back to the browser:\n\n\n`app.get('/', (req, res) => { res.send(\"Hello!\") })`"
                 }
             ],
             "related_cards": ""

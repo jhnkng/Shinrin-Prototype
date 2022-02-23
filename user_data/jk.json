@@ -2,10 +2,44 @@
     "board": {},
     "lists": [
         {
+            "list_id": "iuCQGVsV",
+            "list_name": "Personal Website",
+            "cards": [
+                "lzmynIrC",
+                "nQFfUQLS",
+                "yjWScdWq"
+            ]
+        },
+        {
             "list_id": "fJEjWSdM",
             "list_name": "To-Dos \u2705",
             "cards": []
         }
     ],
-    "cards": []
+    "cards": [
+        {
+            "card_id": "lzmynIrC",
+            "card_title": "",
+            "card_body": "### Goal\nThe goal is to get work as a programmer.",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "nQFfUQLS",
+            "card_title": "",
+            "card_body": "### Important Info\n- my code projects\n- who I am\n- what makes me tick\n- why you should hire me",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "yjWScdWq",
+            "card_title": "",
+            "card_body": "### Less important, but still worth showcasing\n- Photography\n- Films",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        }
+    ]
 }
