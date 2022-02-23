@@ -17,7 +17,19 @@
             "list_name": "Section 19 - Express.js with Node.js",
             "cards": [
                 "KhaoEblM",
-                "stohAtZe"
+                "KTtNAaTX",
+                "stohAtZe",
+                "EswUwXLW"
+            ]
+        },
+        {
+            "list_id": "QAPQyviH",
+            "list_name": "Section 20 - APIs",
+            "cards": [
+                "zWQqdHNI",
+                "mUdmavEf",
+                "RoaZFhmt",
+                "YgjdSnvu"
             ]
         }
     ],
@@ -88,7 +100,7 @@
         {
             "card_id": "stohAtZe",
             "card_title": "",
-            "card_body": "### app.get()\nAccepting GET requests and handling what to do when that happens.\n\n`app.get('/', function(req, res) {\n\u00a0 \u00a0 // Do a thing\n})`",
+            "card_body": "### Handling Requests\nAccepting GET requests and handling what to do when that happens.\n\n`app.get('/', function(req, res) {\n\u00a0 \u00a0 // Do a thing\n})`\n\n\nThe same methods are available for the other HTTP verbs.",
             "tags": "",
             "card_children": [
                 {
@@ -104,6 +116,54 @@
                     "subcard_body": "We then use the `.send()` method to send a response back to the browser:\n\n\n`app.get('/', (req, res) => { res.send(\"Hello!\") })`"
                 }
             ],
+            "related_cards": ""
+        },
+        {
+            "card_id": "KTtNAaTX",
+            "card_title": "",
+            "card_body": "### Calculator App\nBuilding a calculator app website with Node.\n",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "EswUwXLW",
+            "card_title": "",
+            "card_body": "### `__dirname`\nIn order to send a template from Node to the browser, we use:\n\n\n`res.sendFile(//name of file)`\n\n\nBut how will Node know where the file is? In order to get the specific file path we can use the `__dirname` keyword which will return the hard file path. So to serve up a template, you can simply:\n\n\n`res.sendFile(__dirname + \"/index.html\")`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "zWQqdHNI",
+            "card_title": "",
+            "card_body": "[Postman](http://www.postman.com) is a great tool for testing and working with APIs. It does a ton more than that, but for what I need those are the options I need the most.",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "mUdmavEf",
+            "card_title": "",
+            "card_body": "Node has a native method for dealing with APIs called [HTTP and HTTPS](https://nodejs.dev/learn/making-http-requests-with-nodejs). Although their own documentation recommends Axios. One wonders why they don't just merge the two?",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "RoaZFhmt",
+            "card_title": "",
+            "card_body": "HTTP Requests arrive as raw data, to use it you need to convert it into JSON. To do so:\n\n\n`JSON.parse(dataVariable)`\n\n\nThe opposite (to send data):\n\n\n`JSON.stringify(dataToSend)`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "YgjdSnvu",
+            "card_title": "",
+            "card_body": "When sending lines of HTML from Node to the browser, you can only ever have a single `res.send()` function call. But! You can have multiple lines of `res.write()`, so:\n\n\n`res.write(//first line of HTML)`\n`res.write(//another line of HTML)`\n`res.write(//and another line of HTML)`\n\n\n`res.send()`",
+            "tags": "",
+            "card_children": [],
             "related_cards": ""
         }
     ]
