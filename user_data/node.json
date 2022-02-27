@@ -31,6 +31,34 @@
                 "RoaZFhmt",
                 "YgjdSnvu"
             ]
+        },
+        {
+            "list_id": "GKwOcUtU",
+            "list_name": "Section 22 - EJS",
+            "cards": [
+                "qPxnmBAl",
+                "YPhUOauU",
+                "vlNAcokb",
+                "kvahKqCk",
+                "OVVfPFSL"
+            ]
+        },
+        {
+            "list_id": "XZmPmMaw",
+            "list_name": "Section 23 - EJS Challenge",
+            "cards": [
+                "ibpkJpwE"
+            ]
+        },
+        {
+            "list_id": "TFnIdRFw",
+            "list_name": "Nuggets of wisdom",
+            "cards": [
+                "lElYVBLK",
+                "AjieSBPJ",
+                "wrBBBCJZ",
+                "thPuyuLh"
+            ]
         }
     ],
     "cards": [
@@ -153,7 +181,7 @@
         {
             "card_id": "RoaZFhmt",
             "card_title": "",
-            "card_body": "HTTP Requests arrive as raw data, to use it you need to convert it into JSON. To do so:\n\n\n`JSON.parse(dataVariable)`\n\n\nThe opposite (to send data):\n\n\n`JSON.stringify(dataToSend)`",
+            "card_body": "HTTP Requests arrive as raw data, to use it you need to convert it into JSON. To do so:\n\n- `JSON.parse(dataVariable)`\n\nThe opposite (to send data):\n\n- `JSON.stringify(dataToSend)`",
             "tags": "",
             "card_children": [],
             "related_cards": ""
@@ -162,6 +190,86 @@
             "card_id": "YgjdSnvu",
             "card_title": "",
             "card_body": "When sending lines of HTML from Node to the browser, you can only ever have a single `res.send()` function call. But! You can have multiple lines of `res.write()`, so:\n\n\n`res.write(//first line of HTML)`\n`res.write(//another line of HTML)`\n`res.write(//and another line of HTML)`\n\n\n`res.send()`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "qPxnmBAl",
+            "card_title": "",
+            "card_body": "**EJS** is kind of old and basic, from what I read it's close to PHP in syntax and frankly the only reason to use it is that it's so simple and featureless that it's a good way to get the idea of templating in your head. I mean the documentation links to a Github post about using EJS in Express -- it's so old that Express wasn't around when it was published. Anyway, I'm just going to get through the videos and move onto a more modern template system like Jade.",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "YPhUOauU",
+            "card_title": "",
+            "card_body": "After installing and requiring EJS, to **set**\u00a0it as the **rendering engine**, use:\n\n\n`app.set('view engine', 'ejs');`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "vlNAcokb",
+            "card_title": "",
+            "card_body": "EJS templates lives in a folder called 'views' and the template has the extension '.ejs'. To use a template:\n\n`res.render('index', {foo: 'FOO'});`\n\nThe '.ejs' template is basically HTML with some EJS template code for the dynamic bits. Pretty standard stuff.\n\n\nNote in the above code that the first parameter in `.render()` is 'index' which is the name of the template file (sans extension) but the second is a key-value pair called 'foo'. That's the value being passed to the template.\n\n\nThe EJS tag in the template is:\n\n\n`<%= foo %>`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "AjieSBPJ",
+            "card_title": "",
+            "card_body": "If there are more than 5 different conditions, consider using a `switch` statement rather than a bunch of `if...else` statements.",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "wrBBBCJZ",
+            "card_title": "",
+            "card_body": "### Scope and var / let / const\n\n\nIf a variable is declared outside of a block of text or a function, all three behave as a Global Variable.\n\n\nIf a variable is declared inside a function, then all three are Local to that function.\n\n\nBut if a variable was declared inside a code block that's not a function (if/else, for/while etc) then `var` behaves as a Global variable, while `let` and `const` both behave as a Local variable.\n\n\nBasically, don't use `var`.",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "kvahKqCk",
+            "card_title": "",
+            "card_body": "Static files are typically put into a folder called \"public\". To tell Express about it:\n\n\n`app.use(express.static(\"public\"));`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "OVVfPFSL",
+            "card_title": "",
+            "card_body": "### Using custom modules in Node\n\n\nTo use your own local module in Express you have to:\n\n`const moduleName = require(__dirname + \"/nameOfModule.js\")`\n\nIt's a little confusing, so you can review on [Udemy](https://www.udemy.com/course/the-complete-web-development-bootcamp/learn/lecture/12384992#overview)\n\n\nEssentially the way to make methods in each module accessible is to use the `module.export()` method (or just `export()`). The basic structure is as a regular function with a return keyword at the end to return some data, then to make it accessible by:\n\n\n`export.nameOfFunction = functionName`\n\n\nNote the lack of parenthesis.\n\n\nSince to the outside world the way to access that function is to use \"nameOfFunction\", you can shorten it to use arrow functions:\n\n\n`export.nameOfFunction = () => { // code }`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "lElYVBLK",
+            "card_title": "",
+            "card_body": "### Course Resources\n\n\n[https://www.appbrewery.co/p/web-development-course-resources/](https://www.appbrewery.co/p/web-development-course-resources/)",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "thPuyuLh",
+            "card_title": "",
+            "card_body": "The `.forEach()` loop is a much quicker and easier way to loop, much more similar to how a regular Python loop works.\n\n\n`things.forEach(function(thing){ // do something });`",
+            "tags": "",
+            "card_children": [],
+            "related_cards": ""
+        },
+        {
+            "card_id": "ibpkJpwE",
+            "card_title": "",
+            "card_body": "### Route Parameters\n\n[Route Parameters](https://expressjs.com/en/guide/routing.html) in Express lets us insert parameters into the URL.\n\nEach parameter is marked with a \":\" followed by the name of the parameter, which can be accessed with the `req.params` object:\n\n- `/user/:userId/book/:bookId`\n- ` req.params` returns `{'userId': '1', 'bookId': '2'}`\n\nHyphens and dots are interpreted literally, so:\n\n- `/flights/:from-:to`\n- `/flights/LAX-SFO`\n- returns `{'from': 'LAX', 'to': 'SFO'}`\n\n",
             "tags": "",
             "card_children": [],
             "related_cards": ""
