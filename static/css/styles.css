@@ -1,15 +1,5 @@
 body {
-    background: rgb(115,161,75);
-    background: -moz-linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
-    background: -webkit-linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
-    background: linear-gradient(51deg, rgba(115,161,75,1) 19%, rgba(255,206,220,1) 99%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#73a14b",endColorstr="#ffcedc",GradientType=1);
-
-    background-image: url(/static/img/bg7.jpg);
-    background-repeat: no-repeat;
-    background-position: 0 80%;
-    background-attachment: fixed;
-    background-size: cover;
+    background: #368529;
     font-family: 'Zen Kaku Gothic New', sans-serif;
     font-weight: 400;
     overscroll-behavior: none;

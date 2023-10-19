@@ -113,6 +113,7 @@ def process_newlines(text):
 def login():
     resp = make_response(render_template('login.html'))
     return resp
+    # TODO: Login doesn't actually work, you have to pass a user key into the URL or it breaks
 
 
 @app.route('/app/<board>', methods=['GET'])
